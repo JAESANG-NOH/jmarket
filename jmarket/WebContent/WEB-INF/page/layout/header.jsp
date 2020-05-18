@@ -37,14 +37,14 @@
 <c:if test="${empty sessionScope.member}">
 					<li><a href="">로그인</a>
 						<ul>
-							<li><a href="">회원가입</a></li>
+							<li><a href="<%=cp%>/user/newuser.do">회원가입</a></li>
 							<li><a>ID&nbsp;<input class="login" type="text" maxlength="10" name="id">&nbsp;&nbsp;&nbsp;&nbsp;Password&nbsp;<input class="login" type="password" maxlength="10" name="pwd">&nbsp;&nbsp;<button class="loginbtn" type="button" onclick="sendlogin();">로그인</button></a></li>
 						</ul>
 </c:if>
 <c:if test="${not empty sessionScope.member}">
 					<li><a href="">회원</a>
 						<ul>
-							<li><a href="">로그아웃</a></li>
+							<li><a href="<%=cp%>/user/logout.do">로그아웃</a></li>
 						</ul>
 </c:if>
 				</ul>

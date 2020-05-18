@@ -12,7 +12,6 @@ import com.util.MainServlet;
 
 @WebServlet("/user/*")
 public class UserServlet extends MainServlet{
-
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -23,11 +22,18 @@ public class UserServlet extends MainServlet{
 			loginForm(req, resp);
 		} else if(uri.indexOf("login_ok.do")!=-1) {
 			loginSubmit(req, resp);
+		} else if(uri.indexOf("logout.do")!=-1) {
+			logout(req, resp);
+		} else if(uri.indexOf("newuser.do")!=-1) {
+			insertUser(req, resp);
+		} else if(uri.indexOf("newuser_ok.do")!=-1) {
+			submitUser(req, resp);
 		}
 	}
 	
 	protected void loginForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		String path = "/WEB-INF/page/user/login.jsp";
+		forward(req, resp, path);
 	}
 	
 	protected void loginSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -54,6 +60,24 @@ public class UserServlet extends MainServlet{
 		info.setName(dto.getName());
 
 		session.setAttribute("member", info);
-		resp.sendRedirect(cp+"/home/home.do");
+		resp.sendRedirect(cp);
+	}
+	
+	protected void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		HttpSession session = req.getSession();
+		session.invalidate();
+		resp.sendRedirect(cp);
+	}
+	
+	protected void insertUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		req.setAttribute("title", "회원 가입");
+		req.setAttribute("mode", "newuser");
+		forward(req, resp, "/WEB-INF/page/user/newuser.jsp");
+	}
+	
+	protected void submitUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
 	}
 }
