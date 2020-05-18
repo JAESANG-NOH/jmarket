@@ -4,6 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	String cp = request.getContextPath();
+	String a = "aabb";
+	
 %>
 <!DOCTYPE html>
 <html>
