@@ -26,7 +26,7 @@ function sendlogin() {
 <body>
 	<div id="mainframe">
 	 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
-	 
+	 </div>
 	 <form name="join" method="post">
 		<section class="container">
 			<article>
