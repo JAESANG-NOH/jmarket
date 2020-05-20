@@ -1,7 +1,7 @@
 package com.buy;
 
-public class buyDTO {
-	private String num;
+public class BuyDTO {
+	private int num;
 	private String id;
 	private String name;
 	private String subject;
@@ -9,11 +9,26 @@ public class buyDTO {
 	private String imageName;
 	private String created;
 	private int buying;
+	private String price;
+	private String productName;
 	
-	public String getNum() {
+	
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public int getNum() {
 		return num;
 	}
-	public void setNum(String num) {
+	public void setNum(int num) {
 		this.num = num;
 	}
 	public String getName() {
