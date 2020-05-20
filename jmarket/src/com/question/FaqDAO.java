@@ -2,6 +2,9 @@ package com.question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.util.DBConn;
 
@@ -32,6 +35,39 @@ public class FaqDAO {
 			}
 		}
 		return result;
+	}
+	
+	public List<FaqDTO> listFaq(String category){
+		List<FaqDTO> list=new ArrayList<FaqDTO>();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String sql;
+		FaqDTO dto;
+		
+		try {
+			sql="SELECT num, subject, content, category FROM faq WHERE category=? ORDER BY num";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, category);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				dto=new FaqDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setCategory(rs.getString("category"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		return list;
 	}
 	
 //	int result=0;

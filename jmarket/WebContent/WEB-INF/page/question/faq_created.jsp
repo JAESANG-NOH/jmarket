@@ -20,6 +20,12 @@ function sendlogin() {
 	f.submit();
 }
 
+function sendOk(){
+	var f=document.boardForm;
+	f.action='<%=cp%>/question/faq_created_ok.do';
+	f.submit();
+}
+
 </script>
 </head>
 <body>	
@@ -36,9 +42,9 @@ function sendlogin() {
 			      <td width="100" bgcolor="#eeeeee" style="text-align: center;">카테고리</td>
 			      <td style="padding-left:10px;"> 
 			      	<select name="category">
-			      		<option value="event">이벤트문의</option>
 			      		<option value="goods">상품문의</option>
 			      		<option value="delivery">배송문의</option>
+			      		<option value="event">이벤트문의</option>
 			      	</select>
 			      </td>
 			  </tr>
@@ -59,7 +65,7 @@ function sendlogin() {
 			  <table style="width: 100%; border-spacing: 0px;">
 			     <tr height="45"> 
 			      <td align="center" >
-			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/question/faq_created_ok.do';">등록하기</button>
+			        <button type="button" class="btn" onclick="sendOk();">등록하기</button>
 			        <button type="reset" class="btn">다시입력</button>
 			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/question/faq_list.do';">등록취소</button>
 			      </td>
