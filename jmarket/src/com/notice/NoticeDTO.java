@@ -7,12 +7,12 @@ public class NoticeDTO {
 	private String id;
 	private String title;
 	private String content;
-	private String Afilename;
-	private String Bfilename;
+	private String afilename;
+	private String bfilename;
 	private long filesize;
 	private int hitcount;
 	private String created;
-
+	
 	private long gap;
 
 	public int getNum() {
@@ -38,7 +38,6 @@ public class NoticeDTO {
 	public void setNotice(int notice) {
 		this.notice = notice;
 	}
-	
 
 	public String getName() {
 		return name;
@@ -73,19 +72,19 @@ public class NoticeDTO {
 	}
 
 	public String getAfilename() {
-		return Afilename;
+		return afilename;
 	}
 
 	public void setAfilename(String afilename) {
-		Afilename = afilename;
+		this.afilename = afilename;
 	}
 
 	public String getBfilename() {
-		return Bfilename;
+		return bfilename;
 	}
 
 	public void setBfilename(String bfilename) {
-		Bfilename = bfilename;
+		this.bfilename = bfilename;
 	}
 
 	public long getFilesize() {
@@ -119,5 +118,6 @@ public class NoticeDTO {
 	public void setGap(long gap) {
 		this.gap = gap;
 	}
+	
 
 }

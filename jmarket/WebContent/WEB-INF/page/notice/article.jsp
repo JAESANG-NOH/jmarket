@@ -11,6 +11,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sbwrite.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
+<link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -56,6 +60,7 @@
 						</div>
 				</div>
 			</aside>
+</section>
 
 <div class="footer">
     <jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
