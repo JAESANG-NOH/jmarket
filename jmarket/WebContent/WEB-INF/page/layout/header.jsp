@@ -12,7 +12,6 @@ function sendlogin() {
 	f.submit();
 }
 </script>
-
 <form name="loginform" method="post">
 <header>
 			<div id="menuline" class="container">

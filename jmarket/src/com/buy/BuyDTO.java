@@ -11,8 +11,14 @@ public class BuyDTO {
 	private int buying;
 	private String price;
 	private String productName;
+	private int views;
 	
-	
+	public int getViews() {
+		return views;
+	}
+	public void setViews (int views) {
+		this.views = views;
+	}
 	public String getPrice() {
 		return price;
 	}

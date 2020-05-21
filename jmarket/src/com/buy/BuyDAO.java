@@ -119,14 +119,14 @@ public class BuyDAO {
         return result;
     }
 	
-	public List<BuyDTO> listbuy(int offset, int rows) {
+	public List<BuyDTO> listBuy(int offset, int rows) {
 		List<BuyDTO> list=new ArrayList<BuyDTO>();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		String sql;
 		
 		try {
-			sql =" SELECT name, num, b.id, subject, imagename, TO_CHAR(b.created,'YYYY-MM-DD') created, buying "
+			sql =" SELECT name, num, b.id, subject, imagename, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views"
 			    +" FROM buy b "
 			    +" JOIN member1 m ON b.Id=m.Id "
 			    +" ORDER BY num DESC "
@@ -147,6 +147,7 @@ public class BuyDAO {
 				dto.setBuying(rs.getInt("buying"));
 				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
+				dto.setViews(rs.getInt("views"));
 				list.add(dto);
 			}
 			
@@ -168,5 +169,88 @@ public class BuyDAO {
 			}
 		}
 		return list;
+	}
+	
+	public List<BuyDTO> listBuy(int offset, int rows, String condition, String keyword) {
+		List<BuyDTO> list=new ArrayList<BuyDTO>();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String sql;
+		
+		try {
+			sql =" SELECT name, num, b.id, subject, imagename, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views"
+				+" FROM buy b "
+				+" JOIN member1 m ON b.Id=m.Id ";
+			
+			if(condition.equalsIgnoreCase("created")) {
+				keyword = keyword.replaceAll("-", "");
+				sql += " WHERE TO_CHAR(created, 'YYYYMMDD') = ?";
+			} else if(condition.equalsIgnoreCase("userName")) {
+				sql +=" WHERE INSTR(Name, ?) = 1 ";
+			} else {
+				sql +=" WHERE INSTR("+condition+", ?) >= 1 ";;
+			}
+			
+			sql+=" ORDER BY num DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
+			
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, rows);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BuyDTO dto=new BuyDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setImageName(rs.getString("imagename"));
+				dto.setCreated(rs.getString("created"));
+				dto.setBuying(rs.getInt("buying"));
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setViews(rs.getInt("views"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e2) {
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		return list;
+	}
+	
+	public int updateviews(int num)  {
+		int result=0;
+		PreparedStatement pstmt=null;
+		String sql;
+		
+		try {
+			sql="UPDATE buy SET views=views+1  WHERE num=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			result=pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		
+		return result;
 	}
 }

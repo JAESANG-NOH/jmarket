@@ -2,6 +2,8 @@ package com.buy;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +33,11 @@ public class BuyServlet extends FileServlet{
 		String cp = req.getContextPath();
 		
 		HttpSession session=req.getSession();
-		SessionInfo info=(SessionInfo)session.getAttribute("user");
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		String root = session.getServletContext().getRealPath("/");
-		pathname = root+File.pathSeparator+"photo"+File.pathSeparator+"buy";
+		System.out.println(root);
+		pathname = root+"photo"+File.separator+"buy";
 		
 		
 		if(uri.indexOf("list1.do")!=-1) {
@@ -66,7 +69,18 @@ public class BuyServlet extends FileServlet{
 		if(page!=null) {
 			current_page = Integer.parseInt(page);
 		}
-		int dataCount = dao.dataCount();
+		String condition = req.getParameter("condition");
+		String keyword = req.getParameter("keyword");
+		if(condition==null) {
+			condition = "subject";
+			keyword="";
+		}
+		int dataCount;
+		if(keyword.length()==0) {
+			dataCount = dao.dataCount();
+		} else {
+			dataCount = dao.dataCount(condition, keyword);
+		}
 		
 		int rows = 10;
 		int total_page = util.pageCount(rows, dataCount);
@@ -74,10 +88,29 @@ public class BuyServlet extends FileServlet{
 			current_page=total_page;
 		}
 		
+		if(req.getMethod().equalsIgnoreCase("GET")) {
+			keyword = URLDecoder.decode(keyword,"utf-8");
+		}
+		
 		int offset = (current_page-1)*rows;
-		List<BuyDTO> list = dao.listbuy(offset, rows);
-		String listUrl=cp+"/buy/list.do";
-		String articleUrl = cp + "/buy/article.do?page="+current_page;
+		List<BuyDTO> list = null;
+		if(keyword.length()==0) {	
+			list = dao.listBuy(offset, rows);
+		} else {
+			list = dao.listBuy(offset, rows, condition, keyword);
+		}
+		
+		String query="";
+		if(keyword.length()!=0) {
+			query="condition="+condition+ "&keyword="+URLEncoder.encode(keyword, "utf-8");
+		}
+		
+		String listUrl=cp+"/buy/list1.do";
+		String articleUrl=cp+"/buy/article.do?page="+current_page;
+		if(query.length()!=0) {
+			listUrl+="?"+query;
+			articleUrl+="&"+query;
+		}
 		String paging=util.paging(current_page, total_page, listUrl);
 		
 		req.setAttribute("list", list);
@@ -86,9 +119,9 @@ public class BuyServlet extends FileServlet{
 		req.setAttribute("page", current_page);
 		req.setAttribute("total_page", total_page);
 		req.setAttribute("paging", paging);
-		
+		req.setAttribute("condition", condition);
+		req.setAttribute("keyword", keyword);
 		forward(req, resp, "/WEB-INF/page/buy/list1.jsp");
-		
 	}
 	
 	protected void list2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -108,14 +141,14 @@ public class BuyServlet extends FileServlet{
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		dto.setId(info.getId());
-		
-		String filename = null;
-		Part p = req.getPart("upload");
-		Map<String, String> map = fileUpload(p, pathname);
 		dto.setSubject(req.getParameter("subject"));
 		dto.setContent(req.getParameter("content"));
 		dto.setPrice(req.getParameter("price"));
 		dto.setProductName(req.getParameter("productname"));
+		
+		String filename = null;
+		Part p = req.getPart("upload");
+		Map<String, String> map = fileUpload(p, pathname);
 		if(map != null) {
 			filename = map.get("fileName");
 		}
@@ -124,7 +157,7 @@ public class BuyServlet extends FileServlet{
 		}
 		System.out.println(filename);
 		dao.insertBuy(dto);
-		resp.sendRedirect(cp+"/home/home.do");
+		resp.sendRedirect(cp+"/buy/list1.do");
 	}
 	
 	protected void article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
