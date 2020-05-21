@@ -62,6 +62,7 @@ public abstract class FileServlet extends HttpServlet {
 			p.write(fullpath);
 			
 			map = new HashMap<String, String>();
+			map.put("ogFilename", ogFilename);
 			map.put("fileName", fileName);
 		} catch (Exception e) {
 			e.printStackTrace();

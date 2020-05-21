@@ -77,7 +77,7 @@ function catechange(){
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
 					      <td >
-					      	<input type="text">
+					      	<input type="text" name="subject">
 						  </td>
 					  </tr>
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
