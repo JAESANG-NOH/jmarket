@@ -2,10 +2,12 @@ package com.question;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import javax.servlet.http.Part;
 import com.util.FileServlet;
 
 @WebServlet("/qna/*")
+@MultipartConfig
 public class QnaServlet extends FileServlet{
 	private static final long serialVersionUID = 1L;
 	
@@ -39,6 +42,22 @@ public class QnaServlet extends FileServlet{
 		
 	}
 	protected void qna_list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao=new QnaDAO();
+		List<QnaDTO> list=dao.listQna();
+		
+		req.setAttribute("list", list);
+		
+		List<String> year=new ArrayList<String>();
+		for(QnaDTO dto:list) {
+			String yy=dto.getCreated().substring(0, 4);
+			for(String y:year) {
+				if(!y.equals(yy)) {
+					year.add(yy);
+				}
+			}
+		}
+		req.setAttribute("year", year);
+		
 		forward(req, resp, "/WEB-INF/page/question/qna_list.jsp");
 		
 	}
@@ -53,6 +72,7 @@ public class QnaServlet extends FileServlet{
 		
 		List<FaqDTO> list=dao.listFaq();
 		
+		
 		req.setAttribute("list", list);
 		req.setAttribute("listsize", list.size());
 		
@@ -66,6 +86,7 @@ public class QnaServlet extends FileServlet{
 		
 		String cp=req.getContextPath();
 		QnaDTO dto=new QnaDTO();
+		QnaDAO dao=new QnaDAO();
 		dto.setCategory(req.getParameter("category"));
 		dto.setSubject(req.getParameter("subject"));
 		dto.setContent(req.getParameter("content"));
@@ -73,20 +94,14 @@ public class QnaServlet extends FileServlet{
 		Part p=req.getPart("upload");
 		Map<String, String> map=fileUpload(p, pathname);
 		if(map!=null) {
-			String saveFilename=map.get("saveFilename");
-			String originalFilename=map.get("originalFilename");
+			String savefilename=map.get("fileName");
+			String originalfilename=map.get("ogFilename");
 			
+			dto.setSavefilename(savefilename);
+			dto.setOriginalfilename(originalfilename);
 		}
 		
-		
-	//	dto.setOriginalfilename(originalfilename);
-	//	dto.setSavefilename(savefilename);
-		
-		
-		
-		QnaDAO dao=new QnaDAO();
-		
-		
+		dao.insertQna(dto);
 		
 		resp.sendRedirect(cp+"/qna/qna_list.do");
 		

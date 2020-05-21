@@ -2,6 +2,9 @@ package com.question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.util.DBConn;
 
@@ -39,4 +42,65 @@ public class QnaDAO {
 		}
 		return result;	
 	}
+	
+	public List<QnaDTO> listQna(){
+		QnaDTO dto=null;
+		List<QnaDTO> list=new ArrayList<QnaDTO>();
+		PreparedStatement pstmt=null;
+		String sql;
+		ResultSet rs=null;
+		try {
+			sql="SELECT num,category,subject,content,created,savefilename,originalfilename,"
+					+ "an_created,status,an_content FROM qna ORDER BY num";
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				dto=new QnaDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setCategory(rs.getString("category"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setCreated(rs.getString("created"));
+				dto.setSavefilename(rs.getString("savefilename"));
+				dto.setOriginalfilename(rs.getString("originalfilename"));
+				dto.setAn_created(rs.getString("an_created"));
+				dto.setStatus(rs.getInt("status"));
+				dto.setAn_content(rs.getString("an_content"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+
+		return list;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
