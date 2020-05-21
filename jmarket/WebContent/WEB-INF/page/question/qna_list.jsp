@@ -15,11 +15,7 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
-	f.submit();
-}
+
 
 </script>
 </head>
@@ -61,8 +57,8 @@ function sendlogin() {
 					      <td>2020-05-20</td>
 					      <td>접수완료</td>
 					  </tr>
-					  <tr id="answer${dto.num}" align="center" height="35" style="visibility:visible; border-bottom: 1px solid #cccccc;">
-							<td colspan="6" style="background: #EAEAEA;">${dto.content}</td>
+					  <tr id="answer" align="center" height="35" style="visibility:visible; border-bottom: 1px solid #cccccc;">
+							<td colspan="6" style="background: #EAEAEA;">내용</td>
 					  </tr>
 					</table>
 				</div>
@@ -74,8 +70,8 @@ function sendlogin() {
 			</div>
 			<ul>
 				<li><a href="<%=cp%>/question/faq_list.do">-FAQ</a></li>
-				<li><a href="#">-문의하기</a></li>
-				<li><a href="#">-문의내역</a></li>
+				<li><a href="<%=cp%>/question/qna_created.do">-문의하기</a></li>
+				<li><a href="<%=cp%>/question/qna_list.do">-문의내역</a></li>
 			</ul>
 		</div>
 	</section>

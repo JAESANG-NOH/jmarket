@@ -28,6 +28,8 @@ public class QuestionServlet extends MainServlet{
 			qna_list(req, resp);
 		}else if(uri.indexOf("qna_created.do")!=-1) {
 			qna_createdForm(req, resp);
+		}else if(uri.indexOf("qna_created_ok.do")!=-1){
+			qna_createdSubmit(req, resp);
 		}
 		
 	}
@@ -75,7 +77,25 @@ public class QuestionServlet extends MainServlet{
 	}
 	
 	protected void qna_createdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		FaqDAO dao=new FaqDAO();
+		String category=req.getParameter("category");
+		
+		if(category==null) {
+			category="goods";
+		}
+		List<FaqDTO> list=dao.listFaq();
+		req.setAttribute("list", list);
+		req.setAttribute("listsize", list.size());
+		
+		
 		forward(req, resp, "/WEB-INF/page/question/qna_created.jsp");
+		
+	}
+	
+	protected void qna_createdSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String cp=req.getContextPath();
+		resp.sendRedirect(cp+"/question/qna_list.do");
 		
 	}
 	

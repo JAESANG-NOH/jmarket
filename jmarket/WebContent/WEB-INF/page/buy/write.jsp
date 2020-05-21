@@ -15,31 +15,29 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
-	f.submit();
+function sendbuy() {
+    var f = document.writeForm;
+    f.action="<%=cp%>/buy/write_ok.do";
+    f.submit();
 }
-
 </script>
 </head>
 <body>
 	<div id="mainframe">
 	 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
-	 
-	 <form name="writepage" method="post">
+	 <form name="writeForm" method="post" enctype="multipart/form-data" >
 		<section class="container">
 			<article>	
 				<div class="content">
 					<div class="all">
 						<br><br>
 						<div class="name1">글 제목 <input name="subject" style="width: 550px; height: 25px; border-radius: 4px;"></div>
-						<div class="img-upload"><button class="button" type="submit">file upload</button> </div>
+						<div class="img-upload"><input class="button" type="file" name="upload"></div>
 						
 					
 						<ul class="view">
 							<li class="product">상품명 <input name="productname" style="width: 150px; height: 20px; border-radius: 4px;"> <li>
-							<li class="price">가격 &nbsp;&nbsp;<input name="productname" style="width: 150px; height: 20px; border-radius: 4px;"> 원<br></li>
+							<li class="price">가격 &nbsp;&nbsp;<input name="price" style="width: 150px; height: 20px; border-radius: 4px;"> 원<br></li>
 							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
@@ -62,11 +60,16 @@ function sendlogin() {
 						<br>
 					
 					<div>
-						<span class="bigimg-upload"><button class="button" type="submit">file upload</button> </span>
-						<span class="bigimg-upload"><button class="button" type="submit">file upload</button> </span>
+						<span class="bigimg-upload"></span>
+						<span class="bigimg-upload"></span>
 					</div>	
-						<div class="write2"><textarea name="content" rows="12"  style="width: 95%; resize: none; display: inline-block;">내용 입력</textarea></div>
+						<div class="write2"><textarea name="content" rows="12"  style="width: 95%; resize: none; border-radius: 4px;"></textarea></div>
 					</div>
+					<div style="text-align:right; width: 866px;">
+					<button type="button" class="btn" onclick="sendbuy();">${state=='update'?'수정완료':'등록하기'}</button>
+			        <button type="reset" class="btn">다시입력</button>
+			        <button type="button" class="btn" onclick="">${state=='update'?'수정취소':'등록취소'}</button>
+			        </div>
 				</div>
 			</article>	
 			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>
