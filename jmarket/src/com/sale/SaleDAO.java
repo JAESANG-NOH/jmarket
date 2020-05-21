@@ -3,6 +3,7 @@ package com.sale;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -306,20 +307,205 @@ public class SaleDAO {
 	
 	
 	//글보기 
+	public SaleDTO readSale(int num) {
+		SaleDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql ;
+		
+		sql = "SELECT num, s.id, m.name, subject, content, fileName, hitCount, s.created ";
+		sql += "FROM sale s JOIN member1 ON s.id = m.id WHERE num=?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto=new SaleDTO();
+				
+				dto.setNum(rs.getInt("num"));
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setFileName(rs.getString("fileName"));
+				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setCreated(rs.getString("created"));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+				
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+		return dto;
+	}
+
+	
+	//이전글 
+	
+	public SaleDTO preReadSale(int num, String condition, String keyword) {
+		SaleDTO dto = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		PreparedStatement pstmt = null;
+		
+		try {
+			if(keyword.length()!=0) {
+				sb.append("SELECT num,subject FROM sale s JOIN member1 m ON s.id = m.id ");
+				if(condition.equalsIgnoreCase("created")) {
+					keyword=keyword.replaceAll("-", "");
+                	sb.append(" WHERE (TO_CHAR(created, 'YYYYMMDD') = ?)  ");
+				}else {
+                	sb.append(" WHERE (INSTR(" + condition + ", ?) >= 1)  ");
+                }
+	                sb.append("         AND (num > ? )  ");
+	                sb.append(" ORDER BY num ASC  ");
+	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
+	
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setString(1, keyword);
+	                pstmt.setInt(2, num);
+			}else {
+				sb.append("SELECT num, subject FROM sale s JOIN member1 m ON s.id=m.id ");
+				   sb.append(" WHERE num > ?  ");
+	                sb.append(" ORDER BY num ASC  ");
+	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
+
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setInt(1, num);
+			}
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto= new SaleDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setSubject(rs.getString("subject"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+				
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+    
+        return dto;		
+	}
 	
 	
+	//다음글 
 	
+	public SaleDTO nextReadSale(int num, String condition, String keyword) {
+		SaleDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			if(keyword.length()!=0) {
+				sb.append("SELECT num,subject FROM sale s JOIN member1 m ON s.id = m.id ");
+				sb.append(" WHERE num < ? ");
+				 sb.append(" ORDER BY num DESC  ");
+	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
+	                pstmt=conn.prepareStatement(sb.toString());
+	                pstmt.setInt(1, num);
+				}
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new SaleDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setSubject(rs.getString("subject"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+				
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+    
+        return dto;
+		}
 	
+
 	
+	public int updateHitCount(int num) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = " UPDATE sale SET hitCount= hitCount+1 WHERE num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+		return result;
+		}
+
+	//글 수정
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

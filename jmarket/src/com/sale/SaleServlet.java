@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import com.notice.NoticeDTO;
 import com.user.SessionInfo;
 import com.util.FileServlet;
 import com.util.MyUtil;
@@ -115,11 +117,10 @@ public class SaleServlet extends FileServlet{
 			list=dao.listSale(offset, rows);
 		}
 
-		
 		//페이징 처리 
 		
 		String listUrl = cp+"/sale/list.do";
-		String articleUrl = cp+"/sale/list.do?page="+current_page;
+		String articleUrl = cp+"/sale/read.do?page="+current_page;
         String query = "";
         if(keyword.length()!=0) {
            query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
@@ -198,15 +199,59 @@ public class SaleServlet extends FileServlet{
 		
 		}
 		
-	
+	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		SaleDAO dao = new SaleDAO();
+		String cp = req.getContextPath();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page = req.getParameter("page");
+		String rows=req.getParameter("rows");
+		
+		String condition=req.getParameter("condition");
+		String keyword=req.getParameter("keyword");
+		if(condition==null) {
+			condition="subject";
+			keyword="";
+		}
+		keyword=URLDecoder.decode(keyword, "utf-8");
+
+		String query="page="+page+"&rows="+rows;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		// 조회수
+		dao.updateHitCount(num);
+		
+		// 게시물 가져오기
+		SaleDTO dto=dao.readSale(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/sale/list.do?"+query);
+			return;
+		}
+		
+		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+		
+		// 이전글/다음글
+		SaleDTO preReadDto = dao.preReadSale(dto.getNum(), condition, keyword);
+		SaleDTO nextReadDto = dao.nextReadSale(dto.getNum(), condition, keyword);
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("preReadDto", preReadDto);
+		req.setAttribute("nextReadDto", nextReadDto);
+		req.setAttribute("query", query);
+		req.setAttribute("page", page);
+		req.setAttribute("rows", rows);
+		
+		forward(req, resp, "/WEB-INF/page/sale/read.jsp");
+	}
+		
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	
-	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	}
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}

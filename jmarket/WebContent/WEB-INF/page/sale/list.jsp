@@ -16,13 +16,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
-	f.submit();
-}
-
-
 function searchList() {
 	var f = document.searchForm;
 	f.submit();
@@ -50,7 +43,7 @@ function searchList() {
 <li style="line-height: 95px;font-weight: bold;">조회수</li>
 </ul>
 
-<c:forEach var="dto" items="${listSale}">
+<c:forEach var="dto" items="${list}">
 <ul class="row">
 <li> <img class="photo" src="./images/wc.jpg" style="width: 70px; height: 78px;"></li>
 <li style= "width:320px; text-align: left; line-height: 95px;">${dto.subject}</li>
@@ -58,14 +51,13 @@ function searchList() {
 <li style="line-height: 95px;">${dto.created }</li>
 <li style="line-height: 95px;">${dto.hitCount}</li>
 <li>
-	<c:if test="${not empty dto.saveFilename}">
+	<c:if test="${not empty dto.fileName}">
 	  <a href="<%=cp%>/sale/list.do?num=${dto.num}"></a>
 	</c:if>
 </li>
 </ul>
 </c:forEach> 
 </div>
-
 </div>
 		</div>
 
