@@ -14,17 +14,14 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
-	f.submit();
-}
 
 function sendOk(){
 	var f=document.boardForm;
-	f.action='<%=cp%>/question/faq_created_ok.do';
+	f.action='<%=cp%>/faq/faq_created_ok.do';
 	f.submit();
 }
+
+
 
 </script>
 </head>
@@ -67,7 +64,7 @@ function sendOk(){
 			      <td align="center" >
 			        <button type="button" class="btn" onclick="sendOk();">등록하기</button>
 			        <button type="reset" class="btn">다시입력</button>
-			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/question/faq_list.do';">등록취소</button>
+			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do';">등록취소</button>
 			      </td>
 			    </tr>
 			  </table>
