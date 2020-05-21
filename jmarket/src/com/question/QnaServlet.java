@@ -1,21 +1,32 @@
 package com.question;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
-import com.util.MainServlet;
+import com.util.FileServlet;
 
 @WebServlet("/qna/*")
-public class QnaServlet extends MainServlet{
+public class QnaServlet extends FileServlet{
 	private static final long serialVersionUID = 1L;
+	
+	private String pathname;
 
 	@Override
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session=req.getSession();
+		String root=session.getServletContext().getRealPath("/");
+		
+		pathname=root+"photo"+File.separator+"qna";
+		
 		req.setCharacterEncoding("utf-8");
 		String uri=req.getRequestURI();
 		if(uri.indexOf("qna_list.do")!=-1) {
@@ -39,9 +50,12 @@ public class QnaServlet extends MainServlet{
 		if(category==null) {
 			category="goods";
 		}
+		
 		List<FaqDTO> list=dao.listFaq();
+		
 		req.setAttribute("list", list);
 		req.setAttribute("listsize", list.size());
+		
 		
 		
 		forward(req, resp, "/WEB-INF/page/question/qna_created.jsp");
@@ -51,6 +65,29 @@ public class QnaServlet extends MainServlet{
 	protected void qna_createdSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String cp=req.getContextPath();
+		QnaDTO dto=new QnaDTO();
+		dto.setCategory(req.getParameter("category"));
+		dto.setSubject(req.getParameter("subject"));
+		dto.setContent(req.getParameter("content"));
+		
+		Part p=req.getPart("upload");
+		Map<String, String> map=fileUpload(p, pathname);
+		if(map!=null) {
+			String saveFilename=map.get("saveFilename");
+			String originalFilename=map.get("originalFilename");
+			
+		}
+		
+		
+	//	dto.setOriginalfilename(originalfilename);
+	//	dto.setSavefilename(savefilename);
+		
+		
+		
+		QnaDAO dao=new QnaDAO();
+		
+		
+		
 		resp.sendRedirect(cp+"/qna/qna_list.do");
 		
 	}
