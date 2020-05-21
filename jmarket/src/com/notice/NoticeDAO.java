@@ -19,8 +19,8 @@ public class NoticeDAO {
 
 		try {
 			sb.append("INSERT INTO notice ");
-			sb.append(" (notice, id, title, content, afilename, bfilename, filesize)");
-			sb.append(" VALUES (?, ?, ?, ?, ?, ?, ?)");
+			sb.append(" (num, notice, id, title, content, afilename, bfilename, filesize)");
+			sb.append(" VALUES (notice_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)");
 
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, dto.getNotice());
@@ -194,7 +194,7 @@ public class NoticeDAO {
 			ResultSet rs = null;
 			String sql;
 			
-			sql = "SELECT num, notice, n.id, name, subject, content, afilename,bfilename, filesize, hitcount, n.created ";
+			sql = "SELECT num, notice, n.id, name, title, content, afilename,bfilename, filesize, hitcount, n.created ";
 			sql+= "  FROM notice n JOIN member1 m ON n.id=m.id WHERE num = ?";
 			
 			try {

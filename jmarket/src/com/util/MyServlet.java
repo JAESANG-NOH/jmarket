@@ -37,41 +37,35 @@ public abstract class MyServlet extends HttpServlet{
 	}
 
 	protected void forward(HttpServletRequest req, HttpServletResponse resp, String path) throws ServletException, IOException {
-		// 포워딩을 위한 메소드
+		
 		RequestDispatcher rd=req.getRequestDispatcher(path);
 		rd.forward(req, resp);
 	}
 	
-	/**
-	 * 단일 파일 업로드
-	 * @param p					Part 객체
-	 * @param pathname	서버에 파일을 저장할 경로
-	 * @return					서버에 저장된 파일명, 클라이언트가 업로드한 파일명
-	 */
 	protected Map<String, String> doFileUpload(Part p, String pathname) throws ServletException, IOException {
 		Map<String, String> map = null;
 		
 		try {
 			File f=new File(pathname);
-			if(! f.exists()) { // 폴더가 존재하지 않으면
+			if(! f.exists()) { 
 				f.mkdirs();
 			}
 			
-			String originalFilename=getOriginalFilename(p);
-			if(originalFilename==null || originalFilename.length()==0) return null;
+			String bfilename=getbfilename(p);
+			if(bfilename==null || bfilename.length()==0) return null;
 			
-			String fileExt = originalFilename.substring(originalFilename.lastIndexOf("."));
-			String saveFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", 
+			String fileExt = bfilename.substring(bfilename.lastIndexOf("."));
+			String afilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", 
 				 Calendar.getInstance());
-			saveFilename += System.nanoTime();
-			saveFilename += fileExt;
+			afilename += System.nanoTime();
+			afilename += fileExt;
 			
-			String fullpath = pathname+File.separator+saveFilename;
+			String fullpath = pathname+File.separator+afilename;
 			p.write(fullpath);
 			
 			map = new HashMap<>();
-			map.put("originalFilename", originalFilename);
-			map.put("saveFilename", saveFilename);
+			map.put("bfilename", bfilename);
+			map.put("afilename", afilename);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,12 +73,6 @@ public abstract class MyServlet extends HttpServlet{
 		return map;
 	}
 
-	/**
-	 * 다중 파일 업로드
-	 * @param parts				클라이언트가 서버로 전송한 모든 Part 객체
-	 * @param pathname		서버에 파일을 저장할 경로 
-	 * @return						서버에 저장된 파일명, 클라이언트가 올린 파일명
-	 */
 	protected Map<String, String[]> doFileUpload(Collection<Part> parts, String pathname) throws ServletException, IOException {
 		Map<String, String[]> map = null;
 		try {
@@ -99,14 +87,9 @@ public abstract class MyServlet extends HttpServlet{
 			
 			for(Part p : parts) {
 				String contentType = p.getContentType();
-/*				
-			      if(contentType != null && contentType.toLowerCase().startsWith("multipart/")) {
-			         // multipart
-			      }				
-*/
-				// contentType 가 null 인 경우는 파일이 아닌 경우이다.(<input type="text"... 등)
-				if(contentType != null) { // 파일이면
-					original = getOriginalFilename(p);
+
+				if(contentType != null) { 
+					original = getbfilename(p);
 					if(original == null || original.length() == 0 ) continue;
 					
 					ext = original.substring(original.lastIndexOf("."));
@@ -120,7 +103,7 @@ public abstract class MyServlet extends HttpServlet{
 					
 					listOriginal.add(original);
 					listSave.add(save);
-					// Long size = p.getSize()); // 파일 크기
+					
 				}
 			}		
 			
@@ -130,8 +113,8 @@ public abstract class MyServlet extends HttpServlet{
 				
 				map = new HashMap<>();
 				
-				map.put("originalFilenames", originals);
-				map.put("saveFilenames", saves);
+				map.put("bfilename", originals);
+				map.put("afilename", saves);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,7 +123,7 @@ public abstract class MyServlet extends HttpServlet{
 		return map;
 	}
 	
-	private String getOriginalFilename(Part p) {
+	private String getbfilename(Part p) {
 		try {
 			for(String s: p.getHeader("content-disposition").split(";")) {
 				if(s.trim().startsWith("filename")) {
