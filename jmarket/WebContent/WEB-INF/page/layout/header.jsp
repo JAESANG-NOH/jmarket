@@ -38,7 +38,7 @@ function sendlogin() {
 							<li><a href="">공지사항</a></li>
 							<li><a href="">이벤트</a></li>
 							<li><a href="">신고게시판</a>
-							<li><a href="<%=cp%>/question/faq_list.do">FAQ</a></li>
+							<li><a href="<%=cp%>/faq/faq_list.do">문의</a></li>
 
 						</ul>
 <c:if test="${empty sessionScope.member}">
