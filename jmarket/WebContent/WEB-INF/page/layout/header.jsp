@@ -30,7 +30,7 @@
 						<ul>
 							<li><a href="">공지사항</a></li>
 							<li><a href="">이벤트</a></li>
-							<li><a href="">신고게시판</a>
+							<li><a href="<%=cp%>/report/list.do">신고게시판</a>
 							<li><a href="<%=cp%>/question/faq_list.do">FAQ</a></li>
 
 						</ul>
