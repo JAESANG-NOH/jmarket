@@ -22,7 +22,7 @@ function sendlogin() {
 					<li><a href="">회사소개</a>
 					<li><a href="">팝니다</a>
 						<ul>
-							<li><a href="">판매중</a></li>
+							<li><a href="<%=cp%>/sale/list1.do">판매중</a></li>
 							<li><a href="">판매완료</a></li>
 						</ul>
 
@@ -38,7 +38,7 @@ function sendlogin() {
 							<li><a href="">공지사항</a></li>
 							<li><a href="">이벤트</a></li>
 							<li><a href="">신고게시판</a>
-							<li><a href="<%=cp%>/question/faq_list.do">FAQ</a></li>
+							<li><a href="<%=cp%>/faq/faq_list.do">문의</a></li>
 
 						</ul>
 <c:if test="${empty sessionScope.member}">

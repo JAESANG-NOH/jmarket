@@ -2,23 +2,23 @@ package com.sale;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.notice.NoticeDTO;
 import com.user.SessionInfo;
 import com.util.FileServlet;
+import com.util.MyUtil;
 
 @MultipartConfig
 @WebServlet("/sale/*")
@@ -69,6 +69,83 @@ public class SaleServlet extends FileServlet{
 
 
 	protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		SaleDAO dao = new SaleDAO();
+		MyUtil util = new MyUtil();
+		String cp = req.getContextPath();
+		
+		String page = req.getParameter("page");
+		int current_page = 1; 
+		if(page!=null) {
+			current_page=Integer.parseInt(page);
+		}
+		
+		String condition =req.getParameter("condition");
+		String keyword = req.getParameter("keyword");
+		if(condition==null) {
+			condition = "subject";
+			keyword="";
+		}
+		if(req.getMethod().equalsIgnoreCase("GET")) {
+			keyword=URLDecoder.decode(keyword,"utf-8");
+		}
+		
+		int rows = 10; 
+		String numPerPage = req.getParameter("rows");
+		if(numPerPage!=null) {
+			rows = Integer.parseInt(numPerPage);
+		}
+		
+		int dataCount;
+		if(keyword.length()!=0) {
+			dataCount=dao.dataCount(condition,keyword);
+		}else {
+			dataCount=dao.dataCount();
+		}
+		
+		int total_page = util.pageCount(rows, dataCount);
+		
+		if(current_page>total_page) {
+			current_page=total_page;
+		}
+		
+		int offset = (current_page-1)*rows;
+		
+		List<SaleDTO> list;
+		if(keyword.length()!=0) {
+			list=dao.listSale(offset, rows, condition, keyword);
+		}else {
+			list=dao.listSale(offset, rows);
+		}
+
+		//페이징 처리 
+		
+		String listUrl = cp+"/sale/list.do";
+		String articleUrl = cp+"/sale/read.do?page="+current_page;
+        String query = "";
+        if(keyword.length()!=0) {
+           query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+        }
+        
+		if(query.length()!=0) {
+	            listUrl+="&"+query;
+	            articleUrl = articleUrl+"&"+query;
+	         }
+	         
+	    String paging = util.paging(current_page, total_page,listUrl);
+	    
+        req.setAttribute("list", list); 
+        req.setAttribute("paging", paging);
+        req.setAttribute("total_page", total_page); 
+        req.setAttribute("page", current_page); 
+        req.setAttribute("dataCount", dataCount); 
+        req.setAttribute("articleUrl", articleUrl); 
+        req.setAttribute("condition", condition); 
+        req.setAttribute("keyword", keyword);
+        req.setAttribute("rows", rows);
+        
+        forward(req, resp, "/WEB-INF/page/sale/list.jsp");
+	
+	
 	}
 	
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -122,15 +199,59 @@ public class SaleServlet extends FileServlet{
 		
 		}
 		
-	
+	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		SaleDAO dao = new SaleDAO();
+		String cp = req.getContextPath();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page = req.getParameter("page");
+		String rows=req.getParameter("rows");
+		
+		String condition=req.getParameter("condition");
+		String keyword=req.getParameter("keyword");
+		if(condition==null) {
+			condition="subject";
+			keyword="";
+		}
+		keyword=URLDecoder.decode(keyword, "utf-8");
+
+		String query="page="+page+"&rows="+rows;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		// 조회수
+		dao.updateHitCount(num);
+		
+		// 게시물 가져오기
+		SaleDTO dto=dao.readSale(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/sale/list.do?"+query);
+			return;
+		}
+		
+		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+		
+		// 이전글/다음글
+		SaleDTO preReadDto = dao.preReadSale(dto.getNum(), condition, keyword);
+		SaleDTO nextReadDto = dao.nextReadSale(dto.getNum(), condition, keyword);
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("preReadDto", preReadDto);
+		req.setAttribute("nextReadDto", nextReadDto);
+		req.setAttribute("query", query);
+		req.setAttribute("page", page);
+		req.setAttribute("rows", rows);
+		
+		forward(req, resp, "/WEB-INF/page/sale/read.jsp");
+	}
+		
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	
-	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	}
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}

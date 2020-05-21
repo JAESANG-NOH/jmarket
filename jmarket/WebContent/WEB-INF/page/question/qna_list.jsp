@@ -69,9 +69,9 @@
 				<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
 			</div>
 			<ul>
-				<li><a href="<%=cp%>/question/faq_list.do">-FAQ</a></li>
-				<li><a href="<%=cp%>/question/qna_created.do">-문의하기</a></li>
-				<li><a href="<%=cp%>/question/qna_list.do">-문의내역</a></li>
+				<li><a href="<%=cp%>/faq/faq_list.do">-FAQ</a></li>
+				<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
+				<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
 			</ul>
 		</div>
 	</section>
