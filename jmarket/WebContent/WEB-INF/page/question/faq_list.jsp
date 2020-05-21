@@ -15,11 +15,6 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
-	f.submit();
-}
 function btn(num){
 	var answer=document.getElementById("answer"+num);
 	if(answer.style.visibility=="collapse"){
@@ -45,9 +40,9 @@ function btn(num){
 					<table style="width: 700px; margin: 0px auto; border-spacing: 0; border-collapse: collapse;">
 						<tr>
 							<td colspan="3" style="text-align: center;">
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/question/faq_list.do?category=goods';">상품문의</button>
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/question/faq_list.do?category=delivery';" >배송문의</button>
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/question/faq_list.do?category=event';" >이벤트문의</button>
+								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=goods';">상품문의</button>
+								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=delivery';" >배송문의</button>
+								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=event';" >이벤트문의</button>
 							</td>
 						</tr>
 						<c:forEach var="dto" items="${list}">
@@ -63,7 +58,7 @@ function btn(num){
 						</tr>
 						</c:forEach>
 					</table>
-					<button type="button" onclick="javacript:location.href='<%=cp%>/question/faq_created.do'">글올리기</button>
+					<button type="button" onclick="javacript:location.href='<%=cp%>/faq/faq_created.do'">글올리기</button>
 				</div>
 			</div>
 		</article>
@@ -72,9 +67,9 @@ function btn(num){
 				<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
 			</div>
 			<ul>
-				<li><a href="<%=cp%>/question/faq_list.do">-FAQ</a></li>
-				<li><a href="<%=cp%>/question/qna_created.do">-문의하기</a></li>
-				<li><a href="<%=cp%>/question/qna_list.do">-문의내역</a></li>
+				<li><a href="<%=cp%>/faq/faq_list.do">-FAQ</a></li>
+				<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
+				<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
 			</ul>
 		</div>
 	</section>

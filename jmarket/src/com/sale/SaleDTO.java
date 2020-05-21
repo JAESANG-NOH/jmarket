@@ -2,8 +2,9 @@ package com.sale;
 
 public class SaleDTO {
 	private int num; 
+	private String name;
 	private String id;
-	private int sale_check;
+	private int sold;
 	private String subject;
 	private String content;
 	private String fileName; 
@@ -15,17 +16,24 @@ public class SaleDTO {
 	public void setNum(int num) {
 		this.num = num;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getSale_check() {
-		return sale_check;
+	public int getSold() {
+		return sold;
 	}
-	public void setSale_check(int sale_check) {
-		this.sale_check = sale_check;
+	public void setSold(int sold) {
+		this.sold = sold;
 	}
 	public String getSubject() {
 		return subject;
