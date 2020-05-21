@@ -9,9 +9,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="home.css" type="text/css">
-<link rel="stylesheet" href="menu.css" type="text/css">
-<link rel="stylesheet" href="sale-list.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/menu.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sale-list.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
+
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
 function sendlogin() {
@@ -19,16 +21,19 @@ function sendlogin() {
 	f.action = "<%=cp%>/user/login_ok.do";
 	f.submit();
 }
+
+
+function searchList() {
+	var f = document.searchForm;
+	f.submit();
+}
+
 </script>
-
-
-
 </head>
 
 <body>
 <div id="mainframe">
 	<jsp:include page="/WEB-INF/page/layout/header.jsp"/>
-</div>
 <form name="join" method="post" action="">
 
 <section class="container">
@@ -45,15 +50,21 @@ function sendlogin() {
 <li style="line-height: 95px;font-weight: bold;">조회수</li>
 </ul>
 
+<c:forEach var="dto" items="${listSale}">
 <ul class="row">
 <li> <img class="photo" src="./images/wc.jpg" style="width: 70px; height: 78px;"></li>
-<li style= "width:320px; text-align: left; line-height: 95px;"><a href="2watch.html" >&nbsp;&nbsp;갤럭시워치 42mm 골드 LTE+블루투스 판매합니다</a></li>
-<li style="width: 140px;line-height: 95px;">신두철</li>
-<li style="line-height: 95px;">2020-10-10</li>
-<li style="line-height: 95px;">10</li>
+<li style= "width:320px; text-align: left; line-height: 95px;">${dto.subject}</li>
+<li style="width: 140px;line-height: 95px;">${dto.name}</li>
+<li style="line-height: 95px;">${dto.created }</li>
+<li style="line-height: 95px;">${dto.hitCount}</li>
+<li>
+	<c:if test="${not empty dto.saveFilename}">
+	  <a href="<%=cp%>/sale/list.do?num=${dto.num}"></a>
+	</c:if>
+</li>
 </ul>
+</c:forEach> 
 </div>
-
 
 </div>
 		</div>
@@ -62,8 +73,9 @@ function sendlogin() {
 				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
 		</section>
 		</form>
+		</div>
 	<!-- 내용 끝 -->
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
-	
+
 </body>
 </html>
