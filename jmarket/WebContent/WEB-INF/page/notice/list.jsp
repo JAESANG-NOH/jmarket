@@ -19,8 +19,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 
 <script type="text/javascript">
-
+function searchList() {
+	var f=document.searchForm;
+	f.submit();
+}
 </script>
+
 </head>
 <body>
 
@@ -101,10 +105,10 @@
 						      <td align="center">
 						          <form name="searchForm" action="<%=cp%>/notice/list.do" method="post">
 						              <select name="condition" class="selectField">
-						                  <option value="title"     ${condition=="title"?"selected='selected'":"" }>제목</option>
+						                  <option value="title" ${condition=="title"?"selected='selected'":"" }>제목</option>
 						                  <option value="name" ${condition=="name"?"selected='selected'":"" }>작성자</option>
-						                  <option value="content"     ${condition=="content"?"selected='selected'":"" }>내용</option>
-						                  <option value="created"     ${condition=="created"?"selected='selected'":"" }>등록일</option>
+						                  <option value="content" ${condition=="content"?"selected='selected'":"" }>내용</option>
+						                  <option value="created" ${condition=="created"?"selected='selected'":"" }>등록일</option>
 						            </select>
 						            <input type="text" name="keyword" class="boxTF" value="${keyword}">
 						            <input type="hidden" name="rows" value="${rows}">

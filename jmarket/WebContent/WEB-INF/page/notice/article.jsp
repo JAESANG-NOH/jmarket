@@ -53,7 +53,7 @@
 							<table
 								style="width: 100%; margin: 20px auto 0px; border-spacing: 0px; border-collapse: collapse;">
 								<tr height="35"
-									style="border-top: 3px solid #FF6C6C; border-bottom: 1px solid #FF6C6C;">
+									style="border-top: 3px solid #FF6C6C; border-bottom: 1px solid #FF6C6C; background:#FFDDDD">
 									<td colspan="2" align="center">${dto.title}</td>
 								</tr>
 
@@ -69,7 +69,7 @@
 										valign="top" height="200">${dto.content}</td>
 								</tr>
 
-								<tr height="35" style="border-bottom: 1px solid #FF6C6C;">
+								<tr height="35" style="border-bottom: 1px solid #FF6C6C;background:#FFDDDD">
 									<td colspan="2" align="left" style="padding-left: 5px;">
 										첨&nbsp;&nbsp;부 : <c:if test="${not empty dto.afilename}">
 											<a href="<%=cp%>/notice/download.do?num=${dto.num}">${dto.bfilename}</a>
@@ -88,7 +88,7 @@
 									</td>
 								</tr>
 
-								<tr height="35" style="border-bottom: 3px solid #FF6C6C;">
+								<tr height="35" style="border-bottom: 3px solid #FF6C6C;background:#FFDDDD">
 									<td colspan="2" align="left" style="padding-left: 5px;">
 										다음글 : <c:if test="${not empty nextReadDto}">
 											<a

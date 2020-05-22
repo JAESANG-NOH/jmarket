@@ -48,7 +48,7 @@ public class NoticeDAO {
 	}
 
 	// data 갯수 구하기
-	public int dataCount(String condition, String keyword) {
+	public int dataCount() {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -81,10 +81,101 @@ public class NoticeDAO {
 
 		return result;
 	}
-	
-    
+	//////
+	public int dataCount(String condition, String keyword) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+
+		try {
+			if(condition.equalsIgnoreCase("created")) {
+        		keyword=keyword.replaceAll("-", "");
+        		sql="SELECT NVL(COUNT(*), 0) FROM notice n JOIN member1 m ON n.id=m.id WHERE TO_CHAR(created, 'YYYYMMDD') = ?  ";
+        	} else {
+        		sql="SELECT NVL(COUNT(*), 0) FROM notice n JOIN member1 m ON n.id=m.id WHERE  INSTR(" + condition + ", ?) >= 1 ";
+        	}
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return result;
+	}  
 
 	// 게시물 리스트
+	public List<NoticeDTO> listNotice(int offset, int rows) {
+		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			sb.append("SELECT num, n.id, name, title, afilename,  ");
+			sb.append("       hitcount, n.created  ");
+			sb.append(" FROM notice n JOIN member1 m ON n.id=m.id  ");
+			sb.append(" ORDER BY num DESC  ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY");
+
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, offset);
+			pstmt.setInt(2, rows);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				NoticeDTO dto = new NoticeDTO();
+
+				dto.setNum(rs.getInt("num"));
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setTitle(rs.getString("title"));
+				dto.setAfilename(rs.getString("afilename"));
+				dto.setHitcount(rs.getInt("hitcount"));
+				dto.setCreated(rs.getString("created"));
+
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return list;
+	}
+	
 	public List<NoticeDTO> listNotice(int offset, int rows, String condition, String keyword) {
 		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
 		PreparedStatement pstmt = null;
