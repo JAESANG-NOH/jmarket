@@ -65,6 +65,8 @@ margin: 1px 100px 0 110px;
 
 .name{
 	width: 80px;
-	
+}
 
+.row ul:hover {
+	background: #FFD9EC;
 }

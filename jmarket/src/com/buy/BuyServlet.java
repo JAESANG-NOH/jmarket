@@ -36,7 +36,6 @@ public class BuyServlet extends FileServlet{
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		String root = session.getServletContext().getRealPath("/");
-		System.out.println(root);
 		pathname = root+"photo"+File.separator+"buy";
 		
 		
@@ -50,6 +49,7 @@ public class BuyServlet extends FileServlet{
 			writeSubmit(req, resp);
 		} else if(uri.indexOf("article.do")!=-1) {
 			article(req, resp);
+			System.out.println("pass");
 		} else if(uri.indexOf("update.do")!=-1) {
 			updateForm(req, resp);
 		} else if(uri.indexOf("update_ok.do")!=-1) {
@@ -102,7 +102,7 @@ public class BuyServlet extends FileServlet{
 		
 		String query="";
 		if(keyword.length()!=0) {
-			query="condition="+condition+ "&keyword="+URLEncoder.encode(keyword, "utf-8");
+			query="condition="+condition+"&keyword="+URLEncoder.encode(keyword, "utf-8");
 		}
 		
 		String listUrl=cp+"/buy/list1.do";
@@ -161,7 +161,39 @@ public class BuyServlet extends FileServlet{
 	}
 	
 	protected void article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		MyUtil util  = new MyUtil();
 		
+		int num=Integer.parseInt(req.getParameter("num"));
+		String page=req.getParameter("page");
+		String condition=req.getParameter("condition");
+		String keyword=req.getParameter("keyword");
+		
+		if(condition==null) {
+			condition="subject";
+			keyword="";
+		}
+		keyword=URLDecoder.decode(keyword, "utf-8");
+		
+		String query="page="+page;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		dao.updateviews(num);
+		
+		BuyDTO dto = dao.readBuy(num);
+		
+		if(dto==null) { // 게시물이 없으면 다시 리스트로
+			resp.sendRedirect(cp+"/buy/list1.do?"+query);
+			return;
+		}
+		dto.setContent(util.htmlSymbols(dto.getContent()));
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
+		req.setAttribute("query", query);
+		forward(req, resp, "/WEB-INF/page/buy/article.jsp");
 	}
 	
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

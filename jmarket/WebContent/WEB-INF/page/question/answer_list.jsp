@@ -45,27 +45,35 @@ function sendOk(num){
 					      <th width="100" bgcolor="#eeeeee" style="color: #787878;">문의 접수일</th>
 					      <td>
 					      	<select>
-					      		<c:forEach var="n" begin="${minyear}" end="${maxyear}">
-					      			<option>${n}</option>
-					      		</c:forEach>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
 					      	</select>
 					      	년
 					      	<select>
-					      		<c:forEach var="n" begin="1" end="12">
-					      			<option>${n}</option>
-					      		</c:forEach>
+					      		<option>1</option>
+					      		<option>2</option>
+					      		<option>3</option>
+					      		<option>4</option>
+					      		<option>5</option>
 					      	</select>
 					      	월~
 					      	<select>
-					      		<c:forEach var="n" begin="${minyear}" end="${maxyear}">
-					      			<option>${n}</option>
-					      		</c:forEach>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
 					      	</select>
 					      	년
 					      	<select>
-					      		<c:forEach var="n" begin="1" end="12">
-					      			<option>${n}</option>
-					      		</c:forEach>
+					      		<option>1</option>
+					      		<option>2</option>
+					      		<option>3</option>
+					      		<option>4</option>
+					      		<option>5</option>
 					      	</select>
 					      	월
 					      	
@@ -81,9 +89,10 @@ function sendOk(num){
 					<br>
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 					  <tr align="center" bgcolor="#eeeeee" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th width="60" style="color: #787878;">번호</th>
+					      <th width="40" style="color: #787878;">번호</th>
 					      <th width="80" style="color: #787878;">카테고리</th>
 					      <th style="color: #787878;">문의제목</th>
+					      <th width="60" style="color: #787878;">이름</th>
 					      <th width="80" style="color: #787878;">문의일</th>
 					      <th width="80" style="color: #787878;">답변일</th>
 					      <th width="80" style="color: #787878;">처리상태</th>
@@ -93,17 +102,20 @@ function sendOk(num){
 						      <td>${dto.num}</td>
 						      <td>이벤트문의</td>
 						      <td align="left" style="padding-left: 10px;" class="subject" onclick="sendOk(${dto.num});">${dto.subject}</td>
+						      <td>홍길동</td>
 						      <td>${dto.created}</td>
 						      <td>${dto.an_created}</td>
 						      <td>${dto.status==0?"접수완료":"답변완료"}</td>
 						  </tr>
 						  <tr id="answer${dto.num}" height="35" style="visibility:collapse; border-bottom: 1px solid #cccccc;" >
-							  <td colspan="6" style="background: #EAEAEA;">
+							  <td colspan="7" style="background: #EAEAEA;">
 								<p ><b style="color: gray;">Q.</b><b>${dto.subject}</b>&nbsp;${dto.created}	</p>
 								<p>${dto.content}</p>	
 								<hr style="border: 1px dashed gray;" >
 								<p ><b style="color: blue;">A.</b><b>[자몽마켓]고객님 문의에 답변드립니다.</b>&nbsp;2020-05-21	</p>
-								<p>답변내용입니다.</p>
+								<p><textarea rows="12" style="width: 95%" ></textarea> </p>
+								<button>답변작성</button>
+								<button>취소</button>
 							  </td>
 						  </tr>
 					  </c:forEach>

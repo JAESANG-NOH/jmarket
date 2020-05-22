@@ -56,10 +56,10 @@ function catechange(){
 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
 	 <section class="container">
 		<article>
-			<div id = "content">
+			<div id = "content" >
 			<h2>|&nbsp;&nbsp;문의하기</h2>
 				<div class="main" style="width: 700px; margin: 30px auto;">
-				<form name="qnaForm" method="post">
+				<form name="qnaForm" method="post" enctype="multipart/form-data">
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th bgcolor="#eeeeee" style="color: #787878;" >카테고리</th>
