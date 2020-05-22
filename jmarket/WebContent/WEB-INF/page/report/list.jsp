@@ -40,6 +40,7 @@ function searchList() {
 						<table class="table">
 							<tr style="border-bottom: 1px solid silver;">
 								<td class="num">번호</td>
+								<td class="category">카테고리</td>
 								<td class="tilte" style="text-align: left;">제목</td>
 								<td class="writer">작성자</td>
 								<td class="date">&nbsp;&nbsp;작성일자</td>
@@ -48,10 +49,11 @@ function searchList() {
 							<c:forEach var="dto" items="${list}">
 								<tr class="tr-row">
 								<td class="num"><a href="${articleUrl}&num=${dto.num}">${dto.listNum}</a></td>
+								<td><a href="${articleUrl}&num=${dto.num}">[${dto.category}]</a></td>
 								<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a></td>
 								<td><a href="${articleUrl}&num=${dto.num}">${dto.name}</a></td>
 								<td><a href="${articleUrl}&num=${dto.num}">${dto.created}</a></td>
-								<td><a href="${articleUrl}&num=${dto.num}">${dto.views}</a></td>
+								<td class="v"><a href="${articleUrl}&num=${dto.num}">${dto.views}</a></td>
 								</tr>
 							</c:forEach>	
 						</table>

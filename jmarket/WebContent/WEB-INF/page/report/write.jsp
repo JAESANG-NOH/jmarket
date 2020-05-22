@@ -60,7 +60,13 @@
 			  <tr align="left" height="40" style="border-top: 1px solid #FF9090; border-bottom: 1px solid #FF9090;"> 
 			      <td width="100" bgcolor="#FF9090" style="text-align: center;">제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
 			      <td style="padding-left:10px;"> 
-			        <input type="text" name="title" maxlength="100" style="width: 95%;" value="${dto.title}">
+			      	<select name="category">
+			      		<option selected="selected" value="금전적피해">[금전적피해]</option>
+			      		<option value="물건오배송">[물건오배송]</option>
+			      		<option value="도용">[도용]</option>
+			      		<option value="기타">[기타]</option>
+			      	</select>
+			        <input type="text" name="title" maxlength="100" style="width: 80%;" value="${dto.title}">
 			      </td>
 			  </tr>
 			

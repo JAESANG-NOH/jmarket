@@ -18,11 +18,12 @@ public class ReportDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO report(num, id, title, content) VALUES(REPORT_SEQ.NEXTVAL, ?, ?, ?)";
+			sql = "INSERT INTO report(num, id, category, title, content) VALUES(REPORT_SEQ.NEXTVAL, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getTitle());
-			pstmt.setString(3, dto.getContent());
+			pstmt.setString(2, dto.getCategory());
+			pstmt.setString(3, dto.getTitle());
+			pstmt.setString(4, dto.getContent());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +130,7 @@ public class ReportDAO {
 		String sql;
 
 		try {
-			sql = "SELECT num, name, title, views, TO_CHAR(r.created, 'YYYY-MM-DD') created FROM report r JOIN member1 m ON r.id = m.id ORDER BY num DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+			sql = "SELECT num, name, category, title, views, TO_CHAR(r.created, 'YYYY-MM-DD') created FROM report r JOIN member1 m ON r.id = m.id ORDER BY num DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, offset);
@@ -142,6 +143,7 @@ public class ReportDAO {
 				
 				dto.setNum(rs.getInt("num"));
 				dto.setName(rs.getString("name"));
+				dto.setCategory(rs.getString("category"));
 				dto.setTitle(rs.getString("title"));
 				dto.setViews(rs.getInt("views"));
 				dto.setCreated(rs.getString("created"));
@@ -175,7 +177,7 @@ public class ReportDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT num, name, title, views, TO_CHAR(r.created, 'YYYY-MM-DD') created FROM report r JOIN member1 m ON r.id = m.id";
+			sql = "SELECT num, name, category, title, views, TO_CHAR(r.created, 'YYYY-MM-DD') created FROM report r JOIN member1 m ON r.id = m.id";
 			
 			if(condition.equalsIgnoreCase("created")) {
 				keyword = keyword.replaceAll("-", "");
@@ -200,6 +202,7 @@ public class ReportDAO {
 				
 				dto.setNum(rs.getInt("num"));
 				dto.setName(rs.getString("name"));
+				dto.setCategory(rs.getString("category"));
 				dto.setTitle(rs.getString("title"));
 				dto.setViews(rs.getInt("views"));
 				dto.setCreated(rs.getString("created"));
@@ -258,7 +261,7 @@ public class ReportDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT num, r.id, name, title, content, r.created, views From report r JOIN member1 m ON r.id = m.id WHERE num = ?";
+			sql = "SELECT num, r.id, name, category, title, content, r.created, views From report r JOIN member1 m ON r.id = m.id WHERE num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			
@@ -269,6 +272,7 @@ public class ReportDAO {
 				dto.setNum(rs.getInt("num"));
 				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
+				dto.setCategory(rs.getString("category"));
 				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
 				dto.setViews(rs.getInt("views"));
@@ -301,13 +305,14 @@ public class ReportDAO {
 		String sql;
 		
 		try {
-			sql ="UPDATE report SET title=?, content=? WHERE num=? AND id=?";
+			sql ="UPDATE report SET category=?, title=?, content=? WHERE num=? AND id=?";
 			
 			pstmt=conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getTitle());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setInt(3, dto.getNum());
-			pstmt.setString(4, dto.getId());
+			pstmt.setString(1, dto.getCategory());
+			pstmt.setString(2, dto.getTitle());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setInt(4, dto.getNum());
+			pstmt.setString(5, dto.getId());
 			
 			result = pstmt.executeUpdate();
 			

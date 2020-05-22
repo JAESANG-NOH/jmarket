@@ -5,6 +5,7 @@ public class ReportDTO {
 	private int listNum;
 	private String id;
 	private String name;
+	private String category;
 	private String title;
 	private String content;
 	private String created;
@@ -57,6 +58,12 @@ public class ReportDTO {
 	}
 	public void setViews(int views) {
 		this.views = views;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 }

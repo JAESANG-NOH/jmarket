@@ -40,22 +40,26 @@ function deleteReport(num) {
 					<h2>|&nbsp;&nbsp;신고하기</h2>
 					<div class="pageline">
 						<ul class = "pagetitle">
-							<li class="pcategory">[신고]</li>
-							<li class="pname">${dto.title}</li>
+							<li class="pageinfo1">[신고]</li>
+							<li class="pageinfo2">${dto.title}</li>
 						</ul>
-						<ul class = "pagerow1">
+						<ul class = "pagetitle">
+							<li class="pageinfo1">[카테고리]</li>
+							<li class="pageinfo2">${dto.category}</li>
+						</ul>
+						<ul class = "pagetitle">
 							<li class="pageinfo1">[게시번호]</li>
 							<li class="pageinfo2">${dto.num}</li>
 						</ul>
-						<ul class = "pagerow1">
+						<ul class = "pagetitle">
 							<li class="pageinfo1">[등록인]</li>
 							<li class="pageinfo2">${dto.name}</li>
 						</ul>
-						<ul class = "pagerow2">
+						<ul class = "pagetitle">
 							<li class="pageinfo1">[게시날짜]</li>
 							<li class="pageinfo2">${dto.created}</li>
 						</ul>
-						<ul class = "pagerow2">
+						<ul class = "pagetitle">
 							<li class="pageinfo1">[조회수]</li>
 							<li class="pageinfo2">${dto.views}</li>
 						</ul>
@@ -65,12 +69,12 @@ function deleteReport(num) {
 					</div>
 						<div class="btnline">
 							<c:if test="${sessionScope.member.id==dto.id}">	
-								<button type="button" class="bnt" onclick="javascript:location.href='<%=cp%>/report/update.do?&num=${dto.num}&${query}';">수정</button>
+								<button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/report/update.do?&num=${dto.num}&${query}';">수정</button>
 							</c:if>
 							<c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">	
-								<button type="button" class="bnt" onclick="deleteReport('${dto.num}');">삭제</button>
+								<button type="button" class="btn" onclick="deleteReport('${dto.num}');">삭제</button>
 							</c:if>
-								<button type="button" class="bnt" onclick="javascript:location.href='<%=cp%>/report/list.do?${query}';">목록</button>
+								<button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/report/list.do?${query}';">목록</button>
 						</div>
 				</div>
 			</article>

@@ -22,7 +22,15 @@
 }
 
 .num{width: 50px; text-align: center;}
-.count{width: 60px;}
-.writer{width: 90px;}
-.date{width: 100px;}
-.title{width: 150px;}
+.count{width: 60px; text-align: center;}
+.writer{width: 80px;}
+.date{width: 90px;}
+.title{width: 110px;}
+.category{width:120px;}
+
+.v{text-align: center;}
+
+.btn{
+	background: #FFDDDD;
+}
+

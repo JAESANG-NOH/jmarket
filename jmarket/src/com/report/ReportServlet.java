@@ -154,7 +154,7 @@ public class ReportServlet extends HttpServlet {
 		ReportDTO dto = new ReportDTO();
 		
 		dto.setId(info.getId());
-		
+		dto.setCategory(req.getParameter("category"));
 		dto.setTitle(req.getParameter("title"));
 		dto.setContent(req.getParameter("content"));
 		
@@ -245,6 +245,7 @@ public class ReportServlet extends HttpServlet {
 		
 		ReportDTO dto = new ReportDTO();
 		dto.setNum(Integer.parseInt(req.getParameter("num")));
+		dto.setCategory(req.getParameter("category"));
 		dto.setTitle(req.getParameter("title"));
 		dto.setContent(req.getParameter("content"));
 		dto.setId(info.getId());
