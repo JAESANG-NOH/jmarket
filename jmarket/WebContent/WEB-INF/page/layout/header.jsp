@@ -19,7 +19,7 @@ function sendlogin() {
 					<li><a href="<%=cp%>/home/home.do" class="useron">HOME</a>
 					
 					<li><a href="">회사소개</a>
-					<li><a href="">팝니다</a>
+					<li><a href="<%=cp%>/sale/list.do">팝니다</a>
 						<ul>
 							<li><a href="<%=cp%>/sale/list.do">판매중</a></li>
 							<li><a href="">판매완료</a></li>
@@ -34,25 +34,28 @@ function sendlogin() {
 
 					<li><a href="">고객센터</a>
 						<ul>
-							<li><a href="">공지사항</a></li>
+							<li><a href="<%=cp%>/notice/list.do">공지사항</a></li>
 							<li><a href="">이벤트</a></li>
 							<li><a href="">신고게시판</a>
+							<li><a href="">공지사항</a></li>
+							<li><a href="<%=cp%>/event/list.do">이벤트</a></li>
+							<li><a href="<%=cp%>/report/list.do">신고게시판</a>
 							<li><a href="<%=cp%>/faq/faq_list.do">문의</a></li>
 
 						</ul>
-<c:if test="${empty sessionScope.member}">
+				<c:if test="${empty sessionScope.member}">
 					<li><a href="">로그인</a>
 						<ul>
 							<li><a href="<%=cp%>/user/newuser.do">회원가입</a></li>
 							<li><a>ID&nbsp;<input class="login" type="text" maxlength="10" name="id">&nbsp;&nbsp;&nbsp;&nbsp;Password&nbsp;<input class="login" type="password" maxlength="10" name="pwd">&nbsp;&nbsp;<button class="loginbtn" type="button" onclick="sendlogin();">로그인</button></a></li>
 						</ul>
-</c:if>
-<c:if test="${not empty sessionScope.member}">
+				</c:if>
+				<c:if test="${not empty sessionScope.member}">
 					<li><a href="">회원</a>
 						<ul>
 							<li><a href="<%=cp%>/user/logout.do">로그아웃</a></li>
 						</ul>
-</c:if>
+				</c:if>
 				</ul>
 				
 			</div>

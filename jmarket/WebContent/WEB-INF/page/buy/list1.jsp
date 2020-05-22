@@ -47,7 +47,7 @@ function searchnow() {
 							<li style= "width:320px; text-align: left;line-height: 95px;"><a>&nbsp;&nbsp;${dto.subject}</a></li>
 							<li style="width: 140px;line-height: 95px;">${dto.id}</li>
 							<li style="line-height: 95px;">${dto.created}</li>
-							<li style="line-height: 95px;">110</li>
+							<li style="line-height: 95px;">${dto.views}</li>
 							</ul>
 </c:forEach>	
 							<div align="center">

@@ -47,7 +47,7 @@ function deleteNotice(num) {
 						<ul class="view">
 							<li class="product">[판매완료] ${dto.productName}<li>
 							<li class="price">${dto.price} 원<br></li>
-							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
+							<li class="list"><br>거래방법 : &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
 							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span> 수수료 없이 송금하기</li>
@@ -78,7 +78,21 @@ function deleteNotice(num) {
 					</div>
 				</div>	
 				
-				<table>
+				<table style="width: 890px;">
+					 <tr height="45">
+					 	   <td width="300" align="left">
+					       <c:if test="${sessionScope.member.id==dto.id}">				    
+					          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/update.do?num=${dto.num}&page=${page}';">수정</button>
+					       </c:if>
+					       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
+					          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
+					       </c:if>
+					    </td>
+					
+					    <td align="right">
+					        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/list1.do?${query}';">리스트</button>
+					    </td>
+					</tr>
 					<tr height="35" style="border-bottom: 1px solid #cccccc;">
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					       이전글 :
@@ -96,21 +110,6 @@ function deleteNotice(num) {
 					        </c:if>
 					    </td>
 					</tr>
-					
-					<tr height="45">
-			 	   <td width="300" align="left">
-			       <c:if test="${sessionScope.member.id==dto.id}">				    
-			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}&rows=${rows}';">수정</button>
-			       </c:if>
-			       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
-			          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
-			       </c:if>
-			    </td>
-			
-			    <td align="right">
-			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list.do?${query}';">리스트</button>
-			    </td>
-			</tr>
 			</table>
 			</article>
 			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>

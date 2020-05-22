@@ -11,6 +11,13 @@ public class QnaDTO {
 	private String an_created;  //답변날짜
 	private int status;  //처리상태 (0:접수완료, 1:답변완료)
 	private String an_content;  //답변내용
+	private String id;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public int getNum() {
 		return num;
 	}

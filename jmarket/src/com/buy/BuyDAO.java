@@ -18,7 +18,7 @@ public class BuyDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO buy(num,id,subject,content,imagename,buying,productname,price) VALUES(buy_seq.NEXTVAL,?,?,?,?,0,?,?)";
+			sql = "INSERT INTO buy(num,id,subject,content,imagename,buying,productname,price,how) VALUES(buy_seq.NEXTVAL,?,?,?,?,0,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getId());
@@ -27,7 +27,7 @@ public class BuyDAO {
 			pstmt.setString(4, dto.getImageName());
 			pstmt.setString(5, dto.getProductName());
 			pstmt.setString(6, dto.getPrice());
-			
+			pstmt.setString(7, dto.getHow());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -263,7 +263,7 @@ public class BuyDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT num, name, b.Id, subject, content, price, productname, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views, imagename "
+			sql = " SELECT num, name, b.Id, subject, content, price, productname, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views, imagename, how "
 				+ " FROM buy b "
 				+ " JOIN member1 m ON b.Id=m.Id "
 				+ " WHERE num = ? ";
@@ -284,6 +284,7 @@ public class BuyDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setPrice(rs.getString("price"));
 				dto.setProductName(rs.getString("productname"));
+				dto.setHow(rs.getString("how"));
 			}
 			
 		} catch (Exception e) {
@@ -304,5 +305,34 @@ public class BuyDAO {
 			}
 		}
 		return dto;
+	}
+	
+	public int updateBuy(BuyDTO dto) {
+		int result=0;
+		PreparedStatement pstmt=null;
+		String sql;
+		
+		try {
+			sql = "UPDATE photo SET file subject=?, content=?, fileName=? price=?, productName=?, how=? WHERE num=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getSubject());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getImageName());
+			pstmt.setString(4, dto.getPrice());
+			pstmt.setString(5, dto.getProductName());
+			pstmt.setString(6, dto.getHow());
+			pstmt.setInt(7, dto.getNum());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return result;
 	}
 }

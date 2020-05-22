@@ -17,8 +17,8 @@ public class QnaDAO {
 		String sql;
 		
 		try {
-			sql="INSERT INTO qna(num,category,subject,content,savefilename,originalfilename,an_created,an_content) "
-					+ "VALUES(qna_seq.NEXTVAL,?,?,?,?,?,?,?)";
+			sql="INSERT INTO qna(num,category,subject,content,savefilename,originalfilename,an_created,an_content,id) "
+					+ "VALUES(qna_seq.NEXTVAL,?,?,?,?,?,?,?,?)";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getCategory());
 			pstmt.setString(2, dto.getSubject());
@@ -27,6 +27,7 @@ public class QnaDAO {
 			pstmt.setString(5, dto.getOriginalfilename());
 			pstmt.setString(6, dto.getAn_created());
 			pstmt.setString(7, dto.getAn_content());
+			pstmt.setString(8, dto.getId());
 			
 			result=pstmt.executeUpdate();
 			
@@ -51,7 +52,7 @@ public class QnaDAO {
 		ResultSet rs=null;
 		try {
 			sql="SELECT num,category,subject,content,created,savefilename,originalfilename,"
-					+ "an_created,status,an_content FROM qna ORDER BY num";
+					+ "an_created,status,an_content,id FROM qna ORDER BY num";
 			pstmt=conn.prepareStatement(sql);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
@@ -66,6 +67,7 @@ public class QnaDAO {
 				dto.setAn_created(rs.getString("an_created"));
 				dto.setStatus(rs.getInt("status"));
 				dto.setAn_content(rs.getString("an_content"));
+				dto.setId(rs.getString("id"));
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -80,6 +82,31 @@ public class QnaDAO {
 		}
 
 		return list;
+	}
+	
+	public int answerOk(QnaDTO dto) {
+		int result=0;
+		PreparedStatement pstmt=null;
+		String sql;
+		
+		try {
+			sql="INSERT INTO qna(an_created,an_content) VALUES(SYSDATE,?) WHERE num=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getAn_created());
+			pstmt.setString(2, dto.getAn_content());
+			pstmt.setInt(3, dto.getNum());
+			result=pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		return result;	
 	}
 	
 }

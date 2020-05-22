@@ -17,7 +17,36 @@
 <script type="text/javascript">
 function sendbuy() {
     var f = document.writeForm;
-    f.action="<%=cp%>/buy/write_ok.do";
+    var str = f.subject.value;
+    if(!str) {
+        alert("제목을 입력하세요. ");
+        f.subject.focus();
+        return;
+    }
+    
+    str = f.content.value;
+    if(!str) {
+        alert("내용을 입력하세요. ");
+        f.content.focus();
+        return;
+    }
+    
+    str = f.price.value;
+    if(!str) {
+        alert("가격을 입력하세요. ");
+        f.content.focus();
+        return;
+    }
+    
+    str = f.productname.value;
+    if(!str) {
+        alert("물품명을 입력하세요. ");
+        f.content.focus();
+        return;
+    }
+    
+    
+    f.action="<%=cp%>/buy/${state=='write'?'write':'update'}_ok.do";
     f.submit();
 }
 </script>
@@ -26,19 +55,38 @@ function sendbuy() {
 	<div id="mainframe">
 	 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
 	 <form name="writeForm" method="post" enctype="multipart/form-data" >
+	 <c:if test="${state=='update'}">
+		 <input type="hidden" name="id" value="${dto.id}">
+		 <input type="hidden" name="page"  value="${page}">
+		 <input type="hidden" name="num" value="${dto.num}">
+	 </c:if>
 		<section class="container">
-			<article>	
+			<article>
 				<div class="content">
 					<div class="all">
 						<br><br>
-						<div class="name1">글 제목 <input name="subject" style="width: 550px; height: 25px; border-radius: 4px;"></div>
-						<div class="img-upload"><input class="button" type="file" name="upload"></div>
-						
+						<div class="name1">글 제목 <input name="subject" style="width: 550px; height: 25px; border-radius: 4px;" value="${dto.subject}"></div>
+						<div class="img-upload">
+							<c:if test="${state=='write'}">
+								<input class="button" type="file" name="upload">
+							</c:if>	
+							<c:if test="${state=='update'}">
+								<img class="pimg imgbox1" src="<%=cp%>/photo/buy/${dto.imageName}" style="margin: 0px;">
+								<input class="button" type="file" name="upload" style="margin: 5px 0px 0px 5px; ">
+							</c:if>	
+						</div>
 					
 						<ul class="view">
-							<li class="product">상품명 <input name="productname" style="width: 150px; height: 20px; border-radius: 4px;"> <li>
-							<li class="price">가격 &nbsp;&nbsp;<input name="price" style="width: 150px; height: 20px; border-radius: 4px;"> 원<br></li>
-							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
+							<li class="product">상품명 <input name="productname" style="width: 150px; height: 20px; border-radius: 4px;" value="${dto.productName}"> <li>
+							<li class="price">가격 &nbsp;&nbsp;<input name="price" style="width: 150px; height: 20px; border-radius: 4px;" value="${dto.price}"> 원<br></li>
+							<li class="list"><br>거래방법 : <select name="how" style="border-radius: 4px; height: 22px;">
+									                 		<option value="post"    ${how=="post"?"selected='selected'":"" }>택배거래</option>
+									                  		<option value="direct" 	${how=="direct"?"selected='selected'":"" }>직접거래</option>
+									                  	    <option value="safety"  ${how=="safety"?"selected='selected'":"" }>안전거래</option>
+			            								</select>
+							 &nbsp;&nbsp;
+							<span class="safe">안전거래 신청</span> 
+							</li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
 							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span> 수수료 없이 송금하기</li>
@@ -63,7 +111,7 @@ function sendbuy() {
 						<span class="bigimg-upload"></span>
 						<span class="bigimg-upload"></span>
 					</div>	
-						<div class="write2"><textarea name="content" rows="12"  style="width: 95%; resize: none; border-radius: 4px;"></textarea></div>
+						<div class="write2"><textarea name="content" rows="12"  style="width: 95%; resize: none; border-radius: 4px;">${dto.content}</textarea></div>
 					</div>
 					<div style="text-align:right; width: 866px;">
 					<button type="button" class="btn" onclick="sendbuy();">${state=='update'?'수정완료':'등록하기'}</button>
