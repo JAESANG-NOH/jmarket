@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import com.notice.NoticeDTO;
 import com.user.SessionInfo;
 import com.util.FileServlet;
 import com.util.MyUtil;
@@ -36,7 +35,7 @@ public class SaleServlet extends FileServlet{
 		String uri = req.getRequestURI();
 		
 		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("user");
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		if(uri.indexOf("list.do")==-1 && info == null) {
 			resp.sendRedirect(cp+"/user/login.do");
@@ -90,10 +89,7 @@ public class SaleServlet extends FileServlet{
 		}
 		
 		int rows = 10; 
-		String numPerPage = req.getParameter("rows");
-		if(numPerPage!=null) {
-			rows = Integer.parseInt(numPerPage);
-		}
+		
 		
 		int dataCount;
 		if(keyword.length()!=0) {
@@ -141,7 +137,6 @@ public class SaleServlet extends FileServlet{
         req.setAttribute("articleUrl", articleUrl); 
         req.setAttribute("condition", condition); 
         req.setAttribute("keyword", keyword);
-        req.setAttribute("rows", rows);
         
         forward(req, resp, "/WEB-INF/page/sale/list.jsp");
 	
@@ -149,13 +144,8 @@ public class SaleServlet extends FileServlet{
 	}
 	
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("user");
-		SaleDTO dto = new SaleDTO();
-		if(! info.getId().contains(dto.getId())) {
-			resp.sendRedirect(req.getContextPath()+"/sale/list.do");
-			return;
-		}
+
+		
 		
 		String rows = req.getParameter("rows");
 		
@@ -170,32 +160,30 @@ public class SaleServlet extends FileServlet{
 		String cp = req.getContextPath();
 		SaleDTO dto = new SaleDTO();
 		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("user");
-		String rows = req.getParameter("rows");
-		
-		if(! info.getId().contains(dto.getId())) {
-			resp.sendRedirect(req.getContextPath()+"/sale/list.do");
-			return;
-		}
-		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+
+		System.out.println(info.getName());
 		dto.setId(info.getId());
+		dto.setName(info.getName());
 		dto.setSubject(req.getParameter("subject"));
+		dto.setPname(req.getParameter("pname"));
+		dto.setSprice(Integer.parseInt(req.getParameter("sprice")));
 		dto.setContent(req.getParameter("content"));
 		
 		String fileName = null;
-		Part p = req.getPart("uploads");
-		Map<String, String> map = fileUpload(p, pathname);
-		if(map !=null) {
-			fileName = map.get("fileName");
-		}
-		
-		
-		if(fileName!=null) {
-			dto.setFileName(fileName);
-		}		
+//		Part p = req.getPart("uploads");
+//		Map<String, String> map = fileUpload(p, pathname);
+//		if(map !=null) {
+//			fileName = map.get("fileName");
+//		}
+//		
+//		
+//		if(fileName!=null) {
+//			dto.setFileName(fileName);
+//		}		
 			
 		dao.insertSale(dto);
-		resp.sendRedirect(cp+"/sale/list.do?rows="+rows);
+		resp.sendRedirect(cp+"/sale/list.do");
 		
 		}
 		
@@ -246,6 +234,7 @@ public class SaleServlet extends FileServlet{
 		forward(req, resp, "/WEB-INF/page/sale/read.jsp");
 	}
 		
+	
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	

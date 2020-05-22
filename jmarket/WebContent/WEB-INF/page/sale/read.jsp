@@ -54,6 +54,7 @@ function deleteNotice(num) {
 							<li class="warning">자몽마켓에 등록된 판매 물품과 내용을 개별 판매자가 등록한 것으로서, 
 								자몽마켓은 등록을 위한 시스템만 제공하며 내용에 대하여 일체의 책임을 지지 않습니다.</li>
 						</ul>
+
 						
 						<ul class="before">
 							<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;거래전 필독! 주의하세요!</li>
@@ -96,10 +97,10 @@ function deleteNotice(num) {
 					
 					<tr height="45">
 			 	   <td width="300" align="left">
-			       <c:if test="${sessionScope.member.id==dto.Id}">				    
+			       <c:if test="${sessionScope.member.id==dto.id}">				    
 			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}&rows=${rows}';">수정</button>
 			       </c:if>
-			       <c:if test="${sessionScope.member.id==dto.Id || sessionScope.member.Id=='admin'}">				    
+			       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
 			          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
 			       </c:if>
 			    </td>

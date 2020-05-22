@@ -20,15 +20,15 @@ public class SaleDAO {
 		PreparedStatement pstmt = null;
 		
 		try {
-			sql = "INSERT INTO sale(num, id, subject, content, fileName, sold) VALUES(sale_seq.NEXTVAL,?,?,?,?,?)";
+			sql = "INSERT INTO sale(num, id, subject,pname, sprice, content, fileName, name) VALUES(sale_seq.NEXTVAL,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getNum());
-			pstmt.setString(2, dto.getId());
-			pstmt.setString(3, dto.getSubject());
-			pstmt.setString(4, dto.getContent());
-			pstmt.setString(5, dto.getFileName());
-			pstmt.setInt(6, dto.getSold());
-			
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getPname());
+			pstmt.setInt(4, dto.getSprice());
+			pstmt.setString(5, dto.getContent());
+			pstmt.setString(6, dto.getFileName());
+			pstmt.setString(7, dto.getName());
 			result = pstmt.executeUpdate();
 			
 		} catch (Exception e) {
@@ -141,7 +141,7 @@ public class SaleDAO {
 		String sql;
 		
 		try {
-			sql = " SELECT num, m.name, subject, hitCount, fileName,s.created "
+			sql = " SELECT num, m.name, subject, hitCount, fileName,TO_CHAR(s.created,'YYYY-MM-DD') created "
 				+ " FROM sale s "
 				+ " JOIN member1 m ON s.id = m.id "
 				+ " ORDER BY num DESC "
@@ -313,7 +313,7 @@ public class SaleDAO {
 		ResultSet rs = null;
 		String sql ;
 		
-		sql = "SELECT num, s.id, m.name, subject, content, fileName, hitCount, s.created ";
+		sql = "SELECT num, s.id, m.name, subject, pname, sprice, content, fileName, hitCount, s.created ";
 		sql += "FROM sale s JOIN member1 ON s.id = m.id WHERE num=?";
 		
 		try {
@@ -328,6 +328,8 @@ public class SaleDAO {
 				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
 				dto.setSubject(rs.getString("subject"));
+				dto.setPname(rs.getString("pname"));
+				dto.setSprice(rs.getInt("sprice"));
 				dto.setContent(rs.getString("content"));
 				dto.setFileName(rs.getString("fileName"));
 				dto.setHitCount(rs.getInt("hitCount"));

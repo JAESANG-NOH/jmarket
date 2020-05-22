@@ -3,6 +3,8 @@ package com.sale;
 public class SaleDTO {
 	private int num; 
 	private String name;
+	private String pname;
+	private int sprice;
 	private String id;
 	private int sold;
 	private String subject;
@@ -10,6 +12,8 @@ public class SaleDTO {
 	private String fileName; 
 	private int hitCount;
 	private String created;
+	
+	
 	public int getNum() {
 		return num;
 	}
@@ -20,9 +24,23 @@ public class SaleDTO {
 	public String getName() {
 		return name;
 	}
+	
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public int getSprice() {
+		return sprice;
+	}
+	public void setSprice(int sprice) {
+		this.sprice = sprice;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getId() {
 		return id;
 	}
