@@ -122,9 +122,9 @@ function deleteFile(num) {
 						         <c:if test="${mode=='update'}">
 						         	 <input type="hidden" name="num" value="${dto.num}">
 						        	 <input type="hidden" name="page" value="${page}">
-						        	 <input type="hidden" name="fileSize" value="${dto.filesize}">
-						        	 <input type="hidden" name="saveFilename" value="${dto.afilename}">
-						        	 <input type="hidden" name="originalFilename" value="${dto.bfilename}">
+						        	 <input type="hidden" name="filesize" value="${dto.filesize}">
+						        	 <input type="hidden" name="afilename" value="${dto.afilename}">
+						        	 <input type="hidden" name="bfilename" value="${dto.bfilename}">
 						        </c:if>
 						        <input type="hidden" name="rows" value="${rows}">
 						        

@@ -337,7 +337,7 @@ public class NoticeServlet extends MyServlet{
 		dto.setContent(req.getParameter("content"));
 		dto.setAfilename(req.getParameter("afilename"));
 		dto.setBfilename(req.getParameter("bfilename"));
-		dto.setFilesize(Long.parseLong(req.getParameter("fileSize")));
+		dto.setFilesize(Long.parseLong(req.getParameter("filesize")));
 		
 		Part p = req.getPart("upload");
 		Map<String, String> map = doFileUpload(p, pathname);
@@ -416,6 +416,8 @@ public class NoticeServlet extends MyServlet{
 					dto.getAfilename(), pathname, resp);
 		}
 		
+	
+		
 		if(! b) {
 			resp.setContentType("text/html; charset=utf-8");
 			PrintWriter out = resp.getWriter();
@@ -425,6 +427,41 @@ public class NoticeServlet extends MyServlet{
 	}
 
 	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	}
+		
+		
+		HttpSession session=req.getSession();
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		NoticeDAO dao=new NoticeDAO();
+		String cp=req.getContextPath();
 	
+		int num=Integer.parseInt(req.getParameter("num"));
+		String page=req.getParameter("page");
+		String rows=req.getParameter("rows");
+		
+		NoticeDTO dto=dao.readNotice(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/notice/list.do?page="+page+"&rows="+rows);
+			return;
+		}
+		
+		if(! info.getId().equals(dto.getId())) {
+			resp.sendRedirect(cp+"/notice/list.do?page="+page+"&rows="+rows);
+			return;
+		}
+		FileManager.doFiledelete(pathname, dto.getAfilename());
+		
+		dto.setBfilename("");
+		dto.setAfilename("");
+		dto.setFilesize(0);
+		dao.updateNotice(dto);
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
+		req.setAttribute("rows", rows);
+		
+		req.setAttribute("mode", "update");
+
+		forward(req, resp, "/WEB-INF/page/notice/created.jsp");	
+	}
 }

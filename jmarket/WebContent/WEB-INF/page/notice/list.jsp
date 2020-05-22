@@ -36,28 +36,6 @@
 					</div>
 					<div style="width: 730px;">
 					
-			        <form name="listForm" action="<%=cp%>/notice/list.do" method="post">
-						<table style="width: 100%; margin-top: 20px; border-spacing: 0;">
-						   <tr height="35">
-						      <td align="left" width="50%">
-						          ${dataCount}개(${page}/${total_page} 페이지)
-						      </td>
-						      <td align="right">
-						          <select  name="rows" class="selectField" onchange="listNotice();">
-						          		<option value="5" ${rows==5 ? "selected='selected' " : "" }>5개씩 출력</option>
-						          		<option value="10" ${rows==10 ? "selected='selected' " : "" }>10개씩 출력</option>
-						          		<option value="20" ${rows==20 ? "selected='selected' " : "" }>20개씩 출력</option>
-						          		<option value="30" ${rows==30 ? "selected='selected' " : "" }>30개씩 출력</option>
-						          		<option value="50" ${rows==50 ? "selected='selected' " : "" }>50개씩 출력</option>
-						          </select>
-								  <input type="hidden" name="page" value="${page}">
-								  <input type="hidden" name="condition" value="${condition}">
-								  <input type="hidden" name="keyword" value="${keyword}">
-						      </td>
-						   </tr>
-						</table>
-					</form>
-						
 						<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 						  <tr align="center" bgcolor="#FFDDDD" height="35" style="border-top: 3px solid #FF6C6C; border-bottom: 1px solid #FF6C6C;"> 
 						      <th width="60" style="color: #787878;">번호</th>

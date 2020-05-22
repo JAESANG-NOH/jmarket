@@ -23,9 +23,16 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap"
 	rel="stylesheet">
-
 <script type="text/javascript">
+<c:if test="${sessionScope.member.id=='admin'}">
+	function deleteNotice(num) {
+		if(confirm("게시물을 삭제 하시겠습니까?")){
+		var url="<%=cp%>/notice/delete.do?num="+num+"&${query}";
+		location.href=url;		
+	}
 	
+}
+	</c:if>
 </script>
 </head>
 <body>
@@ -66,7 +73,7 @@
 									<td colspan="2" align="left" style="padding-left: 5px;">
 										첨&nbsp;&nbsp;부 : <c:if test="${not empty dto.afilename}">
 											<a href="<%=cp%>/notice/download.do?num=${dto.num}">${dto.bfilename}</a>
-		                    (<fmt:formatNumber value="${dto.fileSize/1024}"
+		                    (<fmt:formatNumber value="${dto.filesize/1024}"
 												pattern="0.00" /> Kbyte)
 		                                    </c:if>
 									</td>
