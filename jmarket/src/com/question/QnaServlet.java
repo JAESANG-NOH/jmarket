@@ -2,7 +2,7 @@ package com.question;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +38,10 @@ public class QnaServlet extends FileServlet{
 			qna_createdForm(req, resp);
 		}else if(uri.indexOf("qna_created_ok.do")!=-1){
 			qna_createdSubmit(req, resp);
+		}else if(uri.indexOf("answer_list.do")!=-1){
+			answer_list(req, resp);
 		}
+		
 		
 	}
 	protected void qna_list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,16 +50,17 @@ public class QnaServlet extends FileServlet{
 		
 		req.setAttribute("list", list);
 		
-		List<String> year=new ArrayList<String>();
-		for(QnaDTO dto:list) {
-			String yy=dto.getCreated().substring(0, 4);
-			for(String y:year) {
-				if(!y.equals(yy)) {
-					year.add(yy);
-				}
-			}
-		}
-		req.setAttribute("year", year);
+		//날짜계산
+		//1.최소날짜와 오늘날짜 구해서 제한두기->alert창 띄우기(6개월까지만 가능)
+		//2.최소날짜부터 오늘날짜까지의 년 월 일 들을 jsp로 가져가서 옵션으로 만들어주기
+		Calendar cal=Calendar.getInstance();  //현재날짜, 시간
+		cal.set(Calendar.MONTH,cal.get(Calendar.MONTH)+1);
+		Calendar min=(Calendar)cal.clone();
+		min.set(Calendar.MONTH,cal.get(Calendar.MONTH)-6);
+		
+		req.setAttribute("minyear", min.get(Calendar.YEAR));
+		req.setAttribute("maxyear", cal.get(Calendar.YEAR));
+		
 		
 		forward(req, resp, "/WEB-INF/page/question/qna_list.jsp");
 		
@@ -104,6 +108,16 @@ public class QnaServlet extends FileServlet{
 		dao.insertQna(dto);
 		
 		resp.sendRedirect(cp+"/qna/qna_list.do");
+		
+	}
+	
+	protected void answer_list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		QnaDAO dao=new QnaDAO();
+		List<QnaDTO> list=dao.listQna();
+		
+		req.setAttribute("list", list);
+		
+		forward(req, resp, "/WEB-INF/page/question/answer_list.jsp");
 		
 	}
 
