@@ -52,7 +52,7 @@
 				<div class="content">
 						<article>
 		<div class="content">
-			<h3><span style="font-family: Webdings">2</span> 신고게시판 </h3>
+			<h3><span style="font-family: Webdings">2</span> 이벤트게시판 </h3>
 		</div>
 		
 		<form name="eventForm" method="post">

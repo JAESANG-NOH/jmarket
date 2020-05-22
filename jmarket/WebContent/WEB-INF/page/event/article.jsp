@@ -37,7 +37,7 @@ function deleteEvent(num) {
 <section class="container">
 			<article>
 				<div class="content">
-					<h2>|&nbsp;&nbsp;신고하기</h2>
+					<h2>|&nbsp;&nbsp;이벤트</h2>
 					<div class="pageline">
 						<ul class = "pagetitle">
 							<li class="pageinfo1">[이벤트]</li>
