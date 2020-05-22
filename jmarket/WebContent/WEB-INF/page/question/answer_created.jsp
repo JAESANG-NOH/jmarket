@@ -21,33 +21,6 @@ function sendOk(){
 	f.submit();
 }
 
-function catechange(){
-	var objs=document.getElementById("tbody");
-
-	var s="";
-	var n=0;
-	<c:forEach var="dto" items="${list}">
-		if("${dto.category}"==document.getElementById("category").value&&n<5){  //연관faq문의사항은 5개까지만 표시
-			if(n!=0){
-				s+="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"
-			}
-			s+="<td><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
-			s+="</tr>";
-			n++;
-		}
-	</c:forEach>
-	
-	s="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"+
-	"<th rowspan='"+n+"' bgcolor='#eeeeee' style='color: #787878;' >연관 FAQ</th>"+s
-	
-	//선택한카테고리에 맞는 질문이 없을시
-	if(n==0){
-		s="";
-	}
-	
-	objs.innerHTML=s;
-	
-}
 
 </script>
 </head>
@@ -61,40 +34,35 @@ function catechange(){
 				<div class="main" style="width: 700px; margin: 30px auto;">
 				<form name="qnaForm" method="post" enctype="multipart/form-data">
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;" >카테고리</th>
-					      <td >
-					      	<select id="category" name="category" onchange="catechange();">
-					      		<option>선택</option>
-					      		<option value="goods">상품문의</option>
-					      		<option value="delivery">배송문의</option>
-					      		<option value="event">이벤트문의</option>
-					      	</select>
-					      </td>
-					  </tr>
 					  <tbody id="tbody">
 					  </tbody>
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
 					      <td >
-					      	<input type="text" name="subject">
+					      	[배송문의]배송언제와용
 						  </td>
 					  </tr>
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th bgcolor="#eeeeee" style="color: #787878;">문의내용</th>
 					      <td>
-					      	<textarea name="content" rows="12" class="boxTA" style="width: 95%;"></textarea>
+					      	배송언제오는지알려주세요제발용
 					      </td>
 					  </tr>
 					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">첨부파일</th>
+					      <th bgcolor="#eeeeee" style="color: #787878;">답변제목</th>
 					      <td>
-					      	<input type="file" name="upload">
+					      	<input type="text" value="[자몽마켓]고객님 문의에 답변드립니다.">
+					      </td> 
+					  </tr>
+					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th bgcolor="#eeeeee" style="color: #787878;">답변내용</th>
+					      <td>
+					      	<textarea name="content" rows="12" class="boxTA" style="width: 95%;"></textarea>
 					      </td>
 					  </tr>
 					</table>
 					<button type="button" onclick="sendOk();">문의하기 등록</button>
-					<button type="button" onclick="javascript:location.href='<%=cp%>/qna/qna_list.do';">입력취소</button>
+					<button type="button" onclick="javascript:location.href='<%=cp%>/qna/answer_list.do';">입력취소</button>
 				</form>
 				</div>
 			</div>

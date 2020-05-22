@@ -24,6 +24,43 @@ function sendOk(num){
 	}
 }
 
+function monthch(){
+	var y=document.getElementById("year").value;
+	var m=document.getElementById("month").value;
+	var minmonth=${minmonth}<10?"0"+${minmonth}:${minmonth};
+	var maxmonth=${maxmonth}<10?"0"+${maxmonth}:${maxmonth};
+	if(m<10){ m="0"+m;}
+	var selectday=""+y+m;
+	var minday=""+${minyear}+${minmonth};
+	var maxday=""+${maxyear}+maxmonth;
+	
+	if(selectday<minday){
+		alert("문의내역조회는 6개월전까지만 가능합니다.");
+	}else if(selectday>maxday){
+		alert("시작날짜를 다시 설정해 주세요");
+	}
+}
+
+function daych(){
+	//선택한달이 현재달과 같을시->현재날짜 이후 불가능
+	//선택한달이 최소달과 같을시->최소날짜이전 불가능
+	var y=document.getElementById("year").value;
+	var m=document.getElementById("month").value;
+	var d=document.getElementById("day").value;
+	if(m==${maxmonth}){
+		if(d>${calday}){
+			alert("시작날짜를 다시 설정해주세요");
+		}
+	}else if(m==${minmonth}){
+		if(d<${minday}){
+			alert("문의내역조회는 6개월전까지만 가능합니다.");
+		}
+	}
+	document.getElementById("year2").value=y;
+	document.getElementById("month2").value=m;
+	document.getElementById("day2").value=d;
+}
+
 </script>
 <style type="text/css">
 .subject:hover{
@@ -44,36 +81,47 @@ function sendOk(num){
 					  <tr align="center" bgcolor="#ffffff"  height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th width="100" bgcolor="#eeeeee" style="color: #787878;">문의 접수일</th>
 					      <td>
-					      	<select>
+					      	<select id="year" >
 					      		<c:forEach var="n" begin="${minyear}" end="${maxyear}">
-					      			<option>${n}</option>
+					      			<option value="${n}">${n}</option>
 					      		</c:forEach>
 					      	</select>
 					      	년
-					      	<select>
+					      	<select id="month" onchange="monthch();" >
 					      		<c:forEach var="n" begin="1" end="12">
-					      			<option>${n}</option>
-					      		</c:forEach>
-					      	</select>
-					      	월~
-					      	<select>
-					      		<c:forEach var="n" begin="${minyear}" end="${maxyear}">
-					      			<option>${n}</option>
-					      		</c:forEach>
-					      	</select>
-					      	년
-					      	<select>
-					      		<c:forEach var="n" begin="1" end="12">
-					      			<option>${n}</option>
+					      			<option value="${n}">${n}</option>
 					      		</c:forEach>
 					      	</select>
 					      	월
-					      	
-					      
+					      	<select id="day" onchange="daych();">
+					      		<c:forEach var="n" begin="1" end="31">
+					      			<option value="${n}">${n}</option>
+					      		</c:forEach>
+					      	</select>
+					      	일~
+					      	<select id="year2" onchange="yearch2();">
+					      		<c:forEach var="n" begin="${minyear}" end="${maxyear}">
+					      			<option value="${n}">${n}</option>
+					      		</c:forEach>
+					      	</select>
+					      	년
+					      	<select id="month2" onchange="monthch2();">
+					      		<c:forEach var="n" begin="1" end="12">
+					      			<option value="${n}">${n}</option>
+					      		</c:forEach>
+					      	</select>
+					      	월
+					      	<select id="day2" onchange="daych2();">
+					      		<c:forEach var="n" begin="1" end="31">
+					      			<option value="${n}">${n}</option>
+					      		</c:forEach>
+					      	</select>
+					      	일
 					      </td>
 					      <td width="150">
 					      	<button>1개월</button>
 					      	<button>전체</button>
+					      	<button style="background: silver;">조회</button>
 					      </td>
 					  </tr>
 					  
@@ -117,8 +165,13 @@ function sendOk(num){
 			</div>
 			<ul>
 				<li><a href="<%=cp%>/faq/faq_list.do">-FAQ</a></li>
-				<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
-				<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
+				<c:if test="${sessionScope.member.id!='admin'}">
+					<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
+					<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
+				</c:if>
+				<c:if test="${sessionScope.member.id=='admin'}">
+					<li><a href="<%=cp%>/qna/answer_list.do">-고객문의내역</a></li>
+				</c:if>
 			</ul>
 		</div>
 	</section>

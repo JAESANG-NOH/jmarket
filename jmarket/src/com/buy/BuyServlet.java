@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.user.SessionInfo;
+import com.util.FileManager;
 import com.util.FileServlet;
 import com.util.MyUtil;
 
@@ -145,7 +146,7 @@ public class BuyServlet extends FileServlet{
 		dto.setContent(req.getParameter("content"));
 		dto.setPrice(req.getParameter("price"));
 		dto.setProductName(req.getParameter("productname"));
-		
+		dto.setHow(req.getParameter("how"));
 		String filename = null;
 		Part p = req.getPart("upload");
 		Map<String, String> map = fileUpload(p, pathname);
@@ -168,6 +169,7 @@ public class BuyServlet extends FileServlet{
 		String page=req.getParameter("page");
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
+	
 		
 		if(condition==null) {
 			condition="subject";
@@ -190,19 +192,80 @@ public class BuyServlet extends FileServlet{
 		}
 		dto.setContent(util.htmlSymbols(dto.getContent()));
 		
+		String trade ="";
+		if(dto.getHow().equals("post")) {
+			trade = "택배거래";
+		} else if(dto.getHow().equals("direct")) {
+			trade = "직접거래";
+		} else if(dto.getHow().equals("safety")) {
+			trade = "안전거래";
+		}
 		req.setAttribute("dto", dto);
+		req.setAttribute("trade", trade);
 		req.setAttribute("page", page);
 		req.setAttribute("query", query);
 		forward(req, resp, "/WEB-INF/page/buy/article.jsp");
 	}
 	
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		String page=req.getParameter("page");
+		
+		int num=Integer.parseInt(req.getParameter("num"));
+		BuyDTO dto=dao.readBuy(num);
+		
+		if(dto==null) {
+			resp.sendRedirect(cp+"/buy/list1.do?page="+page);
+			return;
+		}
+		
+		if(! dto.getId().equals(info.getId())) {
+			resp.sendRedirect(cp+"/buy/list1.do?page="+page);
+			return;
+		}
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
 		req.setAttribute("state", "update");
 		forward(req, resp, "/WEB-INF/page/buy/write.jsp");
 	}
 	
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		BuyDTO dto = new BuyDTO();
 		
+		String page = req.getParameter("page");
+		if(req.getMethod().equalsIgnoreCase("")) {
+			resp.sendRedirect(cp+"/photo/list.do?page="+page);
+			return;
+		}
+		
+		String uploadFileName=req.getParameter("upload");
+		dto.setNum(Integer.parseInt(req.getParameter("num")));
+		dto.setSubject(req.getParameter("subject"));
+		dto.setContent(req.getParameter("content"));
+		dto.setPrice(req.getParameter("price"));
+		dto.setProductName(req.getParameter("productName"));
+		dto.setHow(req.getParameter("how"));
+		
+		Part p = req.getPart("upload");
+		Map<String, String> map = fileUpload(p, pathname);
+		if(map != null) {
+			String fileName = map.get("fileName");
+			FileManager.doFiledelete(pathname, uploadFileName);
+			dto.setImageName(fileName);
+		} else {
+			dto.setImageName(uploadFileName);
+		}
+		try {
+			dao.updateBuy(dto);
+		} catch (Exception e) {
+		}
+		resp.sendRedirect(cp+"/photo/list.do?page="+page);
 	}
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -15,13 +15,19 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendOk(num){
+function subclick(num){
 	var answer=document.getElementById("answer"+num);
 	if(answer.style.visibility=="collapse"){
 		answer.style.visibility="visible";
 	}else{
 		answer.style.visibility="collapse";
 	}
+}
+
+function sendOk(){
+	var f=document.answerForm;
+	f.action="<%=cp%>/qna/answer_created.do"; 
+	f.submit();
 }
 
 </script>
@@ -76,8 +82,6 @@ function sendOk(num){
 					      		<option>5</option>
 					      	</select>
 					      	월
-					      	
-					      
 					      </td>
 					      <td width="150">
 					      	<button>1개월</button>
@@ -87,6 +91,7 @@ function sendOk(num){
 					  
 					</table>
 					<br>
+					<form name="answerForm" method="post">
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 					  <tr align="center" bgcolor="#eeeeee" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th width="40" style="color: #787878;">번호</th>
@@ -100,26 +105,25 @@ function sendOk(num){
 					  <c:forEach var="dto" items="${list}">
 						  <tr align="center" bgcolor="#ffffff" height="35" style="border-bottom: 1px solid #cccccc;"> 
 						      <td>${dto.num}</td>
-						      <td>이벤트문의</td>
-						      <td align="left" style="padding-left: 10px;" class="subject" onclick="sendOk(${dto.num});">${dto.subject}</td>
-						      <td>홍길동</td>
+						      <td>${dto.category}</td>
+						      <td align="left" style="padding-left: 10px;" class="subject" onclick="subclick(${dto.num});">${dto.subject}</td>
+						      <td>${dto.id}</td>
 						      <td>${dto.created}</td>
 						      <td>${dto.an_created}</td>
 						      <td>${dto.status==0?"접수완료":"답변완료"}</td>
 						  </tr>
+						  
 						  <tr id="answer${dto.num}" height="35" style="visibility:collapse; border-bottom: 1px solid #cccccc;" >
 							  <td colspan="7" style="background: #EAEAEA;">
 								<p ><b style="color: gray;">Q.</b><b>${dto.subject}</b>&nbsp;${dto.created}	</p>
 								<p>${dto.content}</p>	
-								<hr style="border: 1px dashed gray;" >
-								<p ><b style="color: blue;">A.</b><b>[자몽마켓]고객님 문의에 답변드립니다.</b>&nbsp;2020-05-21	</p>
-								<p><textarea rows="12" style="width: 95%" ></textarea> </p>
-								<button>답변작성</button>
-								<button>취소</button>
+								<button type="button" onclick="sendOk();">답변작성</button>
+								<button type="reset">취소</button>
 							  </td>
 						  </tr>
 					  </c:forEach>
 					</table>
+					</form>
 				</div>
 			</div>
 		</article>
@@ -129,8 +133,13 @@ function sendOk(num){
 			</div>
 			<ul>
 				<li><a href="<%=cp%>/faq/faq_list.do">-FAQ</a></li>
-				<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
-				<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
+				<c:if test="${sessionScope.member.id!='admin'}">
+					<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
+					<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
+				</c:if>
+				<c:if test="${sessionScope.member.id=='admin'}">
+					<li><a href="<%=cp%>/qna/answer_list.do">-고객문의내역</a></li>
+				</c:if>
 			</ul>
 		</div>
 	</section>

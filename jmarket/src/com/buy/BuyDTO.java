@@ -12,7 +12,15 @@ public class BuyDTO {
 	private String price;
 	private String productName;
 	private int views;
+	private String how;
 	
+	
+	public String getHow() {
+		return how;
+	}
+	public void setHow(String how) {
+		this.how = how;
+	}
 	public int getViews() {
 		return views;
 	}
