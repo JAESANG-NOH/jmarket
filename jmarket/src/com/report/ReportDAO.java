@@ -342,7 +342,7 @@ public class ReportDAO {
 				pstmt.setInt(1, num);
 				result = pstmt.executeUpdate();
 			} else {
-				sql = "DELETE FROM report WHERE num=?, id=?";
+				sql = "DELETE FROM report WHERE num=? and id=?";
 				pstmt=conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
 				pstmt.setString(2, id);

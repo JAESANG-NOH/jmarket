@@ -34,15 +34,12 @@ function sendlogin() {
 
 					<li><a href="">고객센터</a>
 						<ul>
-<<<<<<< HEAD
 							<li><a href="<%=cp%>/notice/list.do">공지사항</a></li>
 							<li><a href="">이벤트</a></li>
 							<li><a href="">신고게시판</a>
-=======
 							<li><a href="">공지사항</a></li>
 							<li><a href="<%=cp%>/event/list.do">이벤트</a></li>
 							<li><a href="<%=cp%>/report/list.do">신고게시판</a>
->>>>>>> branch 'master' of https://github.com/JAESANG-NOH/jmarket.git
 							<li><a href="<%=cp%>/faq/faq_list.do">문의</a></li>
 
 						</ul>
