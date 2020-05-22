@@ -303,21 +303,24 @@ public class SaleServlet extends FileServlet{
 		}
 		
 		dto.setNum(num);
+		dto.setPname(req.getParameter("pname"));
 		dto.setSubject(req.getParameter("subject"));
 		dto.setContent(req.getParameter("content"));
 		dto.setFileName1(req.getParameter("fileName1"));
 		dto.setFileName2(req.getParameter("fileName2"));
 		dto.setFileName3(req.getParameter("fileName3"));
 		
+		System.out.println(dto);
 	//颇老 贸府 
 		
 		//file1
 		Part p = req.getPart("upload1");
 		Map<String, String> map1 = fileUpload(p, pathname);
+
 		if(map1 != null) {
 			// 扁粮颇老 昏力
-			if(req.getParameter("fileName").length()!=0) {
-				FileManager.doFiledelete(pathname, req.getParameter("fileName"));
+			if(req.getParameter("fileName1").length()!=0) {
+				boolean b= FileManager.doFiledelete(pathname, req.getParameter("fileName1"));
 			}
 		// 货肺款 颇老	
 		String fileName = map1.get("fileName");
