@@ -13,6 +13,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <script type="text/javascript">
 
 function sendOk(){
@@ -72,6 +73,22 @@ function sendOk(){
 				</div>
 			</div>
 		</article>
+				<div class="sidebox">
+			<div id="sidetitle">
+				<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+			</div>
+			<ul>
+				<li><a href="<%=cp%>/faq/faq_list.do">-FAQ</a></li>
+				<c:if test="${sessionScope.member.id!='admin'}">
+					<li><a href="<%=cp%>/qna/qna_created.do">-문의하기</a></li>
+					<li><a href="<%=cp%>/qna/qna_list.do">-문의내역</a></li>
+				</c:if>
+				<c:if test="${sessionScope.member.id=='admin'}">
+					<li><a href="<%=cp%>/qna/answer_list.do">-고객문의내역</a></li>
+				</c:if>
+			</ul>
+		</div>
+		
 	</section>
 	</div>
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
