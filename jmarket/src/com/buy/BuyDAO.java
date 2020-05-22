@@ -89,7 +89,8 @@ public class BuyDAO {
         	} else if(condition.equals("userName")) {
         		sql="SELECT NVL(COUNT(*), 0) FROM buy b JOIN member1 m ON b.Id=m.Id WHERE INSTR(Name, ?) = 1 ";
         	} else {
-        		sql="SELECT NVL(COUNT(*), 0) FROM buy b JOIN member1 m ON b.Id=m.Id WHERE INSTR(" + condition + ", ?) >= 1 ";
+        		sql="SELECT NVL(COUNT(*), 0) FROM buy b JOIN member1 m ON b.Id=m.Id WHERE INSTR("+(condition.equals("id")?"b.":"");
+        		sql+=condition + ", ?) >= 1 ";
         	}
         	
             pstmt=conn.prepareStatement(sql);
@@ -186,9 +187,10 @@ public class BuyDAO {
 				keyword = keyword.replaceAll("-", "");
 				sql += " WHERE TO_CHAR(created, 'YYYYMMDD') = ?";
 			} else if(condition.equalsIgnoreCase("userName")) {
-				sql +=" WHERE INSTR(Name, ?) = 1 ";
+				sql +=" WHERE INSTR(b.id, ?) = 1 ";
 			} else {
-				sql +=" WHERE INSTR("+condition+", ?) >= 1 ";;
+				sql +=" WHERE INSTR("+(condition.equals("id")?"b.":"");
+				sql +=condition+", ?) >= 1 ";
 			}
 			
 			sql+=" ORDER BY num DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
@@ -236,7 +238,7 @@ public class BuyDAO {
 		String sql;
 		
 		try {
-			sql="UPDATE buy SET views=views+1  WHERE num=?";
+			sql="UPDATE buy SET views=views+1 WHERE num=?";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			result=pstmt.executeUpdate();
@@ -252,5 +254,55 @@ public class BuyDAO {
 		}
 		
 		return result;
+	}
+	
+	public BuyDTO readBuy(int num) {
+		BuyDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = " SELECT num, name, b.Id, subject, content, price, productname, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views, imagename "
+				+ " FROM buy b "
+				+ " JOIN member1 m ON b.Id=m.Id "
+				+ " WHERE num = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new BuyDTO();
+				dto.setNum(rs.getInt("num"));
+				dto.setName(rs.getString("name"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setImageName(rs.getString("imagename"));
+				dto.setCreated(rs.getString("created"));
+				dto.setBuying(rs.getInt("buying"));
+				dto.setId(rs.getString("id"));
+				dto.setViews(rs.getInt("views"));
+				dto.setContent(rs.getString("content"));
+				dto.setPrice(rs.getString("price"));
+				dto.setProductName(rs.getString("productname"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+				
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return dto;
 	}
 }

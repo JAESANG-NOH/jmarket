@@ -15,7 +15,7 @@ body{
 	padding: 10px 20px;
 	margin : 0px 0px 10px 0px;
 	width: 850px;
-	height: 1100px;
+	min-height: 1100px;
 	border: 1px solid gray; 
 	align-items: center;
 }
@@ -84,7 +84,7 @@ body{
 .view{
 	margin : 25px 10px;
 	padding : 10px;
-	width: 700px;
+	width: 810px;
 	height: 300px;
 	border-bottom: 1px dotted gray;
 }
