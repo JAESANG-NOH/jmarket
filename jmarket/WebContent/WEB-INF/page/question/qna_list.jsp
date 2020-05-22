@@ -15,9 +15,21 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-
+function sendOk(num){
+	var answer=document.getElementById("answer"+num);
+	if(answer.style.visibility=="collapse"){
+		answer.style.visibility="visible";
+	}else{
+		answer.style.visibility="collapse";
+	}
+}
 
 </script>
+<style type="text/css">
+.subject:hover{
+	text-decoration: underline;
+}
+</style>
 </head>
 <body>
 <div id="mainframe">
@@ -31,7 +43,53 @@
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 					  <tr align="center" bgcolor="#ffffff"  height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th width="100" bgcolor="#eeeeee" style="color: #787878;">문의 접수일</th>
-					      <td >년월일~년월일</td>
+					      <td>
+					      	<select>
+					      		<c:forEach var="y" items="${year}">
+					      			<option>${y}</option>
+					      		</c:forEach>
+					      	</select>
+					      	년
+					      	<select>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
+					      	</select>
+					      	월
+					      	<select>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
+					      	</select>
+					      	일~
+					      	<select>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
+					      	</select>
+					      	년
+					      	<select>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
+					      	</select>월
+					      	<select>
+					      		<option>2015</option>
+					      		<option>2016</option>
+					      		<option>2017</option>
+					      		<option>2018</option>
+					      		<option>2020</option>
+					      	</select>일
+					      
+					      </td>
 					      <td width="150">
 					      	<button>1개월</button>
 					      	<button>전체</button>
@@ -49,17 +107,19 @@
 					      <th width="80" style="color: #787878;">답변일</th>
 					      <th width="80" style="color: #787878;">처리상태</th>
 					  </tr>
-					  <tr align="center" bgcolor="#ffffff" height="35" style="border-bottom: 1px solid #cccccc;"> 
-					      <td>1</td>
-					      <td>이벤트문의</td>
-					      <td align="left" style="padding-left: 10px;">문의제목이용</td>
-					      <td>2020-05-20</td>
-					      <td>2020-05-20</td>
-					      <td>접수완료</td>
-					  </tr>
-					  <tr id="answer" align="center" height="35" style="visibility:visible; border-bottom: 1px solid #cccccc;">
-							<td colspan="6" style="background: #EAEAEA;">내용</td>
-					  </tr>
+					  <c:forEach var="dto" items="${list}">
+						  <tr align="center" bgcolor="#ffffff" height="35" style="border-bottom: 1px solid #cccccc;"> 
+						      <td>${dto.num}</td>
+						      <td>이벤트문의</td>
+						      <td align="left" style="padding-left: 10px;"><a class="subject" onclick="sendOk(${dto.num});">${dto.subject}</a></td>
+						      <td>${dto.created}</td>
+						      <td>${dto.an_created}</td>
+						      <td>${dto.status==0?"접수완료":"답변완료"}</td>
+						  </tr>
+						  <tr id="answer${dto.num}" align="center" height="35" style="visibility:collapse; border-bottom: 1px solid #cccccc;">
+								<td colspan="6" style="background: #EAEAEA;">${dto.content}</td>
+						  </tr>
+					  </c:forEach>
 					</table>
 				</div>
 			</div>
