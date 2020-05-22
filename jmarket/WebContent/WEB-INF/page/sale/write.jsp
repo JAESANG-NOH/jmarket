@@ -45,6 +45,7 @@ function sendOk() {
         return;
     }
 
+    
 	
     var mode="${mode}";
 	  if(mode=="created"||mode=="update" && f.upload.value!="") {
@@ -87,7 +88,7 @@ function deleteFile(num) {
 									style="width: 550px; height: 25px; border-radius: 4px;">
 							</div>
 							<div class="img-upload">
-								<button class="button" type="submit">file upload</button>
+								<input type="file" name="upload1">
 							</div>
 
 
@@ -122,10 +123,8 @@ function deleteFile(num) {
 							<br> <br>
 
 							<div>
-								<span class="bigimg-upload"><button class="button"
-										type="submit">file upload</button> </span> <span
-									class="bigimg-upload"><button class="button"
-										type="submit">file upload</button> </span>
+								<span class="bigimg-upload"><input type="file" name="upload2"></span> <span
+									class="bigimg-upload"><input type="file" name="upload3"> </span>
 							</div>
 							<div class="write2">
 								<textarea name="content" rows="12"
@@ -154,7 +153,9 @@ function deleteFile(num) {
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
 									<input type="hidden" name="page" value="${page}">
-									<input type="hidden" name="fileSize" value="${dto.fileName}">
+									<input type="hidden" name="fileName1" value="${dto.fileName1}">
+									<input type="hidden" name="fileName2" value="${dto.fileName2}">
+									<input type="hidden" name="fileName3" value="${dto.fileName3}">
 								</c:if> <input type="hidden" name="rows" value="${rows}">
 
 							</td>

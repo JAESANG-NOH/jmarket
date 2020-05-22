@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.notice.NoticeDAO;
+import com.notice.NoticeDTO;
 import com.user.SessionInfo;
+import com.util.FileManager;
 import com.util.FileServlet;
 import com.util.MyUtil;
 
@@ -43,7 +46,7 @@ public class SaleServlet extends FileServlet{
 		}
 		
 		String root = session.getServletContext().getRealPath("/");
-		pathname = root+"uploads"+File.separator+"sale";
+		pathname = root+"photo"+File.separator+"sale";
 		
 		if(uri.indexOf("list.do")!=-1) {
 			list(req, resp);
@@ -170,21 +173,45 @@ public class SaleServlet extends FileServlet{
 		dto.setSprice(Integer.parseInt(req.getParameter("sprice")));
 		dto.setContent(req.getParameter("content"));
 		
+		
+		//FILE 1
 		String fileName = null;
-//		Part p = req.getPart("uploads");
-//		Map<String, String> map = fileUpload(p, pathname);
-//		if(map !=null) {
-//			fileName = map.get("fileName");
-//		}
-//		
-//		
-//		if(fileName!=null) {
-//			dto.setFileName(fileName);
-//		}		
-			
+		Part p = req.getPart("upload1");
+		Map<String, String> map1 = fileUpload(p, pathname);
+		if(map1 !=null) {
+			fileName = map1.get("fileName");
+			if(fileName!=null) {
+				dto.setFileName1(fileName);
+			}
+		}
+		
+		
+		
+		//FILE 2
+		Part pp = req.getPart("upload2");
+		if(pp!=null) {
+			Map<String, String> map2 = fileUpload(pp, pathname);
+			if(map2 !=null) {
+				fileName = map2.get("fileName");
+				if(fileName!=null) {
+					dto.setFileName2(fileName);
+				}
+			}
+		}
+		
+		//FILE3
+			Part ppp = req.getPart("upload3");
+			if(ppp!=null) {
+			Map<String, String> map3 = fileUpload(ppp, pathname);
+			if(map3 !=null) {
+				fileName = map3.get("fileName");
+				if(fileName!=null) {
+					dto.setFileName3(fileName);
+				}
+			}
+		}	
 		dao.insertSale(dto);
 		resp.sendRedirect(cp+"/sale/list.do");
-		
 		}
 		
 	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -193,7 +220,7 @@ public class SaleServlet extends FileServlet{
 		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page = req.getParameter("page");
-		String rows=req.getParameter("rows");
+	
 		
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
@@ -203,7 +230,7 @@ public class SaleServlet extends FileServlet{
 		}
 		keyword=URLDecoder.decode(keyword, "utf-8");
 
-		String query="page="+page+"&rows="+rows;
+		String query="page="+page;
 		if(keyword.length()!=0) {
 			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
 		}
@@ -229,24 +256,159 @@ public class SaleServlet extends FileServlet{
 		req.setAttribute("nextReadDto", nextReadDto);
 		req.setAttribute("query", query);
 		req.setAttribute("page", page);
-		req.setAttribute("rows", rows);
 		
 		forward(req, resp, "/WEB-INF/page/sale/read.jsp");
 	}
 		
 	
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		SaleDAO dao = new SaleDAO();
+		String cp = req.getContextPath();
+		String page= req.getParameter("page");
+		int num = Integer.parseInt(req.getParameter("num"));
+		
+		SaleDTO dto = dao.readSale(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/sale/list.do?page="+page);
+		}
+		
+		if(! info.getId().equals(dto.getId())) {
+			resp.sendRedirect(cp+"sale/list.do?page="+page);
+			return;
+		}
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
+		req.setAttribute("mode", "update");
+		
+		forward(req, resp, "/WEB-INF/page/sale/write.jsp");
 	}
 	
+	
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		SaleDAO dao = new SaleDAO();
+		String cp = req.getContextPath();
+		
+		SaleDTO dto = new SaleDTO();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page=req.getParameter("page");
+		
+		if(req.getMethod().equalsIgnoreCase("GET")) {
+			resp.sendRedirect(cp+"/notice/list.do?page="+page);
+			return;
+		}
+		
+		dto.setNum(num);
+		dto.setSubject(req.getParameter("subject"));
+		dto.setContent(req.getParameter("content"));
+		dto.setFileName1(req.getParameter("fileName1"));
+		dto.setFileName2(req.getParameter("fileName2"));
+		dto.setFileName3(req.getParameter("fileName3"));
+		
+	//파일 처리 
+		
+		//file1
+		Part p = req.getPart("upload1");
+		Map<String, String> map1 = fileUpload(p, pathname);
+		if(map1 != null) {
+			// 기존파일 삭제
+			if(req.getParameter("fileName").length()!=0) {
+				FileManager.doFiledelete(pathname, req.getParameter("fileName"));
+			}
+		// 새로운 파일	
+		String fileName = map1.get("fileName");
+		dto.setFileName1(fileName);
+		}
+
+			
+		//file2
+		Part pp = req.getPart("upload2");
+		Map<String, String> map2 = fileUpload(pp, pathname);
+		if(map2 != null) {
+			// 기존파일 삭제
+			if(req.getParameter("fileName2").length()!=0) {
+				FileManager.doFiledelete(pathname, req.getParameter("fileName2"));
+				}	
+		// 새로운 파일
+		String fileName = map2.get("fileName");
+		dto.setFileName2(fileName);
+		}
+			
+		
+		//file3
+		Part ppp = req.getPart("upload3");
+		Map<String, String> map3 = fileUpload(ppp, pathname);
+		if(map3 != null) {
+			// 기존파일 삭제
+			if(req.getParameter("fileName3").length()!=0) {
+				FileManager.doFiledelete(pathname, req.getParameter("fileName3"));
+				}	
+		// 새로운 파일
+		String fileName = map3.get("fileName");
+		dto.setFileName3(fileName);
+		}
+
+		dao.updateSale(dto);
+		resp.sendRedirect(cp+"/sale/list.do?page="+page);
+	
 	}
+	
+	
+	
+	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	//수정에서 파일만 삭제 
+		HttpSession session=req.getSession();
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		SaleDAO dao=new SaleDAO();
+		String cp=req.getContextPath();
+	
+		int num=Integer.parseInt(req.getParameter("num"));
+		String page=req.getParameter("page");
+		String rows=req.getParameter("rows");
+		
+		SaleDTO dto=dao.readSale(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/sale/list.do?page="+page);
+			return;
+		}
+		
+		if(! info.getId().equals(dto.getId())) {
+			resp.sendRedirect(cp+"/sale/list.do?page="+page);
+			return;
+		}
+		
+		// 파일삭제
+		FileManager.doFiledelete(pathname, dto.getFileName1());
+		FileManager.doFiledelete(pathname, dto.getFileName2());
+		FileManager.doFiledelete(pathname, dto.getFileName3());
+		
+		
+		// 파일명과 파일크기 변경
+		dto.setFileName1("");
+		dto.setFileName2("");
+		dto.setFileName3("");
+		dao.updateSale(dto);
+		
+		req.setAttribute("dto", dto);
+		req.setAttribute("page", page);
+		req.setAttribute("rows", rows);
+		
+		req.setAttribute("mode", "update");
+
+		forward(req, resp, "/WEB-INF/page/sale/write.jsp");			
+	}
+		
+
 	
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	}
 	
-	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	}
 	
 
 	

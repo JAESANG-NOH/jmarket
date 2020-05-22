@@ -21,7 +21,7 @@ function sendlogin() {
 					<li><a href="">회사소개</a>
 					<li><a href="">팝니다</a>
 						<ul>
-							<li><a href="">판매중</a></li>
+							<li><a href="<%=cp%>/sale/list.do">판매중</a></li>
 							<li><a href="">판매완료</a></li>
 						</ul>
 

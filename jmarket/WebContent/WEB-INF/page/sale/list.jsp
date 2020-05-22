@@ -32,7 +32,7 @@ function searchList() {
 <section class="container">
 		<article>
 				<div class="content" >
-						<div class="bb">
+				<div class="bb">
 		<div id="box" style="width:700px; ">
 		<h2>| 판매중</h2><br>
 <ul class="row" style="border-top: 1px solid #999; color:black;"> 
@@ -45,8 +45,8 @@ function searchList() {
 
 <c:forEach var="dto" items="${list}">
 <ul class="row">
-<li> <img class="photo" src="./images/wc.jpg" style="width: 70px; height: 78px;"></li>
-<li style= "width:320px; text-align: left; line-height: 95px;">${dto.subject}</li>
+<li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
+<li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}">${dto.subject}</a></li>
 <li style="width: 140px;line-height: 95px;">${dto.name}</li>
 <li style="line-height: 95px;">${dto.created}</li>
 <li style="line-height: 95px;">${dto.hitCount}</li>

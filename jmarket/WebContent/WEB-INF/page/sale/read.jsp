@@ -25,6 +25,16 @@ function deleteNotice(num) {
 	}
 }
 </c:if>
+
+<c:if test="${sessionScope.member.id!='admin' && sessionScope.member.id!=dto.id}">
+alert("게시물을 삭제할 수  없습니다.");
+</c:if>
+}
+
+<c:if test="${sessionScope.member.id!=dto.id}">
+alert("게시물을 수정할 수  없습니다.");
+</c:if>
+}
 </script>
 </head>
 <body>
@@ -37,14 +47,14 @@ function deleteNotice(num) {
 				<div class="content">
 					<div class="all">
 						<br><br>
-						<div class="name">귀여운 다람이 노트북 set 판매</div>
-						<div class="nikname">작성자 : ice§princess혜화★ </div>
-						<div><img class="pimg imgbox1" src="./images/nb.jpg"></div>
+						<div class="name">${dto.subject} </div>
+						<div class="nikname">작성자 : ${dto.name}</div>
+						<div><img class="pimg imgbox1" src="<%=cp%>/photo/sale/${dto.fileName1}"></div>
 						
 					
 						<ul class="view">
-							<li class="product">[판매완료] 다라미 노트북 세트 파라용<li>
-							<li class="price">30,000 원<br></li>
+							<li class="product">${dto.pname}<li>
+							<li class="price">${dto.sprice} 원<br></li>
 							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
@@ -67,11 +77,11 @@ function deleteNotice(num) {
 						<br>
 						<br>
 					
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb2.jpg"> </span>
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb3.jpg"> </span>
+						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName2}"> </span>
+						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName3}"> </span>
 			
-						<div class="write">노트북 세트 30000원 급처~~</div>
-						<div class="write">직거래 시러요~~</div>
+						<div class="write">${dto.content}</div>
+						
 						
 					</div>
 				</div>	
@@ -98,7 +108,7 @@ function deleteNotice(num) {
 					<tr height="45">
 			 	   <td width="300" align="left">
 			       <c:if test="${sessionScope.member.id==dto.id}">				    
-			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}&rows=${rows}';">수정</button>
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>
 			       </c:if>
 			       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
 			          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
