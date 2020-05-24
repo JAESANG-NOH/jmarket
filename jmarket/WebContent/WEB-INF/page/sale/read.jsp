@@ -17,14 +17,6 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-<c:if test="${sessionScope.member.id=='admin'}">
-function deleteNotice(num) {
-	if(confirm("게시물을 삭제 하시겠습니까 ?")) {
-		var url="<%=cp%>/notice/delete.do?num="+num+"&${query}";
-		location.href=url;
-	}
-}
-</c:if>
 
 <c:if test="${sessionScope.member.id!='admin' && sessionScope.member.id!=dto.id}">
 alert("게시물을 삭제할 수  없습니다.");
@@ -35,6 +27,9 @@ alert("게시물을 삭제할 수  없습니다.");
 alert("게시물을 수정할 수  없습니다.");
 </c:if>
 }
+
+
+
 </script>
 </head>
 <body>
@@ -58,7 +53,7 @@ alert("게시물을 수정할 수  없습니다.");
 							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
-							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span> 수수료 없이 송금하기</li>
+							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span><a href="#"> 수수료 없이 송금하기 </a> </li>
 							<li>&nbsp;</li>
 							<li class="ju">자몽페이 송금은 에스크로 기능이 제공되지 않으며 판매자에게 결제금액이 바로 전달되는 '직접거래'입니다.</li>
 							<li class="warning">자몽마켓에 등록된 판매 물품과 내용을 개별 판매자가 등록한 것으로서, 
@@ -111,7 +106,7 @@ alert("게시물을 수정할 수  없습니다.");
 			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>
 			       </c:if>
 			       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
-			          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/delete.do?num=${dto.num}&page=${page}';">삭제</button>
 			       </c:if>
 			    </td>
 			

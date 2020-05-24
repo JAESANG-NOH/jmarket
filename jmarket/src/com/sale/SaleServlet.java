@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import com.notice.NoticeDAO;
-import com.notice.NoticeDTO;
 import com.user.SessionInfo;
 import com.util.FileManager;
 import com.util.FileServlet;
@@ -320,7 +318,7 @@ public class SaleServlet extends FileServlet{
 		if(map1 != null) {
 			// 기존파일 삭제
 			if(req.getParameter("fileName1").length()!=0) {
-				boolean b= FileManager.doFiledelete(pathname, req.getParameter("fileName1"));
+				FileManager.doFiledelete(pathname, req.getParameter("fileName1"));
 			}
 		// 새로운 파일	
 		String fileName = map1.get("fileName");
@@ -372,7 +370,6 @@ public class SaleServlet extends FileServlet{
 	
 		int num=Integer.parseInt(req.getParameter("num"));
 		String page=req.getParameter("page");
-		String rows=req.getParameter("rows");
 		
 		SaleDTO dto=dao.readSale(num);
 		if(dto==null) {
@@ -399,7 +396,6 @@ public class SaleServlet extends FileServlet{
 		
 		req.setAttribute("dto", dto);
 		req.setAttribute("page", page);
-		req.setAttribute("rows", rows);
 		
 		req.setAttribute("mode", "update");
 
@@ -410,6 +406,51 @@ public class SaleServlet extends FileServlet{
 	
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		SaleDAO dao = new SaleDAO();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page=req.getParameter("page");
+		String condition=req.getParameter("condition");
+		String keyword=req.getParameter("keyword");
+		if(condition==null) {
+			condition="subject";
+			keyword="";
+		}
+		keyword = URLDecoder.decode(keyword,"utf-8");
+		String query = "page="+page;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		SaleDTO dto = dao.readSale(num);
+		if(dto==null) {
+			resp.sendRedirect(cp+"/sale/list.do?"+query);
+			return;
+		}
+		
+		//등록한 사람 && 관리자만 삭제 가능허게 
+		if(! info.getId().equals(dto.getId()) && ! info.getId().equals("admin")){
+			resp.sendRedirect(cp+"/sale/list.do?"+query);
+			return;
+		}
+		
+		//파일삭제
+		if(dto.getFileName1()!=null && dto.getFileName1().length()!=0) {
+			FileManager.doFiledelete(pathname, dto.getFileName1());}
+		
+		if(dto.getFileName2()!=null && dto.getFileName2().length()!=0) {
+			FileManager.doFiledelete(pathname, dto.getFileName2());}
+		
+		if(dto.getFileName3()!=null && dto.getFileName3().length()!=0) {
+			FileManager.doFiledelete(pathname, dto.getFileName3());}
+		
+		dao.deleteSale(num);
+		
+		resp.sendRedirect(cp+"/sale/list.do?page="+page);
+		
 	}
 	
 	
