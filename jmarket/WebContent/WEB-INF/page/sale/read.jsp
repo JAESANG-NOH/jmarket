@@ -35,7 +35,15 @@ alert("게시물을 삭제할 수  없습니다.");
 alert("게시물을 수정할 수  없습니다.");
 </c:if>
 
-
+<c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
+function sold(num) {
+	alert("방가");
+	if(confirm("판매 완료로 상태를 변경 하시겠습니까 ?\n")) {
+		var url="<%=cp%>/sale/sold.do?num="+num+"&${query}";
+		location.href=url;
+	}
+}
+</c:if>
 
 </script>
 </head>
@@ -112,6 +120,9 @@ alert("게시물을 수정할 수  없습니다.");
 					
 					<tr height="45">
 			 	   <td width="300" align="left">
+			 	    <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">				    
+					   <button type="button" class="btn" onclick="sold('${dto.num}');">판매완료</button>
+					</c:if>
 			       <c:if test="${sessionScope.member.id==dto.id}">				    
 			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>
 			       </c:if>
@@ -120,9 +131,9 @@ alert("게시물을 수정할 수  없습니다.");
 			       </c:if>
 			    </td>
 			
-			    <td align="right">
-			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list.do?${query}';">리스트</button>
-			    </td>
+			     <td align="right">
+					  <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list${listdiv == '0' ? '1' : '2'}.do?${query}';">리스트</button>
+				</td>
 			</tr>
 			</table>
 			</article>

@@ -9,61 +9,75 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="home.css" type="text/css">
-<link rel="stylesheet" href="menu.css" type="text/css">
-<link rel="stylesheet" href="sale-list.css" type="text/css">
+<title>Insert title here</title>
+<link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sblist.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function sendlogin() {
-	var f = document.loginform;
-	f.action = "<%=cp%>/user/login_ok.do";
+function searchnow() {
+	var f=document.searchForm;
 	f.submit();
 }
 </script>
-
-
-
 </head>
-
 <body>
-<div id="mainframe">
-	<jsp:include page="/WEB-INF/page/layout/header.jsp"/>
-</div>
-<form name="join" method="post" action="">
-
-<section class="container">
-		<article>
+	<div id="mainframe">
+	 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
+		<section class="container">
+			<article>
 				<div class="content" >
 						<div class="bb">
-		<div id="box" style="width:700px; ">
-		<h2>| 판매중</h2><br>
-<ul class="row" style="border-top: 1px solid #999; color:black;"> 
-<li style="line-height: 95px;font-weight: bold;">사진</li>
-<li style= "width:320px; text-align: center;line-height: 95px;font-weight: bold;">상품명</li>
-<li style="width: 140px;line-height: 95px;font-weight: bold;">작성자</li>
-<li style="line-height: 95px;font-weight: bold;">작성일</li>
-<li style="line-height: 95px;font-weight: bold;">조회수</li>
-</ul>
-
-<ul class="row">
-<li> <img class="photo" src="./images/wc.jpg" style="width: 70px; height: 78px;"></li>
-<li style= "width:320px; text-align: left; line-height: 95px;"><a href="2watch.html" >&nbsp;&nbsp;갤럭시워치 42mm 골드 LTE+블루투스 판매합니다</a></li>
-<li style="width: 140px;line-height: 95px;">신두철</li>
-<li style="line-height: 95px;">2020-10-10</li>
-<li style="line-height: 95px;">10</li>
-</ul>
-</div>
-
-
-</div>
-		</div>
-
+							<div id="box" style="width:700px; ">
+							<h2>| 판매완료</h2><br>
+						 	<form name="listForm" method="post">
+						 	<input type="hidden" name="page" value="${page}">
+							<input type="hidden" name="condition" value="${condition}">
+							<input type="hidden" name="keyword" value="${keyword}">
+							<ul class="row" style="border-top: 1px solid #999; color:black;"> 
+							<li style="line-height: 95px;font-weight: bold;">사진</li>
+							<li style= "width:320px; text-align: center; line-height: 95px; font-weight: bold;">상품명</li>
+							<li style="width: 140px; line-height: 95px;font-weight: bold;">작성자</li>
+							<li style="line-height: 95px;font-weight: bold;">작성일</li>
+							<li style="line-height: 95px;font-weight: bold;">조회수</li>
+							</ul>
+<c:forEach var="dto" items="${list}">
+	<ul class="row" onclick="javascript:location.href='${articleUrl}&num=${dto.num}&now=${now}';">
+	<li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
+	<li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}">${dto.subject}</a></li>
+	<li style="width: 140px;line-height: 95px;">${dto.name}</li>
+	<li style="line-height: 95px;">${dto.created}</li>
+	<li style="line-height: 95px;">${dto.hitCount}</li>
+	</ul>
+</c:forEach> 
+							<div align="center">
+								<h4 style="text-align: center; width: 340px; margin: 0 50px; ">${dataCount==0?"등록된 게시물이 없습니다.":paging}</h4>
+							</div>
+							</form>
+							<div style="margin-top: 10px; margin-left: 190px;">
+								<form name="goWriteForm" method="post">
+								<div style="float: right;">
+								</div>
+								</form>
+							<form name="searchForm" action="<%=cp%>/buy/list1.do" method="post">
+			                  	<select name="condition" style="width: 85px; height: 23px; border-radius: 4px;">
+			                  		<option value="subject"  ${condition=="subject"?"selected='selected'":"" }>제목</option>
+			                  		<option value="id" 	 ${condition=="id"?"selected='selected'":"" }>작성자</option>
+			                 		<option value="content"  ${condition=="content"?"selected='selected'":"" }>내용</option>
+			               		   <option value="created"   ${condition=="created"?"selected='selected'":"" }>등록일</option>
+			            		</select>
+			            		<input type="text" name="keyword" value="${keyword}" style="width: 200px; height: 17px; border-radius: 4px;">
+			           			<button type="button" class="btn" onclick="searchnow();" style="height: 24px; width: 62px; border: none; background: pink; border-radius: 5px;">검색</button>
+			           			<input type="hidden" name="now" value="${now}">
+			            	</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</article>
-				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
+			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>
 		</section>
-		</form>
-	<!-- 내용 끝 -->
+	</div>
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
-	
 </body>
 </html>
