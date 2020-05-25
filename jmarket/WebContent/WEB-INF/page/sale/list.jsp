@@ -75,7 +75,7 @@ function searchList() {
 			                  <option value="content"     ${condition=="content"?"selected='selected'":"" }>내용</option>
 			                  <option value="created"     ${condition=="created"?"selected='selected'":"" }>등록일</option>
 			            </select>
-			            <input type="text" name="search" value="${keyword}">
+			            <input type="text" name="keyword" value="${keyword}">
 			            <button type="button" class="btn" onclick="searchList()">검색</button>
 			       
 			      </td>
@@ -96,7 +96,7 @@ function searchList() {
 			</article>
 				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
 		</section>
-		</form>
+	
 </div>
 		
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>

@@ -48,10 +48,20 @@ function sendOk() {
     
 	
     var mode="${mode}";
-	  if(mode=="created"||mode=="update" && f.upload.value!="") {
-		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(f.upload.value)) {
+	  if(mode=="created"||mode=="update" && f.upload1.value!="" && f.upload2.value!="" && f.upload3.value!="") {
+		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(f.upload1.value)) {
 			alert('이미지 파일만 가능합니다. !!!');
-			f.upload.focus();
+			f.upload1.focus();
+			return;
+		}
+		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(f.upload2.value)) {
+			alert('이미지 파일만 가능합니다. !!!');
+			f.upload2.focus();
+			return;
+		}
+		if(! /(\.gif|\.jpg|\.png|\.jpeg)$/i.test(f.upload3.value)) {
+			alert('이미지 파일만 가능합니다. !!!');
+			f.upload3.focus();
 			return;
 		}
 	  }

@@ -98,6 +98,13 @@ public class SaleDTO {
 	public void setCreated(String created) {
 		this.created = created;
 	}
+	@Override
+	public String toString() {
+		return "SaleDTO [num=" + num + ", name=" + name + ", pname=" + pname + ", sprice=" + sprice + ", id=" + id
+				+ ", sold=" + sold + ", subject=" + subject + ", content=" + content + ", fileName1=" + fileName1
+				+ ", fileName2=" + fileName2 + ", fileName3=" + fileName3 + ", hitCount=" + hitCount + ", created="
+				+ created + "]";
+	}
 	
 	
 
