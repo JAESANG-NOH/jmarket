@@ -16,15 +16,27 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sale.css" type="text/css">
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
+
 <script type="text/javascript">
-<c:if test="${sessionScope.member.id=='admin'}">
-function deleteNotice(num) {
-	if(confirm("게시물을 삭제 하시겠습니까 ?")) {
-		var url="<%=cp%>/notice/delete.do?num="+num+"&${query}";
-		location.href=url;
-	}
+
+function jmPay(){
+    var url = "pay.do";
+    var name = "test";
+    var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+    window.open(url, name, option);
 }
+
+
+<c:if test="${sessionScope.member.id!='admin' && sessionScope.member.id!=dto.id}">
+alert("게시물을 삭제할 수  없습니다.");
 </c:if>
+
+<c:if test="${sessionScope.member.id!=dto.id}">
+alert("게시물을 수정할 수  없습니다.");
+</c:if>
+
+
+
 </script>
 </head>
 <body>
@@ -37,23 +49,27 @@ function deleteNotice(num) {
 				<div class="content">
 					<div class="all">
 						<br><br>
-						<div class="name">귀여운 다람이 노트북 set 판매</div>
-						<div class="nikname">작성자 : ice§princess혜화★ </div>
-						<div><img class="pimg imgbox1" src="./images/nb.jpg"></div>
+						<div class="name">${dto.subject} </div>
+						<div class="nikname">작성자 : ${dto.name}</div>
+						<div><img class="pimg imgbox1" src="<%=cp%>/photo/sale/${dto.fileName1}"></div>
 						
 					
 						<ul class="view">
-							<li class="product">[판매완료] 다라미 노트북 세트 파라용<li>
-							<li class="price">30,000 원<br></li>
+							<li class="product">${dto.pname}<li>
+							<li class="price">${dto.sprice} 원<br></li>
 							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
-							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span> 수수료 없이 송금하기</li>
+							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span>
+							<a href = "javascript:jmPay();" target="_self">수수료 없이 송금하기 </a> 
+							
+							</li>
 							<li>&nbsp;</li>
 							<li class="ju">자몽페이 송금은 에스크로 기능이 제공되지 않으며 판매자에게 결제금액이 바로 전달되는 '직접거래'입니다.</li>
 							<li class="warning">자몽마켓에 등록된 판매 물품과 내용을 개별 판매자가 등록한 것으로서, 
 								자몽마켓은 등록을 위한 시스템만 제공하며 내용에 대하여 일체의 책임을 지지 않습니다.</li>
 						</ul>
+
 						
 						<ul class="before">
 							<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;거래전 필독! 주의하세요!</li>
@@ -66,11 +82,11 @@ function deleteNotice(num) {
 						<br>
 						<br>
 					
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb2.jpg"> </span>
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb3.jpg"> </span>
+						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName2}"> </span>
+						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName3}"> </span>
 			
-						<div class="write">노트북 세트 30000원 급처~~</div>
-						<div class="write">직거래 시러요~~</div>
+						<div class="write">${dto.content}</div>
+						
 						
 					</div>
 				</div>	
@@ -96,11 +112,11 @@ function deleteNotice(num) {
 					
 					<tr height="45">
 			 	   <td width="300" align="left">
-			       <c:if test="${sessionScope.member.id==dto.Id}">				    
-			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}&rows=${rows}';">수정</button>
+			       <c:if test="${sessionScope.member.id==dto.id}">				    
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>
 			       </c:if>
-			       <c:if test="${sessionScope.member.id==dto.Id || sessionScope.member.Id=='admin'}">				    
-			          <button type="button" class="btn" onclick="deleteNotice('${dto.num}');">삭제</button>
+			       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/delete.do?num=${dto.num}&page=${page}';">삭제</button>
 			       </c:if>
 			    </td>
 			

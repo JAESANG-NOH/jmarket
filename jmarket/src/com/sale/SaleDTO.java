@@ -3,13 +3,19 @@ package com.sale;
 public class SaleDTO {
 	private int num; 
 	private String name;
+	private String pname;
+	private int sprice;
 	private String id;
 	private int sold;
 	private String subject;
 	private String content;
-	private String fileName; 
+	private String fileName1; 
+	private String fileName2;
+	private String fileName3;
 	private int hitCount;
 	private String created;
+	
+	
 	public int getNum() {
 		return num;
 	}
@@ -20,9 +26,23 @@ public class SaleDTO {
 	public String getName() {
 		return name;
 	}
+	
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public int getSprice() {
+		return sprice;
+	}
+	public void setSprice(int sprice) {
+		this.sprice = sprice;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getId() {
 		return id;
 	}
@@ -47,11 +67,24 @@ public class SaleDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getFileName() {
-		return fileName;
+	
+	public String getFileName1() {
+		return fileName1;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileName1(String fileName1) {
+		this.fileName1 = fileName1;
+	}
+	public String getFileName2() {
+		return fileName2;
+	}
+	public void setFileName2(String fileName2) {
+		this.fileName2 = fileName2;
+	}
+	public String getFileName3() {
+		return fileName3;
+	}
+	public void setFileName3(String fileName3) {
+		this.fileName3 = fileName3;
 	}
 	public int getHitCount() {
 		return hitCount;
@@ -64,6 +97,13 @@ public class SaleDTO {
 	}
 	public void setCreated(String created) {
 		this.created = created;
+	}
+	@Override
+	public String toString() {
+		return "SaleDTO [num=" + num + ", name=" + name + ", pname=" + pname + ", sprice=" + sprice + ", id=" + id
+				+ ", sold=" + sold + ", subject=" + subject + ", content=" + content + ", fileName1=" + fileName1
+				+ ", fileName2=" + fileName2 + ", fileName3=" + fileName3 + ", hitCount=" + hitCount + ", created="
+				+ created + "]";
 	}
 	
 	

@@ -27,12 +27,12 @@ function searchList() {
 <body>
 <div id="mainframe">
 	<jsp:include page="/WEB-INF/page/layout/header.jsp"/>
-<form name="join" method="post" action="">
+
 
 <section class="container">
 		<article>
 				<div class="content" >
-						<div class="bb">
+				<div class="bb">
 		<div id="box" style="width:700px; ">
 		<h2>| 판매중</h2><br>
 <ul class="row" style="border-top: 1px solid #999; color:black;"> 
@@ -45,18 +45,50 @@ function searchList() {
 
 <c:forEach var="dto" items="${list}">
 <ul class="row">
-<li> <img class="photo" src="./images/wc.jpg" style="width: 70px; height: 78px;"></li>
-<li style= "width:320px; text-align: left; line-height: 95px;">${dto.subject}</li>
+<li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
+<li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}">${dto.subject}</a></li>
 <li style="width: 140px;line-height: 95px;">${dto.name}</li>
-<li style="line-height: 95px;">${dto.created }</li>
+<li style="line-height: 95px;">${dto.created}</li>
 <li style="line-height: 95px;">${dto.hitCount}</li>
-<li>
-	<c:if test="${not empty dto.fileName}">
-	  <a href="<%=cp%>/sale/list.do?num=${dto.num}"></a>
-	</c:if>
-</li>
 </ul>
 </c:forEach> 
+
+	<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
+			   <tr height="35">
+				<td align="center">
+			        ${dataCount!=0?paging:"등록된 게시물이 없습니다."}
+				</td>
+			   </tr>
+	</table>
+	
+	 <form name="searchForm" action="<%=cp%>/sale/list.do" method="post">
+	 <input type="hidden" name="keyword" value="${keyword}">
+	 <input type="hidden" name="condition" value="${condition}">
+	  <table style="width: 100%; margin: 10px auto; border-spacing: 0px;">
+			   <tr height="40">
+			       
+			      <td align="center" style="padding-left: 120px;">
+			         
+			              <select name="condition" class="selectField" >
+			                  <option value="subject"     ${condition=="subject"?"selected='selected'":"" }>제목</option>
+			                  <option value="name"    ${condition=="name"?"selected='selected'":"" }>작성자</option>
+			                  <option value="content"     ${condition=="content"?"selected='selected'":"" }>내용</option>
+			                  <option value="created"     ${condition=="created"?"selected='selected'":"" }>등록일</option>
+			            </select>
+			            <input type="text" name="keyword" value="${keyword}">
+			            <button type="button" class="btn" onclick="searchList()">검색</button>
+			       
+			      </td>
+			      <td align="left" style="width: 70px;">
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list.do';">새로고침</button>
+			      </td>
+			     <td align="right" style="width: 70px;">
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/write.do';">글올리기</button>
+			      </td>
+			   </tr>
+			</table>
+   </form>	
+
 </div>
 </div>
 		</div>
@@ -64,9 +96,9 @@ function searchList() {
 			</article>
 				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
 		</section>
-		</form>
-		</div>
-	<!-- 내용 끝 -->
+	
+</div>
+		
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
 
 </body>
