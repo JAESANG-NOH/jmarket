@@ -21,6 +21,7 @@ public class Home extends MainServlet {
 		if(uri.indexOf("home.do")!=-1) {
 			forward(req, resp, "/WEB-INF/page/home/home.jsp");
 		}
+		
 	}
 
 }

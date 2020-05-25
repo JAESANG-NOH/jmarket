@@ -18,7 +18,7 @@
 
 function sendOk(){
 	var f=document.boardForm;
-	f.action='<%=cp%>/faq/faq_created_ok.do';
+	f.action='<%=cp%>/faq/faq_${mode}_ok.do';
 	f.submit();
 }
 
@@ -49,13 +49,13 @@ function sendOk(){
 			  <tr align="left" height="40" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 			      <td width="100" bgcolor="#eeeeee" style="text-align: center;">질&nbsp;&nbsp;&nbsp;&nbsp;문</td>
 			      <td style="padding-left:10px;"> 
-			        <input type="text" name="subject" maxlength="100" class="boxTF" style="width: 95%;" value="">
+			        <input type="text" name="subject" maxlength="100" class="boxTF" style="width: 95%;" value="${dto.subject}">
 			      </td>
 			  </tr>
 			  <tr align="left" style="border-bottom: 1px solid #cccccc;"> 
 			      <td width="100" bgcolor="#eeeeee" style="text-align: center; padding-top:5px;" valign="top">답&nbsp;&nbsp;&nbsp;&nbsp;변</td>
 			      <td valign="top" style="padding:5px 0px 5px 10px;"> 
-			        <textarea name="content" rows="12" class="boxTA" style="width: 95%;"></textarea>
+			        <textarea name="content" rows="12" class="boxTA" style="width: 95%;">${dto.content}</textarea>
 			      </td>
 			  </tr>
 			  </table>
@@ -63,12 +63,13 @@ function sendOk(){
 			  <table style="width: 100%; border-spacing: 0px;">
 			     <tr height="45"> 
 			      <td align="center" >
-			        <button type="button" class="btn" onclick="sendOk();">등록하기</button>
+			        <button type="button" class="btn" onclick="sendOk();">${mode=='created'?'등록하기':'수정완료'}</button>
 			        <button type="reset" class="btn">다시입력</button>
-			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do';">등록취소</button>
+			        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do';">${mode=='created'?'등록취소':'수정취소'}</button>
 			      </td>
 			    </tr>
 			  </table>
+			  <input type="hidden" name="num" value="${dto.num}">
 			</form>
 				</div>
 			</div>

@@ -24,6 +24,12 @@ public class FaqServlet extends MainServlet{
 			faq_createdForm(req, resp);
 		}else if(uri.indexOf("faq_created_ok.do")!=-1) {
 			faq_createdSubmit(req, resp);
+		}else if(uri.indexOf("faq_update.do")!=-1) {
+			faq_updateForm(req, resp);
+		}else if(uri.indexOf("faq_update_ok.do")!=-1) {
+			faq_updateSubmit(req, resp);
+		}else if(uri.indexOf("faq_delete_ok.do")!=-1) {
+			faq_deleteSubmit(req, resp);
 		}
 		
 	}
@@ -44,6 +50,7 @@ public class FaqServlet extends MainServlet{
 	}
 	
 	protected void faq_createdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("mode", "created");
 		forward(req, resp, "/WEB-INF/page/question/faq_created.jsp");
 		
 	}
@@ -65,6 +72,35 @@ public class FaqServlet extends MainServlet{
 		
 	}
 	
+	protected void faq_updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		FaqDAO dao=new FaqDAO();
+		FaqDTO dto=dao.readFaq(Integer.parseInt(req.getParameter("num")));
+		req.setAttribute("mode", "update");
+		req.setAttribute("dto", dto);
+		
+		forward(req, resp, "/WEB-INF/page/question/faq_created.jsp");
+	}
 	
+	protected void faq_updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp=req.getContextPath();
+		FaqDAO dao=new FaqDAO();
+		FaqDTO dto=new FaqDTO();
+		dto.setNum(Integer.parseInt(req.getParameter("num")));
+		dto.setCategory(req.getParameter("category"));
+		dto.setContent(req.getParameter("content"));
+		dto.setSubject(req.getParameter("subject"));
+		dao.updateFaq(dto);
+		
+		resp.sendRedirect(cp+"/faq/faq_list.do");
+	}
+	
+	protected void faq_deleteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp=req.getContextPath();
+		FaqDAO dao=new FaqDAO();
+		dao.deleteFaq(Integer.parseInt(req.getParameter("num")));
+		
+		resp.sendRedirect(cp+"/faq/faq_list.do");
+	}
+
 	
 }

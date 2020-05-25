@@ -17,9 +17,17 @@
 <script type="text/javascript">
 function sendOk(){
 	var f=document.qnaForm;
-	f.action='<%=cp%>/qna/qna_created_ok.do';
+	f.action='<%=cp%>/qna/qna_${mode}_ok.do';
 	f.submit();
 }
+
+window.onload = function()
+{
+	var f=document.listForm;
+   	f.category.value='${dto.category}';
+  // 	f.content_up.innerHTML='${dto.content}';
+}
+
 
 function catechange(){
 	var objs=document.getElementById("tbody");
@@ -32,7 +40,7 @@ function catechange(){
 				s+="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"
 			}
 			s+="<td><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
-			s+="</tr>";
+			s+="</tr>"; 
 			n++;
 		}
 	</c:forEach>
@@ -59,42 +67,41 @@ function catechange(){
 			<div id = "content" >
 			<h2>|&nbsp;&nbsp;문의하기</h2>
 				<div class="main" style="width: 700px; margin: 30px auto;">
-				<form name="qnaForm" method="post" enctype="multipart/form-data">
+				<form name="qnaForm" method="post">
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;" >카테고리</th>
-					      <td >
-					      	<select id="category" name="category" onchange="catechange();">
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th width="100" align="center" bgcolor="#eeeeee" style="color: #787878;" >카테고리</th>
+					      <td style="padding: 0px 10px 0px 10px;" >
+					      	<select style="width: 200px;" id="category" name="category" onchange="catechange();">
 					      		<option>선택</option>
-					      		<option value="goods">상품문의</option>
-					      		<option value="delivery">배송문의</option>
-					      		<option value="event">이벤트문의</option>
+					      		<option value="goods" ${dto.category=='goods'?"selected='selected' " : ""  }>상품문의</option>
+					      		<option value="delivery"${dto.category=='delivery'?"selected='selected' " : ""  }>배송문의</option>
+					      		<option value="event" ${dto.category=='event'?"selected='selected' " : ""  }>이벤트문의</option>
 					      	</select>
 					      </td>
 					  </tr>
 					  <tbody id="tbody">
 					  </tbody>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
-					      <td >
-					      	<input type="text" name="subject">
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
+					      <td style="padding: 0px 10px 0px 10px;">
+					      	<input style="width: 300px;" type="text" name="subject" value="${dto.subject}" >
 						  </td>
 					  </tr>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">문의내용</th>
-					      <td>
-					      	<textarea name="content" rows="12" class="boxTA" style="width: 95%;"></textarea>
-					      </td>
-					  </tr>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">첨부파일</th>
-					      <td>
-					      	<input type="file" name="upload">
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의내용</th>
+					      <td style="padding: 0px 10px 0px 10px;">
+					      	<textarea id="content_up" name="content" rows="12" class="boxTA" style=" width: 95%;">${dto.content}</textarea>
 					      </td>
 					  </tr>
 					</table>
-					<button type="button" onclick="sendOk();">문의하기 등록</button>
-					<button type="button" onclick="javascript:location.href='<%=cp%>/qna/qna_list.do';">입력취소</button>
+					<c:if test="${mode=='update'}">
+						<input type="hidden" name="num" value="${dto.num}">
+					</c:if>
+					<p align="center">
+						<button type="button" onclick="sendOk();">${mode=='update'?'수정완료':'문의하기 등록'}</button>
+						<button type="button" onclick="javascript:location.href='<%=cp%>/qna/qna_list.do';">입력취소</button>
+					</p>
 				</form>
 				</div>
 			</div>

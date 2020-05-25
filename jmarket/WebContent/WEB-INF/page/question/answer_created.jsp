@@ -17,7 +17,7 @@
 <script type="text/javascript">
 function sendOk(){
 	var f=document.qnaForm;
-	f.action='<%=cp%>/qna/qna_created_ok.do';
+	f.action='<%=cp%>/qna/answer_created_ok.do';
 	f.submit();
 }
 
@@ -32,37 +32,44 @@ function sendOk(){
 			<div id = "content" >
 			<h2>|&nbsp;&nbsp;문의하기</h2>
 				<div class="main" style="width: 700px; margin: 30px auto;">
-				<form name="qnaForm" method="post" enctype="multipart/form-data">
+				<form name="qnaForm" method="post">
 					<table style="width: 100%; border-spacing: 0; border-collapse: collapse;">
 					  <tbody id="tbody">
 					  </tbody>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
-					      <td >
-					      	[배송문의]배송언제와용
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의날짜</th>
+					      <td style="padding: 0px 10px 0px 10px;">
+					      	${dto.created}
+						  </td>
+						  <th align="center" bgcolor="#eeeeee" style="color: #787878;">아이디</th>
+						  <td style="padding: 0px 10px 0px 10px;">
+						  	${dto.id}
 						  </td>
 					  </tr>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">문의내용</th>
-					      <td>
-					      	배송언제오는지알려주세요제발용
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
+					      <td colspan="3" style="padding: 0px 10px 0px 10px;">
+					      	[${dto.category=='goods'?('상품문의'):(dto.category=='delivery'?'배송문의':'이벤트문의')}]${dto.subject}
+						  </td>
+					  </tr>
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의내용</th>
+					      <td colspan="3" style="padding: 0px 10px 0px 10px;">
+					      	${dto.content}
 					      </td>
 					  </tr>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">답변제목</th>
-					      <td>
-					      	<input type="text" value="[자몽마켓]고객님 문의에 답변드립니다.">
-					      </td> 
-					  </tr>
-					  <tr align="center" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
-					      <th bgcolor="#eeeeee" style="color: #787878;">답변내용</th>
-					      <td>
-					      	<textarea name="content" rows="12" class="boxTA" style="width: 95%;"></textarea>
+					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
+					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">답변내용</th>
+					      <td colspan="3" style="padding: 0px 10px 0px 10px;">
+					      	<textarea name="an_content" rows="12" class="boxTA" style="width: 95%;"></textarea>
 					      </td>
 					  </tr>
 					</table>
-					<button type="button" onclick="sendOk();">문의하기 등록</button>
-					<button type="button" onclick="javascript:location.href='<%=cp%>/qna/answer_list.do';">입력취소</button>
+					<input type="hidden" name="dtonum" value="${dto.num}">
+					<p align="center">
+						<button type="button" onclick="sendOk();">문의하기 등록</button>
+						<button type="button" onclick="javascript:location.href='<%=cp%>/qna/answer_list.do';">입력취소</button>
+					</p>
 				</form>
 				</div>
 			</div>

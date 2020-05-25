@@ -27,6 +27,8 @@ function btn(num){
 	}
 	
 }
+
+
 </script>
 </head>
 <body>
@@ -40,25 +42,36 @@ function btn(num){
 					<table style="width: 700px; margin: 0px auto; border-spacing: 0; border-collapse: collapse;">
 						<tr>
 							<td colspan="3" style="text-align: center;">
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=goods';">상품문의</button>
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=delivery';" >배송문의</button>
-								<button style="height:30px; width: 30%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=event';" >이벤트문의</button>
+								<button style="height:30px; width: 33%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=goods';">상품문의</button>
+								<button style="height:30px; width: 32%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=delivery';" >배송문의</button>
+								<button style="height:30px; width: 33%; background: white; " type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_list.do?category=event';" >이벤트문의</button>
 							</td>
 						</tr>
 						<c:forEach var="dto" items="${list}">
 						<tr align="center" height="35" style="border-bottom: 1px solid #cccccc;"> 
-							<td align="right" width="60px;"><img src="<%=cp%>/resource/image/qna.JPG" border="0" style="margin-top: 1px; width: 30px; height: 30px;"></td>
-							<td align="left" style="padding-left: 10px;">
+							<td width="80px;"><img src="<%=cp%>/resource/image/qna.JPG" border="0" style="margin-top: 1px; width: 30px; height: 30px;"></td>
+							<td width="500px;" align="left" style="padding-left: 10px;">
 								${dto.subject}
 							</td>
-							<td><button id="btn${dto.num}" onclick="btn(${dto.num});">▼</button></td>
+							<td><button id="btn${dto.num}" onclick="btn(${dto.num});" style="font-size: 20px; border: none; background: white;" >▼</button></td>
 						</tr>
-						<tr id="answer${dto.num}" align="center" height="35" style="visibility:collapse; border-bottom: 1px solid #cccccc;">
-							<td colspan="3" style="background: #EAEAEA;">${dto.content}</td>
+						<tr id="answer${dto.num}" align="left" height="35" style="visibility:collapse; border-bottom: 1px solid #cccccc;">
+							<td colspan="3" style="padding:10px 80px 10px 80px; background: #F6F6F6;">${dto.content}
+							<c:if test="${sessionScope.member.id=='admin'}">
+								<p align="right">
+									<button type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_update.do?num=${dto.num}';">수정</button>
+									<button type="button" onclick="javascript:location.href='<%=cp%>/faq/faq_delete_ok.do?num=${dto.num}';">삭제</button>
+								</p>
+							</c:if>
+							</td>
 						</tr>
 						</c:forEach>
 					</table>
-					<button type="button" onclick="javacript:location.href='<%=cp%>/faq/faq_created.do'">글올리기</button>
+					<c:if test="${sessionScope.member.id=='admin'}" >
+						<p align="right">
+							<button style="text-align:right; margin:0px 80px 10px 80px; " type="button" onclick="javacript:location.href='<%=cp%>/faq/faq_created.do'">글올리기</button>
+						</p>
+					</c:if>
 				</div>
 			</div>
 		</article>
