@@ -1,13 +1,18 @@
 package com.question;
 
 public class QnaDTO {
+	private int listNum;
+	public int getListNum() {
+		return listNum;
+	}
+	public void setListNum(int listNum) {
+		this.listNum = listNum;
+	}
 	private int num;  //글번호
 	private String category;  //분류
 	private String subject;  //문의제목
 	private String content;  //문의내용
 	private String created;  //문의날짜
-	private String savefilename;
-	private String originalfilename;
 	private String an_created;  //답변날짜
 	private int status;  //처리상태 (0:접수완료, 1:답변완료)
 	private String an_content;  //답변내용
@@ -47,18 +52,6 @@ public class QnaDTO {
 	}
 	public void setCreated(String created) {
 		this.created = created;
-	}
-	public String getSavefilename() {
-		return savefilename;
-	}
-	public void setSavefilename(String savefilename) {
-		this.savefilename = savefilename;
-	}
-	public String getOriginalfilename() {
-		return originalfilename;
-	}
-	public void setOriginalfilename(String originalfilename) {
-		this.originalfilename = originalfilename;
 	}
 	public String getAn_created() {
 		return an_created;
