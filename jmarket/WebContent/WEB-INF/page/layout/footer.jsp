@@ -4,5 +4,5 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <footer class="container">
-			<p>Copyright(C) 2012 Ssangyong Institute of System Technology., ALL Right Reserved</p>
+			<p>Copyright © jamong Market Inc. All rights reserved.</p>
 </footer>
