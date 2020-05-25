@@ -25,10 +25,10 @@ function sendlogin() {
 							<li><a href="">판매완료</a></li>
 						</ul>
 
-					<li><a href="">삽니다</a>
+					<li><a href="<%=cp%>/buy/list1.do">삽니다</a>
 						<ul>
-							<li><a href="">구매중</a></li>
-							<li><a href="">구매완료</a></li>
+							<li><a href="<%=cp%>/buy/list1.do">구매중</a></li>
+							<li><a href="<%=cp%>/buy/list2.do">구매완료</a></li>
 
 						</ul>
 

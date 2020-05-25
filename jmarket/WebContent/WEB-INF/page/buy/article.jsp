@@ -10,7 +10,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet"><title>Sist</title>
 <link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
 <link rel="stylesheet" href="<%=cp%>/resource/css/sale.css" type="text/css">
@@ -20,7 +19,13 @@
 <c:if test="${sessionScope.member.id=='admin'}">
 function deleteNotice(num) {
 	if(confirm("게시물을 삭제 하시겠습니까 ?")) {
-		var url="<%=cp%>/notice/delete.do?num="+num+"&${query}";
+		var url="<%=cp%>/buy/delete.do?num="+num+"&${query}";
+		location.href=url;
+	}
+}
+function updateBuying(num) {
+	if(confirm("구매 완료 처리를 하시겠습니까 ?\n구매완료 후에는 변경이 불가능 합니다.")) {
+		var url="<%=cp%>/buy/updateBuying.do?num="+num+"&${query}";
 		location.href=url;
 	}
 }
@@ -45,7 +50,7 @@ function deleteNotice(num) {
 						
 					
 						<ul class="view">
-							<li class="product">[판매완료] ${dto.productName}<li>
+							<li class="product"> ${dto.productName}<li>
 							<li class="price">${dto.price} 원<br></li>
 							<li class="list"><br>거래방법 : &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
@@ -67,9 +72,6 @@ function deleteNotice(num) {
 						
 						<br>
 						<br>
-					
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb2.jpg"> </span>
-						<span class="bigimg-box"><img class="big-img imgbox2" src="./images/nb3.jpg"> </span>
 			
 						<div class="write">
 							<textarea name="content" rows="12"  style="width: 95%; resize: none; border-radius: 4px;" readonly="readonly">${dto.content}</textarea>
@@ -81,6 +83,9 @@ function deleteNotice(num) {
 				<table style="width: 890px;">
 					 <tr height="45">
 					 	   <td width="300" align="left">
+					 	    <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">				    
+					          <button type="button" class="btn" onclick="updateBuying('${dto.num}');">구매완료</button>
+					       </c:if>
 					       <c:if test="${sessionScope.member.id==dto.id}">				    
 					          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/update.do?num=${dto.num}&page=${page}';">수정</button>
 					       </c:if>
@@ -96,8 +101,8 @@ function deleteNotice(num) {
 					<tr height="35" style="border-bottom: 1px solid #cccccc;">
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					       이전글 :
-					         <c:if test="${not empty preReadDto}">
-					              <a href="<%=cp%>/sale/read.do?${query}&num=${preReadDto.num}">${preReadDto.subject}</a>
+					         <c:if test="${not empty front}">
+					              <a href="<%=cp%>/buy/article.do?${query}&num=${front.num}">${front.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>
@@ -105,8 +110,8 @@ function deleteNotice(num) {
 					<tr height="35" style="border-bottom: 1px solid #cccccc;">
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					    다음글 :
-					         <c:if test="${not empty nextReadDto}">
-					              <a href="<%=cp%>/sale/read.do?${query}&num=${nextReadDto.num}">${nextReadDto.subject}</a>
+					         <c:if test="${not empty back}">
+					              <a href="<%=cp%>/buy/article.do?${query}&num=${back.num}">${back.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>

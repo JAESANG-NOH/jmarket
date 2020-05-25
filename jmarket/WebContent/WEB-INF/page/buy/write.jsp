@@ -38,6 +38,7 @@ function sendbuy() {
         return;
     }
     
+    
     str = f.productname.value;
     if(!str) {
         alert("물품명을 입력하세요. ");
@@ -106,11 +107,6 @@ function sendbuy() {
 						
 						<br>
 						<br>
-					
-					<div>
-						<span class="bigimg-upload"></span>
-						<span class="bigimg-upload"></span>
-					</div>	
 						<div class="write2"><textarea name="content" rows="12"  style="width: 95%; resize: none; border-radius: 4px;">${dto.content}</textarea></div>
 					</div>
 					<div style="text-align:right; width: 866px;">
