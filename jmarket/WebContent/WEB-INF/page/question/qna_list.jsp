@@ -273,7 +273,7 @@ function totalday(){
 								<c:if test="${dto.status==0&&sessionScope.member.id=='admin'}">
 									<button type="button" onclick="javascript:location.href='<%=cp%>/qna/answer_created.do?num=${dto.num}';">답변작성</button>
 								</c:if>
-								<c:if test="${dto.status==0&&sessionScope.member.id=='admin'}">
+								<c:if test="${sessionScope.member.id=='admin'}">
 									<button type="button" onclick="javascript:location.href='<%=cp%>/qna/answer_delete_ok.do?num=${dto.num}';" >삭제</button>
 								</c:if>
 							  </td>

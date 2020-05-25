@@ -113,7 +113,7 @@ public class QnaDAO {
 				dto.setNum(rs.getInt("num"));
 				dto.setCategory(rs.getString("category"));
 				dto.setSubject(rs.getString("subject"));
-				dto.setContent(util.htmlSymbols(rs.getString("content")));
+				dto.setContent(rs.getString("content")); //////////////////////
 				dto.setCreated(rs.getString("created"));
 				dto.setAn_created(rs.getString("an_created"));
 				dto.setStatus(rs.getInt("status"));

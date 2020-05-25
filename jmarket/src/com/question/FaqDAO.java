@@ -145,7 +145,7 @@ public class FaqDAO {
 				
 				dto.setNum(rs.getInt("num"));
 				dto.setSubject(rs.getString("subject"));
-				dto.setContent(util.htmlSymbols(rs.getString("content")));
+				dto.setContent(rs.getString("content"));
 				dto.setCategory(rs.getString("category"));
 			}
 		} catch (Exception e) {

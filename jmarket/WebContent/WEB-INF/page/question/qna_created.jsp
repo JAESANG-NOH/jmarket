@@ -39,13 +39,13 @@ function catechange(){
 			if(n!=0){
 				s+="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"
 			}
-			s+="<td style='padding: 0px 10px 0px 10px;' align='left'><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
+			s+="<td class='listtr' style='padding: 0px 10px 0px 10px;' align='left'><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
 			s+="</tr>"; 
 			n++;
 		}
 	</c:forEach>
 	
-	s="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"+
+	s="<tr  align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"+
 	"<th rowspan='"+n+"' bgcolor='#eeeeee' style='color: #787878;' >연관 FAQ</th>"+s
 	
 	//선택한카테고리에 맞는 질문이 없을시
@@ -58,6 +58,11 @@ function catechange(){
 }
 
 </script>
+<style type="text/css">
+.listtr:hover{
+	background: #EAEAEA;
+}
+</style>
 </head>
 <body>
 <div id="mainframe">
