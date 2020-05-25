@@ -104,8 +104,8 @@ public class QnaDAO {
 		ResultSet rs = null;
 		MyUtil util=new MyUtil();
 		try {
-			sql = "SELECT num,category,subject,content,created,"
-					+ "an_created,status,an_content,id FROM qna WHERE num=?";
+			sql = "SELECT num,category,subject,content,TO_CHAR(created,'YYYY-MM-DD') created,"
+					+ "TO_CHAR(an_created,'YYYY-MM-DD') an_created,status,an_content,id FROM qna WHERE num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
@@ -173,8 +173,8 @@ public class QnaDAO {
 		ResultSet rs = null;
 		MyUtil util=new MyUtil();
 		try {
-			sql = "SELECT num,category,subject,content,created,"
-					+ "an_created,status,an_content,id FROM qna ";
+			sql = "SELECT num,category,subject,content,TO_CHAR(created,'YYYY-MM-DD') created,"
+					+ "TO_CHAR(an_created,'YYYY-MM-DD') an_created,status,an_content,id FROM qna ";
 			if (id.length() != 0) {
 				sql += "WHERE id=?";
 			}
@@ -232,8 +232,8 @@ public class QnaDAO {
 		ResultSet rs = null;
 		MyUtil util=new MyUtil();
 		try {
-			sql = "SELECT num,category,subject,content,created,"
-					+ "an_created,status,an_content,id FROM qna WHERE ";
+			sql = "SELECT num,category,subject,content,TO_CHAR(created,'YYYY-MM-DD') created,"
+					+ "TO_CHAR(an_created,'YYYY-MM-DD') an_created,status,an_content,id FROM qna WHERE ";
 			if (id.length() != 0) {
 				sql += "id=? AND ";
 			}
@@ -476,8 +476,8 @@ public class QnaDAO {
 		ResultSet rs = null;
 		MyUtil util=new MyUtil();
 		try {
-			sql = "SELECT num,category,subject,content,created,"
-					+ "an_created,status,an_content,id FROM qna WHERE ";
+			sql = "SELECT num,category,subject,content,TO_CHAR(created,'YYYY-MM-DD') created,"
+					+ "TO_CHAR(an_created,'YYYY-MM-DD') an_created,status,an_content,id FROM qna WHERE ";
 			if (id.length() != 0) {
 				sql += "id=? AND";
 			}
@@ -538,8 +538,8 @@ public class QnaDAO {
 		ResultSet rs = null;
 		MyUtil util=new MyUtil();
 		try {
-			sql = "SELECT num,category,subject,content,created,"
-					+ "an_created,status,an_content,id FROM qna WHERE ";
+			sql = "SELECT num,category,subject,content,TO_CHAR(created,'YYYY-MM-DD') created,"
+					+ "TO_CHAR(an_created,'YYYY-MM-DD') an_created,status,an_content,id FROM qna WHERE ";
 			if (id.length() != 0) {
 				sql += "id=? AND";
 			}

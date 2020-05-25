@@ -159,6 +159,10 @@ function totalday(){
 .subject:hover{
 	text-decoration: underline;
 }
+
+.listtr:hover{
+	background: #EAEAEA;
+}
 </style>
 </head>
 <body>
@@ -242,7 +246,7 @@ function totalday(){
 					      </th>
 					  </tr>
 					  <c:forEach var="dto" items="${list}">
-						  <tr align="center" bgcolor="#ffffff" height="35" style="border-bottom: 1px solid #cccccc;"> 
+						  <tr class="listtr" align="center" bgcolor="#ffffff" height="35" style="border-bottom: 1px solid #cccccc;"> 
 						      <td>${dto.listNum}</td>
 						      <td>${dto.category=='goods'?('상품문의'):(dto.category=='delivery'?'배송문의':'이벤트문의')}</td>
 						      <td align="left" style="padding-left: 10px;" class="subject" onclick="subclick(${dto.num});">${dto.subject}</td>

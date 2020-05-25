@@ -30,6 +30,11 @@ function btn(num){
 
 
 </script>
+<style type="text/css">
+.listtr:hover{
+	background: #EAEAEA;
+}
+</style>
 </head>
 <body>
 <div id="mainframe">
@@ -48,7 +53,7 @@ function btn(num){
 							</td>
 						</tr>
 						<c:forEach var="dto" items="${list}">
-						<tr align="center" height="35" style="border-bottom: 1px solid #cccccc;"> 
+						<tr class="listtr" align="center" height="35" style="border-bottom: 1px solid #cccccc;"> 
 							<td width="80px;"><img src="<%=cp%>/resource/image/qna.JPG" border="0" style="margin-top: 1px; width: 30px; height: 30px;"></td>
 							<td width="500px;" align="left" style="padding-left: 10px;">
 								${dto.subject}

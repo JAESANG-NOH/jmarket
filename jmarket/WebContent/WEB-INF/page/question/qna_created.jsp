@@ -39,7 +39,7 @@ function catechange(){
 			if(n!=0){
 				s+="<tr align='center'  height='35' style='border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;'>"
 			}
-			s+="<td><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
+			s+="<td style='padding: 0px 10px 0px 10px;' align='left'><a href='<%=cp%>/faq/faq_list.do?category="+document.getElementById("category").value+"'>${dto.subject}</a></td>";
 			s+="</tr>"; 
 			n++;
 		}
@@ -80,7 +80,7 @@ function catechange(){
 					      	</select>
 					      </td>
 					  </tr>
-					  <tbody id="tbody">
+					  <tbody id="tbody" align="left">
 					  </tbody>
 					  <tr align="left" height="35" style="border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;"> 
 					      <th align="center" bgcolor="#eeeeee" style="color: #787878;">문의제목</th>
