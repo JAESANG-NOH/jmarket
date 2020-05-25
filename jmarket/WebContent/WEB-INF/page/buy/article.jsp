@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-<c:if test="${sessionScope.member.id=='admin'}">
+<c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
 function deleteNotice(num) {
 	if(confirm("게시물을 삭제 하시겠습니까 ?")) {
 		var url="<%=cp%>/buy/delete.do?num="+num+"&${query}";
@@ -24,6 +24,7 @@ function deleteNotice(num) {
 	}
 }
 function updateBuying(num) {
+	alert("진입");
 	if(confirm("구매 완료 처리를 하시겠습니까 ?\n구매완료 후에는 변경이 불가능 합니다.")) {
 		var url="<%=cp%>/buy/updateBuying.do?num="+num+"&${query}";
 		location.href=url;
@@ -40,13 +41,13 @@ function updateBuying(num) {
 			<article>
 				
 				<div class="content">
-					<div class="all">
+					<div class="all" style="min-height: 860px;">
 						<br><br>
 						<div class="name">${dto.subject}</div>
 						<div class="nikname">작성자 : ${dto.id} 
 							<div>작성일 : ${dto.created}</div>
 						</div>
-						<div><img class="pimg imgbox1" src="<%=cp%>/photo/buy/${dto.imageName}"></div>
+						<div><img class="pimg imgbox1" src="<%=cp%>/photo/buy/${dto.imageName}" onerror="this.src='<%=cp%>/resource/image/imgnull.jpg'"></div>
 						
 					
 						<ul class="view">
@@ -95,14 +96,14 @@ function updateBuying(num) {
 					    </td>
 					
 					    <td align="right">
-					        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/list1.do?${query}';">리스트</button>
+					        <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/list${listdiv == '0' ? '1' : '2'}.do?${query}';">리스트</button>
 					    </td>
 					</tr>
 					<tr height="35" style="border-bottom: 1px solid #cccccc;">
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					       이전글 :
 					         <c:if test="${not empty front}">
-					              <a href="<%=cp%>/buy/article.do?${query}&num=${front.num}">${front.subject}</a>
+					              <a href="<%=cp%>/buy/article.do?${query}&num=${front.num}&now=${now}">${front.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>
@@ -111,7 +112,7 @@ function updateBuying(num) {
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					    다음글 :
 					         <c:if test="${not empty back}">
-					              <a href="<%=cp%>/buy/article.do?${query}&num=${back.num}">${back.subject}</a>
+					              <a href="<%=cp%>/buy/article.do?${query}&num=${back.num}&now=${now}">${back.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>

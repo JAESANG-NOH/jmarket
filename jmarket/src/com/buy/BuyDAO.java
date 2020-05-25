@@ -384,7 +384,7 @@ public class BuyDAO {
                 pstmt.setString(1, keyword);
                	pstmt.setInt(2, num);
             } else {
-                sql = "SELECT num, subject FROM buy WHERE num > ? ORDER BY num ASC "
+                sql = "SELECT num, subject FROM buy WHERE num > ? AND buying = "+ div +"  ORDER BY num ASC "
                     + " FETCH  FIRST  1  ROWS  ONLY ";
 
                 pstmt=conn.prepareStatement(sql);
@@ -436,14 +436,14 @@ public class BuyDAO {
                 } else {
                 	sql += " WHERE ( INSTR("+condition+", ?) > 0) ";
                 }
-                sql += "AND buying = " + div
+                sql +=" AND buying = " + div
                 	+ " AND (num < ? ) ORDER BY num ASC FETCH  FIRST  1  ROWS  ONLY ";
 
                 pstmt=conn.prepareStatement(sql);
                 pstmt.setString(1, keyword);
                	pstmt.setInt(2, num);
             } else {
-                sql = "SELECT num, subject FROM buy WHERE num < ? ORDER BY num ASC "
+                sql = "SELECT num, subject FROM buy WHERE num < ? AND buying = "+ div+ " ORDER BY num ASC "
                     + " FETCH  FIRST  1  ROWS  ONLY ";
 
                 pstmt=conn.prepareStatement(sql);

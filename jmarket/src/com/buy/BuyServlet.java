@@ -112,7 +112,8 @@ public class BuyServlet extends FileServlet{
 			articleUrl+="&"+query;
 		}
 		String paging=util.paging(current_page, total_page, listUrl);
-
+		
+		req.setAttribute("now", "list1");
 		req.setAttribute("list", list);
 		req.setAttribute("dataCount", dataCount);
 		req.setAttribute("articleUrl", articleUrl);
@@ -177,6 +178,7 @@ public class BuyServlet extends FileServlet{
 		}
 		String paging=util.paging(current_page, total_page, listUrl);
 		
+		req.setAttribute("now", "list2");
 		req.setAttribute("list", list);
 		req.setAttribute("dataCount", dataCount);
 		req.setAttribute("articleUrl", articleUrl);
@@ -229,7 +231,7 @@ public class BuyServlet extends FileServlet{
 		String page=req.getParameter("page");
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
-	
+		String now = req.getParameter("now");
 		
 		if(condition==null) {
 			condition="subject";
@@ -243,7 +245,14 @@ public class BuyServlet extends FileServlet{
 		}
 		
 		dao.updateviews(num);
+		
 		int div = 0;
+		if(req.getParameter("now").equals("list1")) {
+			div = 0;
+		} else {
+			div = 1;
+		}
+		
 		BuyDTO dto = dao.readBuy(num);
 		
 		if(dto==null) { // 게시물이 없으면 다시 리스트로
@@ -260,12 +269,8 @@ public class BuyServlet extends FileServlet{
 		} else if(dto.getHow().equals("safety")) {
 			trade = "안전거래";
 		}
-		if(dto.getBuying()==0) {
-			req.setAttribute("listdiv", "0");
-		} else {
-			req.setAttribute("listdiv", "1");
-		}
 		
+		req.setAttribute("listdiv", div);
 		req.setAttribute("front", dao.frontBuy(num, condition, keyword, div));
 		req.setAttribute("back", dao.BackBuy(num, condition, keyword,div));
 		req.setAttribute("dto", dto);
