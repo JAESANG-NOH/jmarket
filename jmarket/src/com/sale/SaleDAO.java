@@ -575,11 +575,7 @@ public class SaleDAO {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
+
 }
 	
 	

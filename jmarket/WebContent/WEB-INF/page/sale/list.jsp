@@ -96,7 +96,7 @@ function searchList() {
 			</article>
 				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
 		</section>
-		</form>
+	
 </div>
 		
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>

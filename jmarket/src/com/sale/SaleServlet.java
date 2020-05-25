@@ -62,6 +62,8 @@ public class SaleServlet extends FileServlet{
 			delete(req, resp);
 		}else if(uri.indexOf("deleteFile.do")!=-1) {
 			deleteFile(req, resp);
+		} else if (uri.indexOf("pay.do")!=-1) {
+			pay(req,resp);
 		}
 		
 		
@@ -453,6 +455,10 @@ public class SaleServlet extends FileServlet{
 		
 	}
 	
+	protected void pay(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String path = "/WEB-INF/page/sale/jmpay.jsp";
+		forward(req, resp, path);
+	}
 	
 
 	
