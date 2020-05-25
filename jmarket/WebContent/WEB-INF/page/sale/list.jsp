@@ -16,6 +16,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
+
 function searchList() {
 	var f = document.searchForm;
 	f.submit();

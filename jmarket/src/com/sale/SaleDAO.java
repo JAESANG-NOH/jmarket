@@ -263,7 +263,6 @@ public class SaleDAO {
 			sb.append(" TO_CHAR(s.created, 'YYYY-MM-DD') created");
 			sb.append(" FROM sale s ");
 			sb.append(" JOIN member1 m ON s.id = m.id");
-			sb.append(" WHERE sale =1 ");
 			sb.append(" ORDER BY num DESC ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
@@ -363,11 +362,12 @@ public class SaleDAO {
 	
 	//이전글 
 	
-	public SaleDTO preReadSale(int num, String condition, String keyword) {
+	public SaleDTO preReadSale(int num, String condition, String keyword , int div) {
 		SaleDTO dto = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		PreparedStatement pstmt = null;
+		
 		
 		try {
 			if(keyword.length()!=0) {
@@ -378,7 +378,7 @@ public class SaleDAO {
 				}else {
                 	sb.append(" WHERE (INSTR(" + condition + ", ?) >= 1)  ");
                 }
-	                sb.append("         AND (num > ? )  ");
+	                sb.append("         AND (num > ? )  AND sold ="+div);
 	                sb.append(" ORDER BY num ASC  ");
 	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
 	
@@ -387,7 +387,7 @@ public class SaleDAO {
 	                pstmt.setInt(2, num);
 			}else {
 				sb.append("SELECT num, subject FROM sale s JOIN member1 m ON s.id=m.id ");
-				   sb.append(" WHERE num > ?  ");
+				   sb.append(" WHERE num > ?  AND sold ="+div);
 	                sb.append(" ORDER BY num ASC  ");
 	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
 
@@ -425,7 +425,7 @@ public class SaleDAO {
 	
 	//다음글 
 	
-	public SaleDTO nextReadSale(int num, String condition, String keyword) {
+	public SaleDTO nextReadSale(int num, String condition, String keyword, int div) {
 		SaleDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -440,7 +440,7 @@ public class SaleDAO {
 				}else {
 					sb.append(" WHERE(INSTR("+condition+",?)>=1) " );
 				}
-				sb.append(" AND (num < ? ) ");
+				sb.append(" AND (num < ? ) AND sold ="+div );
 				sb.append(" ORDER BY num DESC  ");
 	            sb.append(" FETCH  FIRST  1  ROWS  ONLY ");
 	            
@@ -449,7 +449,7 @@ public class SaleDAO {
 	            pstmt.setInt(2, num);
 				}else {
 					sb.append(" SELECT num, subject FROM sale s JOIN member1 m ON s.id=m.id ");
-					sb.append(" WHERE num < ? ");
+					sb.append(" WHERE num < ?  AND sold ="+div);
 					sb.append(" ORDER BY num DESC ");
 					sb.append(" FETCH FIRST 1 ROWS ONLY ");
 					
@@ -575,6 +575,34 @@ public class SaleDAO {
 		return result;
 	}
 	
+	
+	
+	public int updateSold(int num) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = " UPDATE sale SET sold = 1 WHERE num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+		return result;
+		}
+
 
 }
 	

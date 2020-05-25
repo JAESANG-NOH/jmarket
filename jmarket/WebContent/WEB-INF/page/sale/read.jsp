@@ -27,6 +27,14 @@ function jmPay(){
 }
 
 
+function send(){
+    var url = "send.do";
+    var name = "sd";
+    var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+    window.open(url, name, option);
+}
+
+
 <c:if test="${sessionScope.member.id!='admin' && sessionScope.member.id!=dto.id}">
 alert("게시물을 삭제할 수  없습니다.");
 </c:if>
@@ -57,7 +65,7 @@ alert("게시물을 수정할 수  없습니다.");
 						<ul class="view">
 							<li class="product">${dto.pname}<li>
 							<li class="price">${dto.sprice} 원<br></li>
-							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe">안전거래 신청</span> </li>
+							<li class="list"><br>거래방법 : 직접거래 &nbsp;&nbsp; <span class="safe"><a href="javascript:send();"  target="_self" style="color: #2FED28;">판매자에게 쪽지보내기</a></span> </li>
 							<li class="list">배송방법 : 판매자와 직접 연락하세요</li>
 							<li>&nbsp;</li>
 							<li class="send"><span class="jmpay"> &nbsp; &nbsp;Pay</span>
@@ -84,7 +92,7 @@ alert("게시물을 수정할 수  없습니다.");
 					
 						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName2}"> </span>
 						<span class="bigimg-box"><img class="big-img imgbox2" src="<%=cp%>/photo/sale/${dto.fileName3}"> </span>
-			
+						
 						<div class="write">${dto.content}</div>
 						
 						
@@ -112,6 +120,9 @@ alert("게시물을 수정할 수  없습니다.");
 					
 					<tr height="45">
 			 	   <td width="300" align="left">
+			 	   <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
+			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/sold.do?num=${dto.num}&page=${page}';">판매완료</button>
+			       </c:if>
 			       <c:if test="${sessionScope.member.id==dto.id}">				    
 			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>
 			       </c:if>
