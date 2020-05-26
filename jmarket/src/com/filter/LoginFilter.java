@@ -53,7 +53,16 @@ public class LoginFilter implements Filter{
 		uri=uri.substring(cp.length());
 		
 		String []uris= {  //로그인 필요하지 않은것들
-				
+				"/index.jsp", 
+				"/buy/list1.do","/buy/list2.do",
+				"/event/list.do","/home/home.do",
+				//layout
+				"/notice/list.do",
+				"/faq/faq_list.do",
+				"/report/list.do",
+				"/sale/list.do", "/sale/list2.do",
+				"/user/login.do","/user/loout.do","/user/login_ok.do", "/user/newuser.do","/user/newuser_ok.do",
+				"/resource/**"
 		};
 		
 		if(uri.length()<=1)
