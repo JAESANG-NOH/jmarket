@@ -50,10 +50,10 @@ public class QnaServlet extends MainServlet{
 		//로그인하지 않았으면 로그인창으로 돌아간다.
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
-		if(info==null) {
-			forward(req, resp, "/WEB-INF/page/user/login.jsp");
-			return;
-		}
+//		if(info==null) {
+//			forward(req, resp, "/WEB-INF/page/user/login.jsp");
+//			return;
+//		}
 		
 		//날짜계산
 		Calendar cal=Calendar.getInstance();  //현재날짜, 시간
@@ -183,10 +183,10 @@ public class QnaServlet extends MainServlet{
 	protected void qna_createdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
-		if(info==null) {
-			forward(req, resp, "/WEB-INF/page/user/login.jsp");
-			return;
-		}
+//		if(info==null) {
+//			forward(req, resp, "/WEB-INF/page/user/login.jsp");
+//			return;
+//		}
 		
 		FaqDAO dao=new FaqDAO();
 		String category=req.getParameter("category");
@@ -225,10 +225,10 @@ public class QnaServlet extends MainServlet{
 	protected void qna_updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
-		if(info==null) {
-			forward(req, resp, "/WEB-INF/page/user/login.jsp");
-			return;
-		}
+//		if(info==null) {
+//			forward(req, resp, "/WEB-INF/page/user/login.jsp");
+//			return;
+//		}
 		
 		FaqDAO dao=new FaqDAO();
 		String category=req.getParameter("category");
@@ -392,10 +392,10 @@ public class QnaServlet extends MainServlet{
 	protected void answer_createdForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
-		if(info==null) {
-			forward(req, resp, "/WEB-INF/page/user/login.jsp");
-			return;
-		}
+//		if(info==null) {
+//			forward(req, resp, "/WEB-INF/page/user/login.jsp");
+//			return;
+//		}
 		
 		//선택한 고객문의 정보 가져오기
 		int num=Integer.parseInt(req.getParameter("num"));
