@@ -135,7 +135,7 @@ public class SaleDAO {
 	
 	
 	
-	public List<SaleDTO> listSale(int offset, int rows){
+	public List<SaleDTO> listSale(int offset, int rows, int div){
 		List<SaleDTO> list = new ArrayList<SaleDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -146,6 +146,7 @@ public class SaleDAO {
 			sql = " SELECT num, m.name, subject, hitCount, fileName1,TO_CHAR(s.created,'YYYY-MM-DD') created "
 				+ " FROM sale s "
 				+ " JOIN member1 m ON s.id = m.id "
+				+ " WHERE sold = "+div
 				+ " ORDER BY num DESC "
 				+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 			
@@ -188,7 +189,7 @@ public class SaleDAO {
 	
 	
 	//검색에서 리스트 
-	public List<SaleDTO> listSale(int offset, int rows, String condition, String keyword) {
+	public List<SaleDTO> listSale(int offset, int rows, String condition, String keyword, int div) {
 		List<SaleDTO> list = new ArrayList<SaleDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; 
@@ -203,9 +204,9 @@ public class SaleDAO {
 				keyword=keyword.replaceAll("-", "");
 				sb.append(" WHERE TO_CHAR(s.created, 'YYYY-MM-DD') =? ");
 			}else if(condition.equalsIgnoreCase("name")) {
-				sb.append(" WHERE INSTR(name,?)=1");
+				sb.append(" WHERE INSTR(s.id,?)=1 AND sold = 0");
 			}else {
-				sb.append(" WHERE INSTR("+condition+", ?)>=1");
+				sb.append(" WHERE INSTR("+condition+", ?)>=1 AND sold ="+div);
 			}
 			sb.append(" ORDER BY num DESC ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
@@ -263,6 +264,7 @@ public class SaleDAO {
 			sb.append(" TO_CHAR(s.created, 'YYYY-MM-DD') created");
 			sb.append(" FROM sale s ");
 			sb.append(" JOIN member1 m ON s.id = m.id");
+			sb.append(" WHERE sale =1 ");
 			sb.append(" ORDER BY num DESC ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
@@ -362,12 +364,11 @@ public class SaleDAO {
 	
 	//이전글 
 	
-	public SaleDTO preReadSale(int num, String condition, String keyword , int div) {
+	public SaleDTO preReadSale(int num, String condition, String keyword, int div) {
 		SaleDTO dto = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		PreparedStatement pstmt = null;
-		
 		
 		try {
 			if(keyword.length()!=0) {
@@ -376,9 +377,9 @@ public class SaleDAO {
 					keyword=keyword.replaceAll("-", "");
                 	sb.append(" WHERE (TO_CHAR(created, 'YYYYMMDD') = ?)  ");
 				}else {
-                	sb.append(" WHERE (INSTR(" + condition + ", ?) >= 1)  ");
+                	sb.append(" WHERE (INSTR(" + condition + ", ?) >= 1) AND sold = "+div);
                 }
-	                sb.append("         AND (num > ? )  AND sold ="+div);
+	                sb.append("         AND (num > ? )  ");
 	                sb.append(" ORDER BY num ASC  ");
 	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
 	
@@ -387,7 +388,7 @@ public class SaleDAO {
 	                pstmt.setInt(2, num);
 			}else {
 				sb.append("SELECT num, subject FROM sale s JOIN member1 m ON s.id=m.id ");
-				   sb.append(" WHERE num > ?  AND sold ="+div);
+				   sb.append(" WHERE num > ?  AND sold ="+div );
 	                sb.append(" ORDER BY num ASC  ");
 	                sb.append(" FETCH  FIRST  1  ROWS  ONLY");
 
@@ -438,9 +439,9 @@ public class SaleDAO {
 					keyword=keyword.replaceAll("-", "");
 					sb.append(" WHERE (TO_CHAR(created, 'YYYYMMDD') = ? ");
 				}else {
-					sb.append(" WHERE(INSTR("+condition+",?)>=1) " );
+					sb.append(" WHERE(INSTR("+condition+",?)>=1) AND sold = "+div );
 				}
-				sb.append(" AND (num < ? ) AND sold ="+div );
+				sb.append(" AND (num < ? ) ");
 				sb.append(" ORDER BY num DESC  ");
 	            sb.append(" FETCH  FIRST  1  ROWS  ONLY ");
 	            
@@ -449,7 +450,7 @@ public class SaleDAO {
 	            pstmt.setInt(2, num);
 				}else {
 					sb.append(" SELECT num, subject FROM sale s JOIN member1 m ON s.id=m.id ");
-					sb.append(" WHERE num < ?  AND sold ="+div);
+					sb.append(" WHERE num < ? AND sold =" +div );
 					sb.append(" ORDER BY num DESC ");
 					sb.append(" FETCH FIRST 1 ROWS ONLY ");
 					
@@ -583,8 +584,7 @@ public class SaleDAO {
 		String sql;
 		
 		try {
-			sql = " UPDATE sale SET sold = 1 WHERE num=?";
-			
+			sql = " UPDATE sale SET sold= 1 WHERE num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
 			result = pstmt.executeUpdate();

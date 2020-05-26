@@ -28,6 +28,8 @@ public class SaleServlet extends FileServlet{
 	private String pathname;
 
 	
+	
+
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 		String cp = req.getContextPath();
@@ -46,8 +48,6 @@ public class SaleServlet extends FileServlet{
 		
 		if(uri.indexOf("list.do")!=-1) {
 			list(req, resp);
-		}else if(uri.indexOf("list2.do")!=-1) {
-			list2(req, resp);
 		}else if(uri.indexOf("write.do")!=-1) {
 			writeForm(req, resp);
 		}else if(uri.indexOf("write_ok.do")!=-1) {
@@ -64,11 +64,10 @@ public class SaleServlet extends FileServlet{
 			deleteFile(req, resp);
 		}else if (uri.indexOf("pay.do")!=-1) {
 			pay(req,resp);
-		}else if (uri.indexOf("send.do")!=-1) {
-			send(req,resp);
 		}else if (uri.indexOf("sold.do")!=-1) {
-			send(req,resp);
+			pay(req,resp);
 		}
+		
 		
 		
 	}
@@ -78,7 +77,7 @@ public class SaleServlet extends FileServlet{
 		SaleDAO dao = new SaleDAO();
 		MyUtil util = new MyUtil();
 		String cp = req.getContextPath();
-		
+		int div = 0;
 		String page = req.getParameter("page");
 		int current_page = 1; 
 		if(page!=null) {
@@ -96,7 +95,6 @@ public class SaleServlet extends FileServlet{
 		}
 		
 		int rows = 10; 
-		
 		int dataCount;
 		if(keyword.length()!=0) {
 			dataCount=dao.dataCount(condition,keyword);
@@ -113,10 +111,10 @@ public class SaleServlet extends FileServlet{
 		int offset = (current_page-1)*rows;
 		
 		List<SaleDTO> list;
-		if(keyword.length()!=0) {
-			list=dao.listSale(offset, rows, condition, keyword);
+		if(keyword.length()==0) {
+			list=dao.listSale(offset, rows,div);
 		}else {
-			list=dao.listSale(offset, rows);
+			list=dao.listSale(offset, rows, condition, keyword, div);
 		}
 
 		//페이징 처리 
@@ -129,12 +127,13 @@ public class SaleServlet extends FileServlet{
         }
         
 		if(query.length()!=0) {
-	            listUrl+="&"+query;
+	            listUrl+="?"+query;
 	            articleUrl = articleUrl+"&"+query;
 	         }
 	         
 	    String paging = util.paging(current_page, total_page,listUrl);
 	    
+	    req.setAttribute("st", "list");
         req.setAttribute("list", list); 
         req.setAttribute("paging", paging);
         req.setAttribute("total_page", total_page); 
@@ -150,10 +149,12 @@ public class SaleServlet extends FileServlet{
 	}
 	
 	
+	
 	protected void list2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		SaleDAO dao = new SaleDAO();
 		MyUtil util = new MyUtil();
 		String cp = req.getContextPath();
+		int div =1;
 		
 		String page = req.getParameter("page");
 		int current_page = 1; 
@@ -173,6 +174,7 @@ public class SaleServlet extends FileServlet{
 		
 		int rows = 10; 
 		
+		
 		int dataCount;
 		if(keyword.length()!=0) {
 			dataCount=dao.dataCount(condition,keyword);
@@ -190,9 +192,9 @@ public class SaleServlet extends FileServlet{
 		
 		List<SaleDTO> list;
 		if(keyword.length()!=0) {
-			list=dao.listSale(offset, rows, condition, keyword);
+			list=dao.listSale(offset, rows, condition, keyword, div);
 		}else {
-			list=dao.listSale(offset, rows);
+			list=dao.listSale(offset, rows, div);
 		}
 
 		//페이징 처리 
@@ -205,11 +207,13 @@ public class SaleServlet extends FileServlet{
         }
         
 		if(query.length()!=0) {
-	            listUrl+="&"+query;
+	            listUrl+="?"+query;
 	            articleUrl = articleUrl+"&"+query;
 	         }
+	         
 	    String paging = util.paging(current_page, total_page,listUrl);
 	    
+	    req.setAttribute("st", "list2");
         req.setAttribute("list", list); 
         req.setAttribute("paging", paging);
         req.setAttribute("total_page", total_page); 
@@ -220,17 +224,14 @@ public class SaleServlet extends FileServlet{
         req.setAttribute("keyword", keyword);
         
         forward(req, resp, "/WEB-INF/page/sale/list2.jsp");
+	
+	
 	}
 	
 	
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		
-		
-		String rows = req.getParameter("rows");
-		
 		req.setAttribute("mode", "write");
-		req.setAttribute("rows", rows);
 		forward(req, resp, "/WEB-INF/page/sale/write.jsp");
 	}
 	
@@ -294,10 +295,10 @@ public class SaleServlet extends FileServlet{
 	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		SaleDAO dao = new SaleDAO();
 		String cp = req.getContextPath();
-		int div = 1;
+		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page = req.getParameter("page");
-	
+		String st = req.getParameter("st");
 		
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
@@ -314,6 +315,14 @@ public class SaleServlet extends FileServlet{
 		
 		// 조회수
 		dao.updateHitCount(num);
+		
+		int div = 0;
+		if(req.getParameter("st").equals("list")) {
+			div=0;
+		}else {
+			div = 1;
+		}
+		
 		
 		// 게시물 가져오기
 		SaleDTO dto=dao.readSale(num);
@@ -537,46 +546,11 @@ public class SaleServlet extends FileServlet{
 		forward(req, resp, path);
 	}
 	
-	
-	protected void send(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String path = "/WEB-INF/page/sale/send.jsp";
-		forward(req, resp, path);
-	}
+
 	
 	
-	protected void sold(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String cp = req.getContextPath();
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		SaleDAO dao = new SaleDAO();
-		
-	 	int div = 0;
-		int num = Integer.parseInt(req.getParameter("num"));
-		String page=req.getParameter("page");
-			
-		String query = "page="+page;
-		
-		if(div==0) {
-			resp.sendRedirect(cp+"/sale/list.do?"+query);
-		}else {
-			resp.sendRedirect(cp+"/sale/list2.do?"+query);
-		}
-		
-		SaleDTO dto = dao.readSale(num);
-		if(dto==null) {
-			resp.sendRedirect(cp+"/sale/list.do?"+query);
-			return;
-		}
-		
-		//등록한 사람 && 관리자만 가능허게 
-		if(! info.getId().equals(dto.getId()) && ! info.getId().equals("admin")){
-			resp.sendRedirect(cp+"/sale/list2.do?"+query);
-			return;
-		}
-		
-		dao.updateSold(div);
-		resp.sendRedirect(cp+"/sale/list2.do?page="+page);
-	}
+	
+	
 }
 
 

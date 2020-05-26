@@ -9,98 +9,75 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Insert title here</title>
 <link rel="stylesheet" href="<%=cp%>/resource/css/home.css" type="text/css">
-<link rel="stylesheet" href="<%=cp%>/resource/css/menu.css" type="text/css">
-<link rel="stylesheet" href="<%=cp%>/resource/css/sale-list.css" type="text/css">
+<link rel="stylesheet" href="<%=cp%>/resource/css/sblist.css" type="text/css">
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
-
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-function searchList() {
-	var f = document.searchForm;
+function searchnow() {
+	var f=document.searchForm;
 	f.submit();
 }
-
-
 </script>
 </head>
-
 <body>
-<div id="mainframe">
-	<jsp:include page="/WEB-INF/page/layout/header.jsp"/>
-
-
-<section class="container">
-		<article>
+	<div id="mainframe">
+	 <jsp:include page="/WEB-INF/page/layout/header.jsp"></jsp:include>
+		<section class="container">
+			<article>
 				<div class="content" >
-				<div class="bb">
-		<div id="box" style="width:700px; ">
-		<h2>| 판매중</h2><br>
-<ul class="row" style="border-top: 1px solid #999; color:black;"> 
-<li style="line-height: 95px;font-weight: bold;">사진</li>
-<li style= "width:320px; text-align: center;line-height: 95px;font-weight: bold;">상품명</li>
-<li style="width: 140px;line-height: 95px;font-weight: bold;">작성자</li>
-<li style="line-height: 95px;font-weight: bold;">작성일</li>
-<li style="line-height: 95px;font-weight: bold;">조회수</li>
-</ul>
-
+						<div class="bb">
+							<div id="box" style="width:700px; ">
+							<h2>| 판매완료</h2><br>
+						 	<form name="listForm" method="post">
+						 	<input type="hidden" name="page" value="${page}">
+							<input type="hidden" name="condition" value="${condition}">
+							<input type="hidden" name="keyword" value="${keyword}">
+							<ul class="row" style="border-top: 1px solid #999; color:black;"> 
+							<li style="line-height: 95px;font-weight: bold;">사진</li>
+							<li style= "width:320px; text-align: center; line-height: 95px; font-weight: bold;">상품명</li>
+							<li style="width: 140px; line-height: 95px;font-weight: bold;">작성자</li>
+							<li style="line-height: 95px;font-weight: bold;">작성일</li>
+							<li style="line-height: 95px;font-weight: bold;">조회수</li>
+							</ul>
 <c:forEach var="dto" items="${list}">
-<ul class="row">
-<li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
-<li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}">${dto.subject}</a></li>
-<li style="width: 140px;line-height: 95px;">${dto.name}</li>
-<li style="line-height: 95px;">${dto.created}</li>
-<li style="line-height: 95px;">${dto.hitCount}</li>
-</ul>
+	<ul class="row" onclick="javascript:location.href='${articleUrl}&num=${dto.num}&now=${now}';">
+	<li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
+	<li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}">${dto.subject}</a></li>
+	<li style="width: 140px;line-height: 95px;">${dto.name}</li>
+	<li style="line-height: 95px;">${dto.created}</li>
+	<li style="line-height: 95px;">${dto.hitCount}</li>
+	</ul>
 </c:forEach> 
-
-	<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
-			   <tr height="35">
-				<td align="center">
-			        ${dataCount!=0?paging:"등록된 게시물이 없습니다."}
-				</td>
-			   </tr>
-	</table>
-	
-	 <form name="searchForm" action="<%=cp%>/sale/list.do" method="post">
-	 <input type="hidden" name="keyword" value="${keyword}">
-	 <input type="hidden" name="condition" value="${condition}">
-	  <table style="width: 100%; margin: 10px auto; border-spacing: 0px;">
-			   <tr height="40">
-			       
-			      <td align="center" style="padding-left: 120px;">
-			         
-			              <select name="condition" class="selectField" >
-			                  <option value="subject"     ${condition=="subject"?"selected='selected'":"" }>제목</option>
-			                  <option value="name"    ${condition=="name"?"selected='selected'":"" }>작성자</option>
-			                  <option value="content"     ${condition=="content"?"selected='selected'":"" }>내용</option>
-			                  <option value="created"     ${condition=="created"?"selected='selected'":"" }>등록일</option>
-			            </select>
-			            <input type="text" name="keyword" value="${keyword}">
-			            <button type="button" class="btn" onclick="searchList()">검색</button>
-			       
-			      </td>
-			      <td align="left" style="width: 70px;">
-			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list.do';">새로고침</button>
-			      </td>
-			     <td align="right" style="width: 70px;">
-			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/write.do';">글올리기</button>
-			      </td>
-			   </tr>
-			</table>
-   </form>	
-
-</div>
-</div>
-		</div>
-
+							<div align="center">
+								<h4 style="text-align: center; width: 340px; margin: 0 50px; ">${dataCount==0?"등록된 게시물이 없습니다.":paging}</h4>
+							</div>
+							</form>
+							<div style="margin-top: 10px; margin-left: 190px;">
+								<form name="goWriteForm" method="post">
+								<div style="float: right;">
+								</div>
+								</form>
+							<form name="searchForm" action="<%=cp%>/buy/list1.do" method="post">
+			                  	<select name="condition" style="width: 85px; height: 23px; border-radius: 4px;">
+			                  		<option value="subject"  ${condition=="subject"?"selected='selected'":"" }>제목</option>
+			                  		<option value="id" 	 ${condition=="id"?"selected='selected'":"" }>작성자</option>
+			                 		<option value="content"  ${condition=="content"?"selected='selected'":"" }>내용</option>
+			               		   <option value="created"   ${condition=="created"?"selected='selected'":"" }>등록일</option>
+			            		</select>
+			            		<input type="text" name="keyword" value="${keyword}" style="width: 200px; height: 17px; border-radius: 4px;">
+			           			<button type="button" class="btn" onclick="searchnow();" style="height: 24px; width: 62px; border: none; background: pink; border-radius: 5px;">검색</button>
+			           			<input type="hidden" name="now" value="${now}">
+			            	</form>
+							</div>
+						</div>
+					</div>
+				</div>
 			</article>
-				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
+			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>
 		</section>
-	
-</div>
-		
+	</div>
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>
-
 </body>
 </html>

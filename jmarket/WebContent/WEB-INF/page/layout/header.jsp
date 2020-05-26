@@ -14,9 +14,9 @@ function sendlogin() {
 </script>
 <form name="loginform" method="post">
 <header>
-			<div id="menuline" class="container">
+			<div id="menuline" class="container" >
 				<ul class="nav">
-					<li><a href="<%=cp%>/home/home.do" class="useron">HOME</a>
+					<li><a href="<%=cp%>/home/home.do">HOME</a>
 					
 					<li><a href="">회사소개</a>
 					<li><a href="<%=cp%>/sale/list.do">팝니다</a>
@@ -25,10 +25,10 @@ function sendlogin() {
 							<li><a href="">판매완료</a></li>
 						</ul>
 
-					<li><a href="">삽니다</a>
+					<li><a href="<%=cp%>/buy/list1.do">삽니다</a>
 						<ul>
-							<li><a href="">구매중</a></li>
-							<li><a href="">구매완료</a></li>
+							<li><a href="<%=cp%>/buy/list1.do">구매중</a></li>
+							<li><a href="<%=cp%>/buy/list2.do">구매완료</a></li>
 
 						</ul>
 
@@ -41,7 +41,7 @@ function sendlogin() {
 
 						</ul>
 				<c:if test="${empty sessionScope.member}">
-					<li><a href="">로그인</a>
+					<li><a href="<%=cp%>/user/login.do">로그인</a>
 						<ul>
 							<li><a href="<%=cp%>/user/newuser.do">회원가입</a></li>
 							<li><a>ID&nbsp;<input class="login" type="text" maxlength="10" name="id">&nbsp;&nbsp;&nbsp;&nbsp;Password&nbsp;<input class="login" type="password" maxlength="10" name="pwd">&nbsp;&nbsp;<button class="loginbtn" type="button" onclick="sendlogin();">로그인</button></a></li>
@@ -50,6 +50,7 @@ function sendlogin() {
 				<c:if test="${not empty sessionScope.member}">
 					<li><a href="">회원</a>
 						<ul>
+							<li><a href="<%=cp%>/user/updateuser.do">회원정보수정</a></li>
 							<li><a href="<%=cp%>/user/logout.do">로그아웃</a></li>
 						</ul>
 				</c:if>
