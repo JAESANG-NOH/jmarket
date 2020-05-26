@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import com.user.SessionInfo;
 import com.util.MyUtil;
 
 @WebServlet("/event/*")
+// 필터를 이미 다 걸어놔서 지정 안해줘도 될듯
 public class EventServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,12 +39,7 @@ public class EventServlet extends HttpServlet {
 	}
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
-		String cp = req.getContextPath();
 		String uri = req.getRequestURI();
-		
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("user");
-		
 		
 		if(uri.indexOf("list.do") != -1) {
 			list(req, resp);
@@ -140,13 +137,6 @@ public class EventServlet extends HttpServlet {
 	}
 	
 	protected void writeForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session=req.getSession();
-		SessionInfo info=(SessionInfo)session.getAttribute("member");
-		
-		if(! info.getId().equals("admin")) {
-			resp.sendRedirect(req.getContextPath()+"/event/list.do");
-			return;
-		}
 		
 		req.setAttribute("mode", "write");
 		forward(req, resp, "/WEB-INF/page/event/write.jsp");
@@ -157,11 +147,6 @@ public class EventServlet extends HttpServlet {
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
-		if(! info.getId().equals("admin")) {
-			resp.sendRedirect(req.getContextPath()+"/event/list.do");
-			return;
-		}
 		
 		EventDAO dao = new EventDAO();
 		EventDTO dto = new EventDTO();

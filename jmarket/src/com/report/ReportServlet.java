@@ -37,12 +37,7 @@ public class ReportServlet extends HttpServlet {
 	}
 	protected void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
-		String cp = req.getContextPath();
 		String uri = req.getRequestURI();
-		
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("user");
-		
 		
 		if(uri.indexOf("list.do") != -1) {
 			list(req, resp);
