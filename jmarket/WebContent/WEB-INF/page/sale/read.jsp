@@ -27,14 +27,6 @@ function jmPay(){
 }
 
 
-<c:if test="${sessionScope.member.id!='admin' && sessionScope.member.id!=dto.id}">
-alert("게시물을 삭제할 수  없습니다.");
-</c:if>
-
-<c:if test="${sessionScope.member.id!=dto.id}">
-alert("게시물을 수정할 수  없습니다.");
-</c:if>
-
 <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
 
 function sold(num) {
@@ -134,7 +126,7 @@ function sold(num) {
 			    </td>
 			
 			     <td align="right">
-					  <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list${listdiv == '0' ? '1' : '2'}.do?${query}';">리스트</button>
+					  <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/list${listdiv == '0' ? '' : '2'}.do?${query}';">리스트</button>
 				</td>
 			</tr>
 			</table>

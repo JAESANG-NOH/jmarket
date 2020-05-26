@@ -48,7 +48,7 @@ function searchList() {
 <ul class="row" onclick="javascript:location.href='${articleUrl}&num=${dto.num}&now=${now}';">
 <li> <img class="photo" src="<%=cp%>/photo/sale/${dto.fileName1}" style="width: 70px; height: 78px;"></li>
 <li style= "width:320px; text-align: left; line-height: 95px; text-align: center;"> <a href="${articleUrl}&num=${dto.num}&now=${now}">${dto.subject}</a></li>
-<li style="width: 140px;line-height: 95px;">${dto.id}</li>
+<li style="width: 140px;line-height: 95px;">${dto.name}</li>
 <li style="line-height: 95px;">${dto.created}</li>
 <li style="line-height: 95px;">${dto.hitCount}</li>
 </ul>
