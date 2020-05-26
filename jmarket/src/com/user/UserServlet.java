@@ -50,8 +50,6 @@ public class UserServlet extends MainServlet{
 		UserDTO dto = dao.readUser(id);
 		
 		if(dto == null || ! dto.getPwd().equals(pwd) || dto.getEnabled() !=1 ) {
-			String s = "아이디 또는 패스워드가 일치하지 않습니다.";
-			req.setAttribute("message", s);
 			forward(req, resp, "/WEB-INF/page/home/home.jsp");
 			return;
 		}
@@ -64,7 +62,7 @@ public class UserServlet extends MainServlet{
 		info.setName(dto.getName());
 
 		session.setAttribute("member", info);
-		resp.sendRedirect(cp);
+		resp.sendRedirect(cp+"/home/home.jsp");
 	}
 	
 	protected void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -117,9 +115,7 @@ public class UserServlet extends MainServlet{
 		resp.sendRedirect(cp+"/user/login.do");
 	}
 	
-	protected void updateuser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		String cp = req.getContextPath();
-		
+	protected void updateuser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{	
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		

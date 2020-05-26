@@ -77,7 +77,17 @@ function searchnow() {
 					</div>
 				</div>
 			</article>
-			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>
+			<aside>
+			<div class="sidebox">
+				<div id="sidetitle">
+					<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+				</div>
+				<ul>
+					<li><a href="<%=cp%>/buy/list1.do">-구매중</a></li>
+					<li><a href="<%=cp%>/buy/list2.do">-구매완료</a></li>
+				</ul>
+			</div>
+			</aside>
 		</section>
 	</div>
 	<jsp:include page="/WEB-INF/page/layout/footer.jsp"></jsp:include>

@@ -231,7 +231,6 @@ public class BuyServlet extends FileServlet{
 		String page=req.getParameter("page");
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
-		String now = req.getParameter("now");
 		
 		if(condition==null) {
 			condition="subject";

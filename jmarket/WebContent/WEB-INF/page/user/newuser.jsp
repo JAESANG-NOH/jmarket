@@ -237,7 +237,20 @@ function isValidDateFormat(data){
 						<div class="btnbox"><button class="btn1" type="button" onclick="sendjoin();">제 출</button>&nbsp;&nbsp;<button class="btn1">취 소</button></div>
 				</div>
 			</article>
-			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"></jsp:include>
+			<aside>
+			<div class="sidebox">
+				<div id="sidetitle">
+					<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+				</div>
+				<ul>
+					<li><a href="<%=cp%>/user/login.do">-로그인</a></li>
+					<li><a href="<%=cp%>/user/newuser.do">-회원가입</a></li>
+					<c:if test="${not empty dto}">
+						<li><a href="<%=cp%>/user/updateuser.do">-회원정보수정</a></li>
+					</c:if>
+				</ul>
+			</div>
+			</aside>
 		</section>
 	 </form>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
