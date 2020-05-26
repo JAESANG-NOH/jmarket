@@ -258,10 +258,6 @@ public class BuyServlet extends FileServlet{
 			resp.sendRedirect(cp+"/buy/list1.do?"+query);
 			return;
 		}
-		String content = dto.getContent();
-		String chcontent;
-		chcontent = util.htmlSymbols(content);
-		dto.setContent(chcontent);
 		
 		String trade ="";
 		if(dto.getHow().equals("post")) {
