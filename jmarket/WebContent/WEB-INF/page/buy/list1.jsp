@@ -42,7 +42,7 @@ function searchnow() {
 							<li style="line-height: 95px;font-weight: bold;">조회수</li>
 							</ul>
 <c:forEach var="dto" items="${list}">				
-							<ul class="row" onclick="javascript:location.href='${articleUrl}&num=${dto.num}';">
+							<ul class="row" onclick="javascript:location.href='${articleUrl}&num=${dto.num}&now=${now}';">
 							<li> <img class="photo" src="<%=cp%>/photo/buy/${dto.imageName}" onerror="this.src='<%=cp%>/resource/image/imgnull.jpg'" style="width: 70px; height: 78px;"></li>
 							<li style= "width:320px; text-align: left;line-height: 95px;"><a>&nbsp;&nbsp;${dto.subject}</a></li>
 							<li style="width: 140px;line-height: 95px;">${dto.id}</li>

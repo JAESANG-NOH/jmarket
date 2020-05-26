@@ -29,7 +29,7 @@ function sendPay() {
 </div>
 
 <div>
-	<input type="button"  value="결제완료" onclick="sendPay();" style="width:250px; height:40px; margin-left: 75px; margin-top: 10px; background: #FF7E7E;">
+	<input type="button"  value="결제완료" onclick="sendPay();" style="width:250px; height:40px; margin-left: 95px; margin-top: 10px; background: #FF7E7E;">
 	
 </div>
 </div>
