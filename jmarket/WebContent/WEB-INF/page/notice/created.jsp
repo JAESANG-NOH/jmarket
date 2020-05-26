@@ -137,7 +137,19 @@ function deleteFile(num) {
 				</div>
 			</div>
 		</article>
-		<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
+		<aside>
+	<div class="sidebox">
+		<div id="sidetitle">
+			<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+		</div>
+		<ul>
+			<li><a href="<%=cp%>/notice/list.do">-공지</a></li>
+			<li><a href="<%=cp%>/event/list.do">-이벤트</a></li>
+			<li><a href="<%=cp%>/report/list.do">-신고하기</a></li>
+			<li><a href="<%=cp%>/faq/faq_list.do">-문의</a></li>
+		</ul>
+	</div>
+</aside>
 	</section>
 </div>
 
