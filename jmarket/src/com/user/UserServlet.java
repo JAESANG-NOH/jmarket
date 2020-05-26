@@ -62,7 +62,7 @@ public class UserServlet extends MainServlet{
 		info.setName(dto.getName());
 
 		session.setAttribute("member", info);
-		resp.sendRedirect(cp+"/home/home.jsp");
+		resp.sendRedirect(cp+"/home/home.do");
 	}
 	
 	protected void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
