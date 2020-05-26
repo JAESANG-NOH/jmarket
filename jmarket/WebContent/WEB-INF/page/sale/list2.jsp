@@ -65,7 +65,7 @@ function searchList() {
 			   </tr>
 	</table>
 	
-	 <form name="searchForm" action="<%=cp%>/sale/list.do" method="post">
+	 <form name="searchForm" action="<%=cp%>/sale/list2.do" method="post">
 	 <input type="hidden" name="keyword" value="${keyword}">
 	 <input type="hidden" name="condition" value="${condition}">
 	  <table style="width: 100%; margin: 10px auto; border-spacing: 0px;">
@@ -98,7 +98,17 @@ function searchList() {
 		</div>
 
 			</article>
-				<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp"/>
+				<aside>
+	<div class="sidebox">
+		<div id="sidetitle">
+			<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+		</div>
+		<ul>
+			<li><a href="<%=cp%>/sale/list.do">-판매중</a></li>
+			<li><a href="<%=cp%>/sale/list2.do">-판매완료</a></li>
+		</ul>
+	</div>
+</aside>
 		</section>
 	
 </div>
