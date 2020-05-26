@@ -16,13 +16,16 @@
 <link rel="stylesheet" href="<%=cp%>/resource/css/sidemenu.css" type="text/css">
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
-<c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
+
+<c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">
 function deleteNotice(num) {
 	if(confirm("게시물을 삭제 하시겠습니까 ?")) {
 		var url="<%=cp%>/buy/delete.do?num="+num+"&${query}";
 		location.href=url;
 	}
 }
+</c:if>
+<c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
 function updateBuying(num) {
 	if(confirm("구매 완료 처리를 하시겠습니까 ?\n구매완료 후에는 변경이 불가능 합니다.")) {
 		var url="<%=cp%>/buy/updateBuying.do?num="+num+"&${query}";
@@ -86,7 +89,7 @@ function updateBuying(num) {
 					 	    <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">				    
 					          <button type="button" class="btn" onclick="updateBuying('${dto.num}');">구매완료</button>
 					       </c:if>
-					       <c:if test="${sessionScope.member.id==dto.id}">				    
+					       <c:if test="${listdiv =='0' && sessionScope.member.id==dto.id}">				    
 					          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/buy/update.do?num=${dto.num}&page=${page}';">수정</button>
 					       </c:if>
 					       <c:if test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">				    
