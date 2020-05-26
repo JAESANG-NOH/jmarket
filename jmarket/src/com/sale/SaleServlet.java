@@ -36,12 +36,6 @@ public class SaleServlet extends FileServlet{
 		String uri = req.getRequestURI();
 		
 		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
-		if(uri.indexOf("list.do")==-1 && info == null) {
-			resp.sendRedirect(cp+"/user/login.do");
-			return;
-		}
 		
 		String root = session.getServletContext().getRealPath("/");
 		pathname = root+"photo"+File.separator+"sale";
@@ -347,8 +341,7 @@ public class SaleServlet extends FileServlet{
 		
 	
 	protected void updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
 		
 		String cp = req.getContextPath();
 		String page= req.getParameter("page");
@@ -357,11 +350,6 @@ public class SaleServlet extends FileServlet{
 		SaleDTO dto = dao.readSale(num);
 		if(dto==null) {
 			resp.sendRedirect(cp+"/sale/list.do?page="+page);
-		}
-		
-		if(! info.getId().equals(dto.getId())) {
-			resp.sendRedirect(cp+"sale/list.do?page="+page);
-			return;
 		}
 		
 		req.setAttribute("dto", dto);
@@ -447,8 +435,6 @@ public class SaleServlet extends FileServlet{
 	
 	protected void deleteFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	//수정에서 파일만 삭제 
-		HttpSession session=req.getSession();
-		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		String cp=req.getContextPath();
 	
@@ -460,11 +446,7 @@ public class SaleServlet extends FileServlet{
 			resp.sendRedirect(cp+"/sale/list.do?page="+page);
 			return;
 		}
-		
-		if(! info.getId().equals(dto.getId())) {
-			resp.sendRedirect(cp+"/sale/list.do?page="+page);
-			return;
-		}
+	
 		
 		// 파일삭제
 		FileManager.doFiledelete(pathname, dto.getFileName1());
@@ -491,8 +473,6 @@ public class SaleServlet extends FileServlet{
 	
 	protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String cp = req.getContextPath();
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page=req.getParameter("page");
@@ -514,11 +494,6 @@ public class SaleServlet extends FileServlet{
 			return;
 		}
 		
-		//등록한 사람 && 관리자만 삭제 가능허게 
-		if(! info.getId().equals(dto.getId()) && ! info.getId().equals("admin")){
-			resp.sendRedirect(cp+"/sale/list.do?"+query);
-			return;
-		}
 		
 		//파일삭제
 		if(dto.getFileName1()!=null && dto.getFileName1().length()!=0) {
