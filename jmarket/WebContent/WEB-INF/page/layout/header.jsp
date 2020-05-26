@@ -22,7 +22,7 @@ function sendlogin() {
 					<li><a href="<%=cp%>/sale/list.do">팝니다</a>
 						<ul>
 							<li><a href="<%=cp%>/sale/list.do">판매중</a></li>
-							<li><a href="">판매완료</a></li>
+							<li><a href="<%=cp%>/sale/list2.do">판매완료</a></li>
 						</ul>
 
 					<li><a href="<%=cp%>/buy/list1.do">삽니다</a>

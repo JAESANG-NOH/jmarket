@@ -36,13 +36,15 @@ alert("게시물을 수정할 수  없습니다.");
 </c:if>
 
 <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">
+
 function sold(num) {
-	alert("방가");
-	if(confirm("판매 완료로 상태를 변경 하시겠습니까 ?\n")) {
+	alert("판매완료");
+	if(confirm("판매 완료로 상태를 변경 하시겠습니까 ?")) {
 		var url="<%=cp%>/sale/sold.do?num="+num+"&${query}";
 		location.href=url;
 	}
 }
+
 </c:if>
 
 </script>
@@ -104,7 +106,7 @@ function sold(num) {
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					       이전글 :
 					         <c:if test="${not empty preReadDto}">
-					              <a href="<%=cp%>/sale/read.do?${query}&num=${preReadDto.num}">${preReadDto.subject}</a>
+					              <a href="<%=cp%>/sale/read.do?${query}&num=${preReadDto.num}&now=${now}">${preReadDto.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>
@@ -113,7 +115,7 @@ function sold(num) {
 					    <td colspan="2" align="left" style="padding-left: 5px;">
 					    다음글 :
 					         <c:if test="${not empty nextReadDto}">
-					              <a href="<%=cp%>/sale/read.do?${query}&num=${nextReadDto.num}">${nextReadDto.subject}</a>
+					              <a href="<%=cp%>/sale/read.do?${query}&num=${nextReadDto.num}&now=${now}">${nextReadDto.subject}</a>
 					        </c:if>
 					    </td>
 					</tr>
@@ -121,7 +123,7 @@ function sold(num) {
 					<tr height="45">
 			 	   <td width="300" align="left">
 			 	    <c:if test="${listdiv =='0' && (sessionScope.member.id==dto.id || sessionScope.member.id=='admin')}">				    
-					   <button type="button" class="btn" onclick="sold('${dto.num}');">판매완료</button>
+					     <button type="button" class="btn" onclick="sold('${dto.num}');">구매완료</button>
 					</c:if>
 			       <c:if test="${sessionScope.member.id==dto.id}">				    
 			          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/sale/update.do?num=${dto.num}&page=${page}';">수정</button>

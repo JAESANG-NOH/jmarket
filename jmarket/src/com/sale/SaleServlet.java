@@ -26,7 +26,7 @@ public class SaleServlet extends FileServlet{
 
 	private static final long serialVersionUID = 1L;
 	private String pathname;
-
+	private SaleDAO dao = new SaleDAO(); 
 	
 	
 
@@ -48,6 +48,8 @@ public class SaleServlet extends FileServlet{
 		
 		if(uri.indexOf("list.do")!=-1) {
 			list(req, resp);
+		}else if(uri.indexOf("list2.do")!=-1) {
+			list2(req, resp);	
 		}else if(uri.indexOf("write.do")!=-1) {
 			writeForm(req, resp);
 		}else if(uri.indexOf("write_ok.do")!=-1) {
@@ -65,7 +67,7 @@ public class SaleServlet extends FileServlet{
 		}else if (uri.indexOf("pay.do")!=-1) {
 			pay(req,resp);
 		}else if (uri.indexOf("sold.do")!=-1) {
-			pay(req,resp);
+			sold(req,resp);
 		}
 		
 		
@@ -74,7 +76,6 @@ public class SaleServlet extends FileServlet{
 
 
 	protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		SaleDAO dao = new SaleDAO();
 		MyUtil util = new MyUtil();
 		String cp = req.getContextPath();
 		int div = 0;
@@ -133,7 +134,7 @@ public class SaleServlet extends FileServlet{
 	         
 	    String paging = util.paging(current_page, total_page,listUrl);
 	    
-	    req.setAttribute("st", "list");
+	    req.setAttribute("now", "list");
         req.setAttribute("list", list); 
         req.setAttribute("paging", paging);
         req.setAttribute("total_page", total_page); 
@@ -151,7 +152,6 @@ public class SaleServlet extends FileServlet{
 	
 	
 	protected void list2(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		SaleDAO dao = new SaleDAO();
 		MyUtil util = new MyUtil();
 		String cp = req.getContextPath();
 		int div =1;
@@ -213,7 +213,7 @@ public class SaleServlet extends FileServlet{
 	         
 	    String paging = util.paging(current_page, total_page,listUrl);
 	    
-	    req.setAttribute("st", "list2");
+	    req.setAttribute("now", "list2");
         req.setAttribute("list", list); 
         req.setAttribute("paging", paging);
         req.setAttribute("total_page", total_page); 
@@ -237,7 +237,6 @@ public class SaleServlet extends FileServlet{
 	
 	
 	protected void writeSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		SaleDAO dao = new SaleDAO();
 		String cp = req.getContextPath();
 		SaleDTO dto = new SaleDTO();
 		HttpSession session = req.getSession();
@@ -293,12 +292,11 @@ public class SaleServlet extends FileServlet{
 		}
 		
 	protected void read(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		SaleDAO dao = new SaleDAO();
 		String cp = req.getContextPath();
 		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page = req.getParameter("page");
-		String st = req.getParameter("st");
+		String now = req.getParameter("now");
 		
 		String condition=req.getParameter("condition");
 		String keyword=req.getParameter("keyword");
@@ -317,7 +315,7 @@ public class SaleServlet extends FileServlet{
 		dao.updateHitCount(num);
 		
 		int div = 0;
-		if(req.getParameter("st").equals("list")) {
+		if(req.getParameter("now").equals("list")) {
 			div=0;
 		}else {
 			div = 1;
@@ -337,6 +335,7 @@ public class SaleServlet extends FileServlet{
 		SaleDTO preReadDto = dao.preReadSale(dto.getNum(), condition, keyword, div);
 		SaleDTO nextReadDto = dao.nextReadSale(dto.getNum(), condition, keyword, div);
 		
+		req.setAttribute("listdiv", div);
 		req.setAttribute("dto", dto);
 		req.setAttribute("preReadDto", preReadDto);
 		req.setAttribute("nextReadDto", nextReadDto);
@@ -351,7 +350,6 @@ public class SaleServlet extends FileServlet{
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
-		SaleDAO dao = new SaleDAO();
 		String cp = req.getContextPath();
 		String page= req.getParameter("page");
 		int num = Integer.parseInt(req.getParameter("num"));
@@ -375,7 +373,6 @@ public class SaleServlet extends FileServlet{
 	
 	
 	protected void updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		SaleDAO dao = new SaleDAO();
 		String cp = req.getContextPath();
 		
 		SaleDTO dto = new SaleDTO();
@@ -453,7 +450,6 @@ public class SaleServlet extends FileServlet{
 		HttpSession session=req.getSession();
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
-		SaleDAO dao=new SaleDAO();
 		String cp=req.getContextPath();
 	
 		int num=Integer.parseInt(req.getParameter("num"));
@@ -497,7 +493,6 @@ public class SaleServlet extends FileServlet{
 		String cp = req.getContextPath();
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		SaleDAO dao = new SaleDAO();
 		
 		int num = Integer.parseInt(req.getParameter("num"));
 		String page=req.getParameter("page");
@@ -545,6 +540,30 @@ public class SaleServlet extends FileServlet{
 		String path = "/WEB-INF/page/sale/jmpay.jsp";
 		forward(req, resp, path);
 	}
+	
+	
+	protected void sold(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cp = req.getContextPath();
+		
+		int num = Integer.parseInt(req.getParameter("num"));
+		String page = req.getParameter("page");
+		
+		String condition = req.getParameter("condition");
+		String keyword = req.getParameter("keyword");
+		if(condition==null) {
+			condition="subject";
+			keyword = "";
+		}
+		keyword=URLDecoder.decode(keyword,"utf-8");
+		String query = "page="+page;
+		if(keyword.length()!=0) {
+			query="&condition="+condition+"&keyword="+URLEncoder.encode(keyword,"utf-8");
+		}
+		dao.updateSold(num);
+		resp.sendRedirect(cp+"/sale/list.do?"+query);
+	
+	}
+	
 	
 
 	
