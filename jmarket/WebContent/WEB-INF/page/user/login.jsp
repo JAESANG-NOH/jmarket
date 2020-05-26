@@ -15,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Jua&display=swap" rel="stylesheet">
 <script type="text/javascript">
 function sendlogin() {
-	var f = document.loginform;
+	var f = document.loginform2;
 	f.action = "<%=cp%>/user/login_ok.do";
 	f.submit();
 }
@@ -40,7 +40,7 @@ function sendlogin() {
 						<li>|</li>
 						<li><a href="#">비밀번호찾기</a></li>
 						<li>|</li>
-						<li><a href="#">회원가입</a></li>
+						<li><a href="<%=cp%>/user/newuser.do">회원가입</a></li>
 					</ul>
 				</div>
 			</article>

@@ -105,16 +105,16 @@
 									<td width="300" align="left"><c:if
 											test="${sessionScope.member.id==dto.id}">
 											<button type="button" class="btn"
-												onclick="javascript:location.href='<%=cp%>/notice/update.do?num=${dto.num}&page=${page}&rows=${rows}';">수정</button>
+												onclick="javascript:location.href='<%=cp%>/notice/update.do?num=${dto.num}&page=${page}&rows=${rows}';" style="background: #FFDDDD">수정</button>
 										</c:if> <c:if
 											test="${sessionScope.member.id==dto.id || sessionScope.member.id=='admin'}">
 											<button type="button" class="btn"
-												onclick="deleteNotice('${dto.num}');">삭제</button>
+												onclick="deleteNotice('${dto.num}'); " style="background: #FFDDDD">삭제</button>
 										</c:if></td>
 
 									<td align="right">
 										<button type="button" class="btn"
-											onclick="javascript:location.href='<%=cp%>/notice/list.do?${query}';">리스트</button>
+											onclick="javascript:location.href='<%=cp%>/notice/list.do?${query}';" style="background: #FFDDDD">리스트</button>
 									</td>
 								</tr>
 							</table>
@@ -124,7 +124,19 @@
 					</div>
 				</div>
 			</article>
-			<jsp:include page="/WEB-INF/page/layout/sidemenu.jsp" />
+			<aside>
+	<div class="sidebox">
+		<div id="sidetitle">
+			<h2 style="font-family: 'Do Hyeon', sans-serif;">|&nbsp;&nbsp;메뉴</h2>
+		</div>
+		<ul>
+			<li><a href="<%=cp%>/notice/list.do">-공지</a></li>
+			<li><a href="<%=cp%>/event/list.do">-이벤트</a></li>
+			<li><a href="<%=cp%>/report/list.do">-신고하기</a></li>
+			<li><a href="<%=cp%>/faq/faq_list.do">-문의</a></li>
+		</ul>
+	</div>
+</aside>
 		</section>
 	</div>
 

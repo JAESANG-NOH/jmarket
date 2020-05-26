@@ -120,7 +120,7 @@ public class BuyDAO {
         return result;
     }
 	
-	public List<BuyDTO> listBuy(int offset, int rows) {
+	public List<BuyDTO> listBuy(int offset, int rows, int div) {
 		List<BuyDTO> list=new ArrayList<BuyDTO>();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
@@ -130,6 +130,7 @@ public class BuyDAO {
 			sql =" SELECT name, num, b.id, subject, imagename, TO_CHAR(b.created,'YYYY-MM-DD') created, buying, views"
 			    +" FROM buy b "
 			    +" JOIN member1 m ON b.Id=m.Id "
+			    +" WHERE buying = "+div
 			    +" ORDER BY num DESC "
 			    +" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 
@@ -172,7 +173,7 @@ public class BuyDAO {
 		return list;
 	}
 	
-	public List<BuyDTO> listBuy(int offset, int rows, String condition, String keyword) {
+	public List<BuyDTO> listBuy(int offset, int rows, String condition, String keyword, int div) {
 		List<BuyDTO> list=new ArrayList<BuyDTO>();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
@@ -185,12 +186,12 @@ public class BuyDAO {
 			
 			if(condition.equalsIgnoreCase("created")) {
 				keyword = keyword.replaceAll("-", "");
-				sql += " WHERE TO_CHAR(created, 'YYYYMMDD') = ?";
+				sql += " WHERE TO_CHAR(created, 'YYYYMMDD') = ?AND buying = 0 ";
 			} else if(condition.equalsIgnoreCase("userName")) {
-				sql +=" WHERE INSTR(b.id, ?) = 1 ";
+				sql +=" WHERE INSTR(b.id, ?) = 1 AND buying = 0 ";
 			} else {
 				sql +=" WHERE INSTR("+(condition.equals("id")?"b.":"");
-				sql +=condition+", ?) >= 1 ";
+				sql +=condition+", ?) >= 1 AND buying = "+div;
 			}
 			
 			sql+=" ORDER BY num DESC OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
@@ -313,7 +314,7 @@ public class BuyDAO {
 		String sql;
 		
 		try {
-			sql = "UPDATE photo SET file subject=?, content=?, fileName=? price=?, productName=?, how=? WHERE num=?";
+			sql = "UPDATE buy SET subject=?, content=?, imagename=?, price=?, productName=?, how=? WHERE num=?";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
@@ -324,12 +325,175 @@ public class BuyDAO {
 			pstmt.setInt(7, dto.getNum());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
 		} finally {
 			if(pstmt!=null) {
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
+				}
+			}
+		}
+		return result;
+	}
+	
+	public int deleteBuy(int num) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql;
+		try {
+			sql = "DELETE FROM buy WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
+		return result;
+	}
+	
+	public BuyDTO frontBuy(int num, String condition, String keyword, int div) {
+		BuyDTO dto=null;
+
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        String sql;
+
+        try {
+            if(keyword.length() != 0) {
+                sql = "SELECT num, subject FROM buy b JOIN member1 m ON b.Id = m.Id ";
+                if(condition.equals("id")) {
+                    sql += " WHERE ( INSTR(b.id, ?) = 1) ";
+                } else if(condition.equals("created")) {
+                	keyword=keyword.replaceAll("-", "");
+                    sql += " WHERE (TO_CHAR(created, 'YYYYMMDD') = ?) ";
+                } else {
+                	sql += " WHERE ( INSTR("+condition+", ?) > 0) ";
+                }
+                sql += " AND buying = " +div
+                	+ "AND (num > ? ) ORDER BY num ASC FETCH  FIRST  1  ROWS  ONLY ";
+
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setString(1, keyword);
+               	pstmt.setInt(2, num);
+            } else {
+                sql = "SELECT num, subject FROM buy WHERE num > ? AND buying = "+ div +"  ORDER BY num ASC "
+                    + " FETCH  FIRST  1  ROWS  ONLY ";
+
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setInt(1, num);
+            }
+
+            rs=pstmt.executeQuery();
+
+            if(rs.next()) {
+                dto=new BuyDTO();
+                dto.setNum(rs.getInt("num"));
+                dto.setSubject(rs.getString("subject"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(rs!=null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            }
+                
+            if(pstmt!=null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+        return dto;
+	}	
+	
+	public BuyDTO BackBuy(int num, String condition, String keyword, int div) {
+		BuyDTO dto=null;
+
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        String sql;
+
+        try {
+            if(keyword.length() != 0) {
+                sql = "SELECT num, subject FROM buy b JOIN member1 m ON b.Id = m.Id ";
+                if(condition.equals("id")) {
+                    sql += " WHERE ( INSTR(b.id, ?) = 1) ";
+                } else if(condition.equals("created")) {
+                	keyword=keyword.replaceAll("-", "");
+                    sql += " WHERE (TO_CHAR(created, 'YYYYMMDD') = ?) ";
+                } else {
+                	sql += " WHERE ( INSTR("+condition+", ?) > 0) ";
+                }
+                sql +=" AND buying = " + div
+                	+ " AND (num < ? ) ORDER BY num ASC FETCH  FIRST  1  ROWS  ONLY ";
+
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setString(1, keyword);
+               	pstmt.setInt(2, num);
+            } else {
+                sql = "SELECT num, subject FROM buy WHERE num < ? AND buying = "+ div+ " ORDER BY num ASC "
+                    + " FETCH  FIRST  1  ROWS  ONLY ";
+
+                pstmt=conn.prepareStatement(sql);
+                pstmt.setInt(1, num);
+            }
+
+            rs=pstmt.executeQuery();
+
+            if(rs.next()) {
+                dto=new BuyDTO();
+                dto.setNum(rs.getInt("num"));
+                dto.setSubject(rs.getString("subject"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(rs!=null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            }
+                
+            if(pstmt!=null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+        return dto;
+	}
+	
+	public int updateBuying(int num) {
+		PreparedStatement pstmt=null;
+		int result=0;
+		String sql;
+		
+		try {
+			sql = "UPDATE buy SET buying=1 WHERE num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e2) {
 				}
 			}
 		}
