@@ -119,17 +119,13 @@ function sendjoin() {
         f.email2.focus();
         return;
     }
-    	alert("진입1");
 
     var mode="${mode}";
     if(mode=="created") {
-    	alert("진입2");
     	f.action = "<%=cp%>/user/newuser_ok.do";
     } else if(mode=="update") {
-    	alert("진입3");
     	f.action = "<%=cp%>/user/updateuser_ok.do";
     }
-    alert("진입4");
     f.submit();
 }
 

@@ -24,7 +24,6 @@ function deleteNotice(num) {
 	}
 }
 function updateBuying(num) {
-	alert("진입");
 	if(confirm("구매 완료 처리를 하시겠습니까 ?\n구매완료 후에는 변경이 불가능 합니다.")) {
 		var url="<%=cp%>/buy/updateBuying.do?num="+num+"&${query}";
 		location.href=url;

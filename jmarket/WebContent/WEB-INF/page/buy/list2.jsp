@@ -29,7 +29,7 @@ function searchnow() {
 				<div class="content" >
 						<div class="bb">
 							<div id="box" style="width:700px; ">
-							<h2>| 구입중</h2><br>
+							<h2>| 구매완료</h2><br>
 						 	<form name="listForm" method="post">
 						 	<input type="hidden" name="page" value="${page}">
 							<input type="hidden" name="condition" value="${condition}">

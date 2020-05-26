@@ -81,7 +81,6 @@ public class UserServlet extends MainServlet{
 	protected void submitUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		UserDAO dao=new UserDAO();
 		UserDTO dto = new UserDTO();
-		System.out.println("¡¯¿‘");
 		dto.setId(req.getParameter("userId"));
 		dto.setPwd(req.getParameter("userPwd"));
 		dto.setName(req.getParameter("userName"));
