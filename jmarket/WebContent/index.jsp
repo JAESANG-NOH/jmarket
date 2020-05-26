@@ -1,1 +1,1 @@
-<jsp:forward page="/home/home.do"/>
+<jsp:forward page="/ome/home.do"/>

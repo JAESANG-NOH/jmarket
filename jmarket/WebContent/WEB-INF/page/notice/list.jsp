@@ -100,7 +100,7 @@ function searchList() {
 						<table style="width: 100%; margin: 10px auto; border-spacing: 0px;">
 						   <tr height="40">
 						      <td align="left" width="100">
-						          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/notice/list.do';">새로고침</button>
+						          <button style="background: #FFDDDD" type="button" class="btn" onclick="javascript:location.href='<%=cp%>/notice/list.do';">새로고침</button>
 						      </td>
 						      <td align="center">
 						          <form name="searchForm" action="<%=cp%>/notice/list.do" method="post">
@@ -112,12 +112,12 @@ function searchList() {
 						            </select>
 						            <input type="text" name="keyword" class="boxTF" value="${keyword}">
 						            <input type="hidden" name="rows" value="${rows}">
-						            <button type="button" class="btn" onclick="searchList()">검색</button>
+						            <button type="button" class="btn" onclick="searchList()" style="background: #FFDDDD">검색</button>
 						        </form>
 						      </td>
 						      <td align="right" width="100">
 								<c:if test="${sessionScope.member.id == 'admin' }">			      
-						          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/notice/created.do?rows=${rows}';">글올리기</button>
+						          <button type="button" class="btn" onclick="javascript:location.href='<%=cp%>/notice/created.do?rows=${rows}'; " style="background: #FFDDDD">글올리기</button>
 						        </c:if>
 						      </td>
 						   </tr>
